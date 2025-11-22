@@ -129,6 +129,31 @@
             font-size: 12px;
             color: #666;
         }
+
+        .btn-back {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            color: #2E5F35;
+            border: 2px solid #2E5F35;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-back:hover {
+            background: #2E5F35;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 95, 53, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -160,6 +185,10 @@
                 <i class="fas fa-sign-in-alt"></i> Entrar
             </button>
         </form>
+
+        <a href="Eliá SPA _ Eliá SPA.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Voltar para o site
+        </a>
 
         <p class="info-text">Usuário padrão: admin | Senha: admin123</p>
     </div>
