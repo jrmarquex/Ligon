@@ -58,7 +58,7 @@ SISTEMA ADMINISTRATIVO
     - Acesso: Público (com senha)
 
 11. AUTENTICAÇÃO DO ADMIN
-    - Arquivo: admin-auth.html
+    - Arquivo:    
     - URL: /admin-auth.html
     - Descrição: Tela de login com usuário e senha
     - Acesso: Após senha inicial

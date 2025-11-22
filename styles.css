@@ -898,6 +898,27 @@ footer.main-footer,
     padding: 60px 0 !important;
 }
 
+/* Seção "Uma verdadeira Jornada de Bem-Estar" - sem imagem de fundo */
+.content-section#sec2 {
+    position: relative !important;
+    padding: 80px 0 !important;
+}
+
+.content-section#sec2 .row,
+.content-section#sec2 .col-lg-6,
+.content-section#sec2 .section-title,
+.content-section#sec2 .text-block {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Remover elementos decorativos sc-dec */
+.sc-dec,
+.sc-dec2,
+.sc-dec3 {
+    display: none !important;
+}
+
 /* Remover sombreado azul escuro e substituir por creme/dourado */
 .bg-parallax-wrap-gradien::before,
 .bg-parallax-wrap-gradien::after,
