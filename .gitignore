@@ -1,0 +1,29 @@
+# Arquivos de backup
+backup/
+*.bak
+*.backup
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos temporários
+*.tmp
+*.log
+*.cache
+
+# Arquivos de documentação de desenvolvimento (opcional - descomente se não quiser subir)
+# ADMIN_README.md
+# CHECKLIST_ADAPTACAO_SITE.md
+# GUIA_TECNICO_ADAPTACAO.md
+# rotas.txt
+# senhas.txt
+

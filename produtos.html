@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos Exclusivos - Ligon Resort Spa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #F5F5F5;
+            color: #2E5F35;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            background: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1920&h=1080&fit=crop') center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(46, 95, 53, 0.85) 0%, rgba(155, 138, 107, 0.75) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content */
+        .catalog-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9B8A6B;
+            font-size: 1.1rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #E8D5B7;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: #FFFFFF;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #9B8A6B;
+            box-shadow: 0 4px 15px rgba(155, 138, 107, 0.2);
+        }
+
+        .filter-dropdown select {
+            padding: 15px 30px;
+            border: 2px solid #E8D5B7;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            color: #2E5F35;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .filter-dropdown select:focus {
+            outline: none;
+            border-color: #9B8A6B;
+            box-shadow: 0 4px 15px rgba(155, 138, 107, 0.2);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .product-card {
+            background: #FFFFFF;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(155, 138, 107, 0.25);
+        }
+
+        .product-image {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .product-card:hover .product-image {
+            background-size: 110%;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(46, 95, 53, 0.9);
+            color: #FFFFFF;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: #9B8A6B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2E5F35;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #F5E6D3;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2E5F35;
+        }
+
+        .product-buy-btn {
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF !important;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .product-buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(155, 138, 107, 0.4);
+            color: #FFFFFF !important;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 50px 0;
+        }
+
+        .page-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #E8D5B7;
+            background: #FFFFFF;
+            color: #2E5F35;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF;
+            border-color: #9B8A6B;
+            transform: scale(1.1);
+        }
+
+        /* Back Home Button */
+        .back-home {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(155, 138, 107, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(155, 138, 107, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .catalog-container {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 40vh;
+                min-height: 300px;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+            }
+
+            .catalog-container {
+                padding: 30px 20px;
+            }
+
+            .filters-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-box,
+            .filter-dropdown select {
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .product-card {
+                min-height: 380px;
+            }
+
+            .product-image {
+                height: 180px;
+            }
+
+            .product-info {
+                padding: 15px;
+            }
+
+            .product-title {
+                font-size: 0.95rem;
+            }
+
+            .product-description {
+                font-size: 0.85rem;
+            }
+
+            .product-price {
+                font-size: 1.2rem;
+            }
+
+            .product-buy-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+
+            .pagination {
+                margin: 30px 0;
+            }
+
+            .page-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+
+            .back-home {
+                bottom: 20px;
+                left: 20px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-section {
+                height: 35vh;
+                min-height: 250px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.75rem;
+            }
+
+            .hero-content p {
+                font-size: 0.85rem;
+            }
+
+            .catalog-container {
+                padding: 25px 15px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .product-card {
+                max-width: 100%;
+            }
+
+            .product-image {
+                height: 220px;
+            }
+
+            .search-box input {
+                font-size: 0.9rem;
+            }
+
+            .filter-dropdown select {
+                font-size: 0.9rem;
+            }
+
+            .product-category {
+                font-size: 0.7rem;
+            }
+
+            .product-title {
+                font-size: 1rem;
+            }
+
+            .product-description {
+                font-size: 0.85rem;
+            }
+
+            .product-price {
+                font-size: 1.3rem;
+            }
+
+            .product-buy-btn {
+                padding: 10px 18px;
+                font-size: 0.85rem;
+            }
+
+            .pagination {
+                gap: 8px;
+                margin: 25px 0;
+            }
+
+            .page-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 0.85rem;
+            }
+
+            .back-home {
+                bottom: 15px;
+                left: 15px;
+                padding: 10px 18px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero-content h1 {
+                font-size: 1.5rem;
+            }
+
+            .products-grid {
+                gap: 15px;
+            }
+
+            .product-footer {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .product-buy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #9B8A6B;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Produtos Exclusivos</h1>
+            <p>Leve o Bem-Estar para Sua Casa</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="catalog-container">
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar produtos por nome...">
+            </div>
+            <div class="filter-dropdown">
+                <select id="typeFilter">
+                    <option value="todos">Todos os tipos</option>
+                    <option value="corporal">Corporal</option>
+                    <option value="facial">Facial</option>
+                    <option value="aromaterapia">Aromaterapia</option>
+                    <option value="cabelo">Cabelo</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <div class="loading">Carregando produtos...</div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <button class="page-btn active" data-page="1">1</button>
+            <button class="page-btn" data-page="2">2</button>
+            <button class="page-btn" data-page="3">3</button>
+        </div>
+    </main>
+
+    <!-- Back to Home Button -->
+    <a href="Eliá SPA _ Eliá SPA.html" class="back-home">
+        <i class="fas fa-arrow-left"></i> Voltar para Home
+    </a>
+
+    <script>
+        // Database de produtos (15 produtos)
+        const produtos = [
+            {
+                id: 1,
+                nome: "Loção Hidratante Corporal",
+                categoria: "corporal",
+                descricao: "Hidratação profunda com ingredientes naturais",
+                preco: 89.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 2,
+                nome: "Sabonete Artesanal Aromático",
+                categoria: "aromaterapia",
+                descricao: "Limpeza suave com fragrâncias únicas",
+                preco: 45.90,
+                imagem: "https://images.unsplash.com/photo-1588016919788-f60db6ee9f8c?w=400&h=400&fit=crop"
+            },
+            {
+                id: 3,
+                nome: "Creme Facial Revitalizante",
+                categoria: "facial",
+                descricao: "Alta performance para pele macia e sedosa",
+                preco: 129.90,
+                imagem: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 4,
+                nome: "Óleo Corporal Nutritivo",
+                categoria: "corporal",
+                descricao: "Nutrição intensiva para o corpo",
+                preco: 99.90,
+                imagem: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=400&fit=crop"
+            },
+            {
+                id: 5,
+                nome: "Máscara Facial Iluminadora",
+                categoria: "facial",
+                descricao: "Ilumina e revitaliza a pele do rosto",
+                preco: 149.90,
+                imagem: "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&h=400&fit=crop"
+            },
+            {
+                id: 6,
+                nome: "Esfoliante Corporal Natural",
+                categoria: "corporal",
+                descricao: "Remove impurezas com ingredientes naturais",
+                preco: 79.90,
+                imagem: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop"
+            },
+            {
+                id: 7,
+                nome: "Óleo Essencial Relaxante",
+                categoria: "aromaterapia",
+                descricao: "Aromaterapia para relaxamento profundo",
+                preco: 119.90,
+                imagem: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 8,
+                nome: "Shampoo Revitalizante",
+                categoria: "cabelo",
+                descricao: "Fortalece e revitaliza os fios",
+                preco: 69.90,
+                imagem: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop"
+            },
+            {
+                id: 9,
+                nome: "Condicionador Nutritivo",
+                categoria: "cabelo",
+                descricao: "Nutrição profunda para cabelos sedosos",
+                preco: 69.90,
+                imagem: "https://images.unsplash.com/photo-1526045478516-99145907023c?w=400&h=400&fit=crop"
+            },
+            {
+                id: 10,
+                nome: "Creme para Mãos Premium",
+                categoria: "corporal",
+                descricao: "Hidratação intensa para mãos macias",
+                preco: 55.90,
+                imagem: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop"
+            },
+            {
+                id: 11,
+                nome: "Sérum Facial Anti-Idade",
+                categoria: "facial",
+                descricao: "Reduz linhas de expressão e rugas",
+                preco: 179.90,
+                imagem: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 12,
+                nome: "Vela Aromática Terapêutica",
+                categoria: "aromaterapia",
+                descricao: "Ambiente relaxante com fragrâncias naturais",
+                preco: 89.90,
+                imagem: "https://images.unsplash.com/photo-1602874801006-e747be5a43e1?w=400&h=400&fit=crop"
+            },
+            {
+                id: 13,
+                nome: "Máscara Capilar Reparadora",
+                categoria: "cabelo",
+                descricao: "Repara fios danificados profundamente",
+                preco: 99.90,
+                imagem: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+            },
+            {
+                id: 14,
+                nome: "Creme para Pés Hidratante",
+                categoria: "corporal",
+                descricao: "Hidratação e maciez para os pés",
+                preco: 65.90,
+                imagem: "https://images.unsplash.com/photo-1505944357429-cc699bcb1d33?w=400&h=400&fit=crop"
+            },
+            {
+                id: 15,
+                nome: "Kit Presente Relaxamento",
+                categoria: "aromaterapia",
+                descricao: "Kit completo para momentos de paz",
+                preco: 249.90,
+                imagem: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 16,
+                nome: "Gel de Limpeza Facial",
+                categoria: "facial",
+                descricao: "Limpeza profunda sem ressecar a pele",
+                preco: 59.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop"
+            },
+            {
+                id: 17,
+                nome: "Tônico Facial Hidratante",
+                categoria: "facial",
+                descricao: "Equilibra e hidrata a pele",
+                preco: 69.90,
+                imagem: "https://images.unsplash.com/photo-1571875257727-256c39da42af?w=400&h=400&fit=crop"
+            },
+            {
+                id: 18,
+                nome: "Manteiga Corporal Nutritiva",
+                categoria: "corporal",
+                descricao: "Nutrição extrema para pele seca",
+                preco: 109.90,
+                imagem: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop"
+            },
+            {
+                id: 19,
+                nome: "Spray Fixador Capilar",
+                categoria: "cabelo",
+                descricao: "Fixação natural sem resíduos",
+                preco: 49.90,
+                imagem: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+            },
+            {
+                id: 20,
+                nome: "Difusor de Aromas",
+                categoria: "aromaterapia",
+                descricao: "Aromatize seu ambiente com elegância",
+                preco: 159.90,
+                imagem: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 21,
+                nome: "Creme Antioxidante Facial",
+                categoria: "facial",
+                descricao: "Proteção contra radicais livres",
+                preco: 139.90,
+                imagem: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop"
+            },
+            {
+                id: 22,
+                nome: "Óleo Reparador de Pontas",
+                categoria: "cabelo",
+                descricao: "Sela e recupera pontas danificadas",
+                preco: 79.90,
+                imagem: "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=400&h=400&fit=crop"
+            },
+            {
+                id: 23,
+                nome: "Sabonete Líquido Refrescante",
+                categoria: "corporal",
+                descricao: "Limpeza suave com toque refrescante",
+                preco: 39.90,
+                imagem: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop"
+            },
+            {
+                id: 24,
+                nome: "Mousse Hidratante Corporal",
+                categoria: "corporal",
+                descricao: "Textura leve e absorção rápida",
+                preco: 94.90,
+                imagem: "https://images.unsplash.com/photo-1571875257727-256c39da42af?w=400&h=400&fit=crop"
+            },
+            {
+                id: 25,
+                nome: "Incenso Natural Premium",
+                categoria: "aromaterapia",
+                descricao: "Fragrâncias naturais para meditação",
+                preco: 34.90,
+                imagem: "https://images.unsplash.com/photo-1602874801006-e747be5a43e1?w=400&h=400&fit=crop"
+            },
+            {
+                id: 26,
+                nome: "Protetor Solar Facial FPS 50",
+                categoria: "facial",
+                descricao: "Alta proteção com toque seco",
+                preco: 119.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 27,
+                nome: "Leave-in Hidratante",
+                categoria: "cabelo",
+                descricao: "Hidratação sem enxágue para fios macios",
+                preco: 59.90,
+                imagem: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+            },
+            {
+                id: 28,
+                nome: "Água Micelar Demaquilante",
+                categoria: "facial",
+                descricao: "Remove maquiagem suavemente",
+                preco: 64.90,
+                imagem: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop"
+            },
+            {
+                id: 29,
+                nome: "Gel Pós-Sol Refrescante",
+                categoria: "corporal",
+                descricao: "Acalma e hidrata após exposição solar",
+                preco: 74.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop"
+            },
+            {
+                id: 30,
+                nome: "Óleo de Banho Aromático",
+                categoria: "aromaterapia",
+                descricao: "Experiência relaxante no banho",
+                preco: 89.90,
+                imagem: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop"
+            },
+            {
+                id: 31,
+                nome: "Creme Noturno Regenerador",
+                categoria: "facial",
+                descricao: "Regeneração intensiva durante o sono",
+                preco: 169.90,
+                imagem: "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 32,
+                nome: "Finalizador Capilar Brilho",
+                categoria: "cabelo",
+                descricao: "Brilho intenso sem pesar os fios",
+                preco: 69.90,
+                imagem: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop"
+            },
+            {
+                id: 33,
+                nome: "Espuma de Banho Relaxante",
+                categoria: "corporal",
+                descricao: "Banho de espumas com aromas calmantes",
+                preco: 54.90,
+                imagem: "https://images.unsplash.com/photo-1505944357429-cc699bcb1d33?w=400&h=400&fit=crop"
+            },
+            {
+                id: 34,
+                nome: "Sachê Perfumado para Gavetas",
+                categoria: "aromaterapia",
+                descricao: "Perfuma roupas delicadamente",
+                preco: 29.90,
+                imagem: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&h=400&fit=crop"
+            },
+            {
+                id: 35,
+                nome: "Máscara Facial de Argila",
+                categoria: "facial",
+                descricao: "Purifica e minimiza poros",
+                preco: 79.90,
+                imagem: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=400&fit=crop"
+            },
+            {
+                id: 36,
+                nome: "Tratamento Intensivo Capilar",
+                categoria: "cabelo",
+                descricao: "Ampola de tratamento profundo",
+                preco: 89.90,
+                imagem: "https://images.unsplash.com/photo-1526045478516-99145907023c?w=400&h=400&fit=crop"
+            },
+            {
+                id: 37,
+                nome: "Desodorante Natural Roll-on",
+                categoria: "corporal",
+                descricao: "Proteção natural sem alumínio",
+                preco: 44.90,
+                imagem: "https://images.unsplash.com/photo-1617897903246-719242758050?w=400&h=400&fit=crop"
+            },
+            {
+                id: 38,
+                nome: "Óleo Essencial Energizante",
+                categoria: "aromaterapia",
+                descricao: "Revitaliza corpo e mente",
+                preco: 109.90,
+                imagem: "https://images.unsplash.com/photo-1602874801006-e747be5a43e1?w=400&h=400&fit=crop"
+            },
+            {
+                id: 39,
+                nome: "Contorno de Olhos Anti-Idade",
+                categoria: "facial",
+                descricao: "Reduz olheiras e linhas finas",
+                preco: 149.90,
+                imagem: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 40,
+                nome: "Máscara Detox Capilar",
+                categoria: "cabelo",
+                descricao: "Remove resíduos e impurezas",
+                preco: 84.90,
+                imagem: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+            },
+            {
+                id: 41,
+                nome: "Loção Firmadora Corporal",
+                categoria: "corporal",
+                descricao: "Firma e tonifica a pele",
+                preco: 129.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop"
+            },
+            {
+                id: 42,
+                nome: "Bruma Aromática Ambiente",
+                categoria: "aromaterapia",
+                descricao: "Perfuma ambientes instantaneamente",
+                preco: 69.90,
+                imagem: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop"
+            },
+            {
+                id: 43,
+                nome: "Sérum Vitamina C Facial",
+                categoria: "facial",
+                descricao: "Clareia e uniformiza o tom da pele",
+                preco: 159.90,
+                imagem: "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 44,
+                nome: "Shampoo a Seco",
+                categoria: "cabelo",
+                descricao: "Limpeza instantânea sem água",
+                preco: 54.90,
+                imagem: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop"
+            },
+            {
+                id: 45,
+                nome: "Creme Redutor de Medidas",
+                categoria: "corporal",
+                descricao: "Ação termogênica modeladora",
+                preco: 119.90,
+                imagem: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&h=400&fit=crop"
+            },
+            {
+                id: 46,
+                nome: "Porta-velas Decorativo",
+                categoria: "aromaterapia",
+                descricao: "Decoração e aromaterapia em um",
+                preco: 79.90,
+                imagem: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&h=400&fit=crop"
+            },
+            {
+                id: 47,
+                nome: "Máscara Facial Hidratante",
+                categoria: "facial",
+                descricao: "Hidratação instantânea intensiva",
+                preco: 89.90,
+                imagem: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=400&fit=crop"
+            },
+            {
+                id: 48,
+                nome: "Texturizador Capilar",
+                categoria: "cabelo",
+                descricao: "Modelagem com efeito natural",
+                preco: 64.90,
+                imagem: "https://images.unsplash.com/photo-1526045478516-99145907023c?w=400&h=400&fit=crop"
+            },
+            {
+                id: 49,
+                nome: "Óleo Anticelulite",
+                categoria: "corporal",
+                descricao: "Combate celulite e melhora textura",
+                preco: 139.90,
+                imagem: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=400&h=400&fit=crop"
+            },
+            {
+                id: 50,
+                nome: "Kit Aromaterapia Completo",
+                categoria: "aromaterapia",
+                descricao: "Óleos essenciais + difusor premium",
+                preco: 299.90,
+                imagem: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 51,
+                nome: "BB Cream Facial FPS 30",
+                categoria: "facial",
+                descricao: "Cobertura leve com proteção solar",
+                preco: 94.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop"
+            },
+            {
+                id: 52,
+                nome: "Ampola Reconstrução Capilar",
+                categoria: "cabelo",
+                descricao: "Reconstrução imediata dos fios",
+                preco: 79.90,
+                imagem: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&h=400&fit=crop"
+            },
+            {
+                id: 53,
+                nome: "Sabonete Esfoliante Corporal",
+                categoria: "corporal",
+                descricao: "Esfolia e hidrata simultaneamente",
+                preco: 49.90,
+                imagem: "https://images.unsplash.com/photo-1588016919788-f60db6ee9f8c?w=400&h=400&fit=crop"
+            },
+            {
+                id: 54,
+                nome: "Pedras Aromáticas Decorativas",
+                categoria: "aromaterapia",
+                descricao: "Decoração com fragrância duradoura",
+                preco: 59.90,
+                imagem: "https://images.unsplash.com/photo-1602874801006-e747be5a43e1?w=400&h=400&fit=crop"
+            },
+            {
+                id: 55,
+                nome: "Esfoliante Facial Enzimático",
+                categoria: "facial",
+                descricao: "Renovação celular suave",
+                preco: 104.90,
+                imagem: "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&h=400&fit=crop"
+            },
+            {
+                id: 56,
+                nome: "Spray Protetor Térmico",
+                categoria: "cabelo",
+                descricao: "Protege do calor de secador e chapinha",
+                preco: 59.90,
+                imagem: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&h=400&fit=crop"
+            },
+            {
+                id: 57,
+                nome: "Gel Redutor de Celulite",
+                categoria: "corporal",
+                descricao: "Ação crioterápica intensiva",
+                preco: 109.90,
+                imagem: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop"
+            },
+            {
+                id: 58,
+                nome: "Óleo Essencial Lavanda",
+                categoria: "aromaterapia",
+                descricao: "Puro e natural para relaxamento",
+                preco: 99.90,
+                imagem: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&h=400&fit=crop",
+                destaque: true
+            },
+            {
+                id: 59,
+                nome: "Creme Hidratante Labial FPS 15",
+                categoria: "facial",
+                descricao: "Hidratação e proteção para lábios",
+                preco: 34.90,
+                imagem: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop"
+            },
+            {
+                id: 60,
+                nome: "Kit Tratamento Capilar Premium",
+                categoria: "cabelo",
+                descricao: "Shampoo + condicionador + máscara",
+                preco: 199.90,
+                imagem: "https://images.unsplash.com/photo-1526045478516-99145907023c?w=400&h=400&fit=crop",
+                destaque: true
+            }
+        ];
+
+        // Load products from admin (localStorage)
+        function loadAdminProducts() {
+            try {
+                const adminProducts = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+                // Convert admin products to site format
+                const convertedProducts = adminProducts.map(ap => ({
+                    id: ap.id,
+                    nome: ap.nome,
+                    categoria: ap.categoria,
+                    descricao: ap.descricao,
+                    preco: ap.preco,
+                    imagem: (ap.imagens && ap.imagens.length > 0) ? ap.imagens[0] : 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400&h=400&fit=crop',
+                    destaque: ap.destaque || false
+                }));
+                // Merge with existing products (admin products take priority if same ID)
+                const existingIds = new Set(produtos.map(p => p.id));
+                const newAdminProducts = convertedProducts.filter(ap => !existingIds.has(ap.id));
+                produtos.push(...newAdminProducts);
+                // Update existing products with admin data
+                convertedProducts.forEach(ap => {
+                    const index = produtos.findIndex(p => p.id === ap.id);
+                    if (index !== -1) {
+                        produtos[index] = ap;
+                    }
+                });
+            } catch (e) {
+                console.error('Error loading admin products:', e);
+            }
+        }
+
+        // Load admin products on page load
+        loadAdminProducts();
+
+        let currentPage = 1;
+        const productsPerPage = 20;
+        let filteredProducts = [];
+
+        // Atualizar filteredProducts após carregar produtos do admin
+        function updateFilteredProducts() {
+            filteredProducts = [...produtos];
+        }
+
+        // Renderizar produtos
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
+
+            if (productsToShow.length === 0) {
+                grid.innerHTML = '<div class="loading">Nenhum produto encontrado.</div>';
+                return;
+            }
+
+            grid.innerHTML = productsToShow.map(produto => `
+                <div class="product-card" data-category="${produto.categoria}">
+                    <div class="product-image" style="background-image: url('${produto.imagem}')">
+                        ${produto.destaque ? '<div class="product-badge">Destaque</div>' : ''}
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${produto.categoria}</div>
+                        <h3 class="product-title">${produto.nome}</h3>
+                        <p class="product-description">${produto.descricao}</p>
+                        <div class="product-footer">
+                            <div class="product-price">R$ ${produto.preco.toFixed(2).replace('.', ',')}</div>
+                            <a href="produto-detalhes.html?id=${produto.id}" class="product-buy-btn">
+                                <i class="fas fa-shopping-bag"></i>
+                                Comprar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filtrar por busca
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            updateFilteredProducts(); // Atualizar lista completa primeiro
+            const searchTerm = e.target.value.toLowerCase();
+            filteredProducts = filteredProducts.filter(p =>
+                p.nome.toLowerCase().includes(searchTerm) ||
+                p.descricao.toLowerCase().includes(searchTerm)
+            );
+
+            // Aplicar filtro de categoria também
+            const categoryFilter = document.getElementById('typeFilter').value;
+            if (categoryFilter !== 'todos') {
+                filteredProducts = filteredProducts.filter(p => p.categoria === categoryFilter);
+            }
+
+            currentPage = 1;
+            updatePagination();
+            renderProducts();
+        });
+
+        // Filtrar por tipo
+        document.getElementById('typeFilter').addEventListener('change', (e) => {
+            updateFilteredProducts(); // Atualizar lista completa primeiro
+            const category = e.target.value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredProducts = filteredProducts.filter(p => {
+                const matchesSearch = p.nome.toLowerCase().includes(searchTerm) ||
+                                     p.descricao.toLowerCase().includes(searchTerm);
+                const matchesCategory = category === 'todos' || p.categoria === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            currentPage = 1;
+            updatePagination();
+            renderProducts();
+        });
+
+        // Paginação
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            const pagination = document.getElementById('pagination');
+
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+                btn.textContent = i;
+                btn.dataset.page = i;
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    updatePagination();
+                    renderProducts();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                pagination.appendChild(btn);
+            }
+        }
+
+        // Inicializar - garantir que produtos do admin sejam carregados primeiro
+        updateFilteredProducts();
+        renderProducts();
+        updatePagination();
+    </script>
+</body>
+</html>

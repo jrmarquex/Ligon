@@ -1,0 +1,117 @@
+═══════════════════════════════════════════════════════════════
+  DEPLOY DO SITE LIGON RESORT SPA PARA GITHUB PAGES
+═══════════════════════════════════════════════════════════════
+
+📋 PRÉ-REQUISITOS
+───────────────────────────────────────────────────────────────
+✅ Git instalado (já está instalado: versão 2.47.1)
+✅ Conta no GitHub (jrmarquex)
+✅ Repositório criado: https://github.com/jrmarquex/Ligon.git
+
+🚀 OPÇÃO 1: DEPLOY AUTOMÁTICO (RECOMENDADO)
+───────────────────────────────────────────────────────────────
+
+1. Abra o PowerShell no diretório do projeto:
+   cd c:\xampp\htdocs\ligon_1
+
+2. Execute o script de deploy:
+   .\deploy.ps1
+
+   O script irá:
+   - Inicializar o Git (se necessário)
+   - Adicionar o remote do GitHub
+   - Fazer commit de todos os arquivos
+   - Enviar para o GitHub
+
+3. Configure o GitHub Pages:
+   - Acesse: https://github.com/jrmarquex/Ligon/settings/pages
+   - Em "Source", selecione:
+     * Branch: main
+     * Folder: / (root)
+   - Clique em "Save"
+
+4. Aguarde alguns minutos e acesse:
+   https://jrmarquex.github.io/Ligon/
+
+═══════════════════════════════════════════════════════════════
+
+🔧 OPÇÃO 2: DEPLOY MANUAL
+───────────────────────────────────────────────────────────────
+
+Execute os seguintes comandos no PowerShell:
+
+1. cd c:\xampp\htdocs\ligon_1
+
+2. git init
+
+3. git remote add origin https://github.com/jrmarquex/Ligon.git
+
+4. git add .
+
+5. git commit -m "Initial commit: Site Ligon Resort Spa completo"
+
+6. git branch -M main
+
+7. git push -u origin main
+
+   (Se pedir credenciais, use um Personal Access Token do GitHub)
+
+8. Configure o GitHub Pages (mesmo passo 3 da Opção 1)
+
+═══════════════════════════════════════════════════════════════
+
+📝 ARQUIVOS IMPORTANTES
+───────────────────────────────────────────────────────────────
+
+✅ index.html          - Página principal (criado automaticamente)
+✅ README.md            - Documentação do projeto
+✅ .gitignore          - Arquivos ignorados pelo Git
+✅ deploy.ps1          - Script de deploy automático
+✅ DEPLOY_GITHUB.md    - Guia completo de deploy
+
+═══════════════════════════════════════════════════════════════
+
+🌐 URL DO SITE APÓS DEPLOY
+───────────────────────────────────────────────────────────────
+
+Site público:
+https://jrmarquex.github.io/Ligon/
+
+Admin:
+https://jrmarquex.github.io/Ligon/admin-login.html
+
+═══════════════════════════════════════════════════════════════
+
+⚠️  IMPORTANTE
+───────────────────────────────────────────────────────────────
+
+1. O arquivo index.html foi criado automaticamente (cópia do arquivo principal)
+
+2. Todos os caminhos de imagens e links devem estar relativos
+
+3. O sistema admin usa localStorage (dados locais ao navegador)
+
+4. Para atualizações futuras, use:
+   git add .
+   git commit -m "Descrição das mudanças"
+   git push origin main
+
+5. O GitHub Pages pode levar alguns minutos para atualizar
+
+═══════════════════════════════════════════════════════════════
+
+✅ CHECKLIST ANTES DE ENVIAR
+───────────────────────────────────────────────────────────────
+
+[ ] Testar o site localmente
+[ ] Verificar se todas as imagens carregam
+[ ] Testar links de navegação
+[ ] Verificar responsividade
+[ ] Testar sistema admin
+[ ] Fazer commit e push
+[ ] Configurar GitHub Pages
+[ ] Testar site publicado
+[ ] Enviar link para validação
+
+═══════════════════════════════════════════════════════════════
+

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Procedimentos - Ligon Resort Spa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #F5F5F5;
+            color: #2E5F35;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 50vh;
+            min-height: 350px;
+            background: linear-gradient(135deg, rgba(46, 95, 53, 0.9) 0%, rgba(155, 138, 107, 0.85) 100%), url('images/marmore_verde.jpg') center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-content p {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content */
+        .catalog-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Filters Section */
+        .filters-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9B8A6B;
+            font-size: 1.1rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #E8D5B7;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            background: #FFFFFF;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #9B8A6B;
+            box-shadow: 0 4px 15px rgba(155, 138, 107, 0.2);
+        }
+
+        .filter-dropdown select {
+            padding: 15px 30px;
+            border: 2px solid #E8D5B7;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            color: #2E5F35;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .filter-dropdown select:focus {
+            outline: none;
+            border-color: #9B8A6B;
+            box-shadow: 0 4px 15px rgba(155, 138, 107, 0.2);
+        }
+
+        /* Procedures Grid */
+        .procedures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .procedure-card {
+            background: #FFFFFF;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .procedure-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .procedure-image {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #E8D5B7 0%, #D4C4A8 100%);
+        }
+
+        .procedure-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .procedure-card:hover .procedure-image img {
+            transform: scale(1.1);
+        }
+
+        .procedure-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .procedure-info {
+            padding: 25px;
+        }
+
+        .procedure-category {
+            color: #9B8A6B;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .procedure-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2E5F35;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .procedure-description {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .procedure-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #9B8A6B;
+            margin-top: 15px;
+        }
+
+        .procedure-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #999;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 12px 20px;
+            border: 2px solid #E8D5B7;
+            background: #FFFFFF;
+            color: #2E5F35;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: #9B8A6B;
+            color: #FFFFFF;
+            border-color: #9B8A6B;
+            transform: translateY(-2px);
+        }
+
+        .pagination button.active {
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF;
+            border-color: #9B8A6B;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination-info {
+            color: #666;
+            font-size: 0.95rem;
+            margin: 0 15px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #E8D5B7;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .procedures-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-section {
+                flex-direction: column;
+            }
+
+            .search-box,
+            .filter-dropdown {
+                width: 100%;
+            }
+
+            .hero-section {
+                height: 40vh;
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header style="background: #FFFFFF; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;">
+        <nav style="max-width: 1400px; margin: 0 auto; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="Eliá SPA _ Eliá SPA.html" style="text-decoration: none;">
+                <img src="images/ligon_verde.png" alt="Ligon Resort Spa" style="max-height: 50px;">
+            </a>
+            <a href="Eliá SPA _ Eliá SPA.html" style="color: #2E5F35; text-decoration: none; font-weight: 600; padding: 10px 20px; border-radius: 25px; transition: all 0.3s;">
+                <i class="fas fa-arrow-left"></i> Voltar
+            </a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Nossos Procedimentos</h1>
+            <p>Descubra tratamentos exclusivos para seu bem-estar</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="catalog-container">
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar procedimento...">
+            </div>
+            <div class="filter-dropdown">
+                <select id="categoryFilter">
+                    <option value="">Todas as Categorias</option>
+                    <option value="massagem">Massagens</option>
+                    <option value="facial">Tratamentos Faciais</option>
+                    <option value="corporal">Tratamentos Corporais</option>
+                    <option value="relaxamento">Relaxamento</option>
+                    <option value="estetica">Estética</option>
+                </select>
+            </div>
+            <div class="filter-dropdown">
+                <select id="sortFilter">
+                    <option value="name">Ordenar por Nome</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Procedures Grid -->
+        <div class="procedures-grid" id="proceduresGrid">
+            <!-- Cards will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Sample procedures data
+        const proceduresData = [
+            {
+                id: 1,
+                name: "Massagem Relaxante Completa",
+                category: "massagem",
+                description: "Uma massagem profunda que alivia tensões musculares e promove relaxamento total do corpo e mente. Utiliza técnicas suaves e óleos essenciais aromáticos.",
+                price: 250.00,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "90 minutos"
+            },
+            {
+                id: 2,
+                name: "Tratamento Facial Revitalizante",
+                category: "facial",
+                description: "Tratamento facial completo com produtos premium que hidrata, nutre e rejuvenesce a pele, deixando-a radiante e com aspecto saudável.",
+                price: 180.00,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 3,
+                name: "Massagem Terapêutica",
+                category: "massagem",
+                description: "Técnica especializada para alívio de dores musculares e tensões crônicas. Ideal para quem sofre com estresse e dores nas costas.",
+                price: 220.00,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "75 minutos"
+            },
+            {
+                id: 4,
+                name: "Ritual de Bem-Estar Corporal",
+                category: "corporal",
+                description: "Experiência completa de relaxamento com esfoliação, massagem e hidratação profunda. Renove sua pele e sua energia.",
+                price: 320.00,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "120 minutos"
+            },
+            {
+                id: 5,
+                name: "Tratamento Anti-Idade",
+                category: "facial",
+                description: "Protocolo avançado com produtos anti-idade que estimulam a produção de colágeno e reduzem sinais de envelhecimento.",
+                price: 280.00,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "90 minutos"
+            },
+            {
+                id: 6,
+                name: "Massagem com Pedras Quentes",
+                category: "relaxamento",
+                description: "Técnica milenar que combina massagem com pedras vulcânicas aquecidas para relaxamento profundo e alívio de tensões.",
+                price: 300.00,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "90 minutos"
+            },
+            {
+                id: 7,
+                name: "Limpeza de Pele Profunda",
+                category: "estetica",
+                description: "Limpeza facial profunda que remove impurezas, cravos e células mortas, deixando a pele limpa, suave e renovada.",
+                price: 150.00,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 8,
+                name: "Drenagem Linfática",
+                category: "corporal",
+                description: "Técnica que estimula o sistema linfático, reduzindo inchaços e melhorando a circulação sanguínea.",
+                price: 200.00,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 9,
+                name: "Massagem Aromaterapia",
+                category: "relaxamento",
+                description: "Massagem relaxante com óleos essenciais personalizados que promovem bem-estar físico e emocional.",
+                price: 240.00,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "75 minutos"
+            },
+            {
+                id: 10,
+                name: "Tratamento Capilar Premium",
+                category: "estetica",
+                description: "Tratamento completo para cabelos com produtos de alta qualidade que nutrem, hidratam e reparam os fios.",
+                price: 160.00,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "90 minutos"
+            },
+            {
+                id: 11,
+                name: "Massagem Desportiva",
+                category: "massagem",
+                description: "Massagem específica para atletas que ajuda na recuperação muscular, prevenção de lesões e melhora do desempenho.",
+                price: 260.00,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "75 minutos"
+            },
+            {
+                id: 12,
+                name: "Ritual de Detox Corporal",
+                category: "corporal",
+                description: "Tratamento completo que elimina toxinas, melhora a circulação e promove sensação de leveza e bem-estar.",
+                price: 290.00,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "105 minutos"
+            },
+            {
+                id: 13,
+                name: "Tratamento Facial Hidratante",
+                category: "facial",
+                description: "Hidratação profunda da pele com máscaras e produtos específicos para seu tipo de pele, deixando-a macia e radiante.",
+                price: 170.00,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 14,
+                name: "Massagem Pré-Natal",
+                category: "massagem",
+                description: "Massagem especializada e segura para gestantes, aliviando dores, tensões e promovendo relaxamento durante a gravidez.",
+                price: 230.00,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 15,
+                name: "Tratamento Corporal Redutor",
+                category: "corporal",
+                description: "Protocolo completo que ajuda a reduzir medidas, melhorar a textura da pele e promover sensação de firmeza.",
+                price: 310.00,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "90 minutos"
+            },
+            {
+                id: 16,
+                name: "Massagem Reflexologia",
+                category: "relaxamento",
+                description: "Técnica de massagem nos pés que estimula pontos reflexos conectados a diferentes partes do corpo, promovendo equilíbrio.",
+                price: 190.00,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 17,
+                name: "Tratamento Facial Iluminador",
+                category: "facial",
+                description: "Protocolo que uniformiza o tom da pele, reduz manchas e deixa a pele com aspecto iluminado e radiante.",
+                price: 210.00,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "75 minutos"
+            },
+            {
+                id: 18,
+                name: "Ritual Completo de Relaxamento",
+                category: "relaxamento",
+                description: "Experiência completa que inclui banho relaxante, massagem, tratamento facial e momento de meditação guiada.",
+                price: 450.00,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "180 minutos"
+            }
+        ];
+
+        // Load services from admin (localStorage)
+        function loadAdminServices() {
+            try {
+                const adminServices = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+                // Convert admin services to site format
+                const convertedServices = adminServices.map(as => ({
+                    id: as.id,
+                    name: as.nome,
+                    category: as.categoria,
+                    description: as.descricao,
+                    price: as.preco,
+                    image: (as.imagens && as.imagens.length > 0) ? as.imagens[0] : 'images/IMG-20251114-WA0504.jpg',
+                    duration: as.duracao ? `${as.duracao} minutos` : '60 minutos'
+                }));
+                // Merge with existing services (admin services take priority if same ID)
+                const existingIds = new Set(proceduresData.map(p => p.id));
+                const newAdminServices = convertedServices.filter(as => !existingIds.has(as.id));
+                proceduresData.push(...newAdminServices);
+                // Update existing services with admin data
+                convertedServices.forEach(as => {
+                    const index = proceduresData.findIndex(p => p.id === as.id);
+                    if (index !== -1) {
+                        proceduresData[index] = as;
+                    }
+                });
+            } catch (e) {
+                console.error('Error loading admin services:', e);
+            }
+        }
+
+        // Load admin services on page load
+        loadAdminServices();
+
+        let currentPage = 1;
+        const itemsPerPage = 9;
+        let filteredProcedures = [];
+
+        // Atualizar filteredProcedures após carregar serviços do admin
+        function updateFilteredProcedures() {
+            filteredProcedures = [...proceduresData];
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(price);
+        }
+
+        function getCategoryName(category) {
+            const categories = {
+                'massagem': 'Massagens',
+                'facial': 'Tratamentos Faciais',
+                'corporal': 'Tratamentos Corporais',
+                'relaxamento': 'Relaxamento',
+                'estetica': 'Estética'
+            };
+            return categories[category] || category;
+        }
+
+        function renderProcedures() {
+            const grid = document.getElementById('proceduresGrid');
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const proceduresToShow = filteredProcedures.slice(startIndex, endIndex);
+
+            if (proceduresToShow.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-spa"></i>
+                        <h3>Nenhum procedimento encontrado</h3>
+                        <p>Tente ajustar os filtros de busca</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = proceduresToShow.map(procedure => `
+                <a href="procedimento-detalhes.html?id=${procedure.id}" class="procedure-card">
+                    <div class="procedure-image">
+                        <img src="${procedure.image}" alt="${procedure.name}" onerror="this.src='https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&h=300&fit=crop'">
+                        <div class="procedure-badge">${getCategoryName(procedure.category)}</div>
+                    </div>
+                    <div class="procedure-info">
+                        <div class="procedure-category">${getCategoryName(procedure.category)}</div>
+                        <h3 class="procedure-name">${procedure.name}</h3>
+                        <p class="procedure-description">${procedure.description}</p>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(filteredProcedures.length / itemsPerPage);
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+
+            // Previous button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    paginationHTML += `
+                        <button class="${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
+                            ${i}
+                        </button>
+                    `;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    paginationHTML += `<span class="pagination-info">...</span>`;
+                }
+            }
+
+            // Next button
+            paginationHTML += `
+                <button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+
+            // Info
+            const startItem = (currentPage - 1) * itemsPerPage + 1;
+            const endItem = Math.min(currentPage * itemsPerPage, filteredProcedures.length);
+            paginationHTML += `
+                <span class="pagination-info">
+                    Mostrando ${startItem}-${endItem} de ${filteredProcedures.length} procedimentos
+                </span>
+            `;
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredProcedures.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            renderProcedures();
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterProcedures() {
+            updateFilteredProcedures(); // Atualizar lista completa primeiro
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+
+            filteredProcedures = filteredProcedures.filter(procedure => {
+                const matchesSearch = procedure.name.toLowerCase().includes(searchTerm) ||
+                                    procedure.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = !category || procedure.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            // Sort
+            filteredProcedures.sort((a, b) => a.name.localeCompare(b.name));
+
+            currentPage = 1;
+            renderProcedures();
+            renderPagination();
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterProcedures);
+        document.getElementById('categoryFilter').addEventListener('change', filterProcedures);
+        document.getElementById('sortFilter').addEventListener('change', filterProcedures);
+
+        // Initial render - garantir que serviços do admin sejam carregados primeiro
+        updateFilteredProcedures();
+        renderProcedures();
+        renderPagination();
+    </script>
+</body>
+</html>
+

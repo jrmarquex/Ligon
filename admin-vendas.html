@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Ligon - Vendas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="admin-produtos.html" class="nav-item">
+                <i class="fas fa-box"></i> Produtos
+            </a>
+            <a href="admin-servicos.html" class="nav-item">
+                <i class="fas fa-spa"></i> Serviços
+            </a>
+            <a href="admin-vendas.html" class="nav-item active">
+                <i class="fas fa-shopping-cart"></i> Vendas
+            </a>
+            <a href="admin-relatorios.html" class="nav-item">
+                <i class="fas fa-chart-line"></i> Relatórios
+            </a>
+            <a href="#" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Gerenciar Vendas</h1>
+            <button class="btn btn-primary" onclick="openSaleModal()">
+                <i class="fas fa-plus"></i> Nova Venda
+            </button>
+        </header>
+
+        <div class="content-section">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Tipo</th>
+                            <th>Itens</th>
+                            <th>Valor Total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesTable">
+                        <!-- Sales will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sale Modal -->
+    <div class="modal" id="saleModal">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2>Nova Venda</h2>
+                <button class="modal-close" onclick="closeSaleModal()">&times;</button>
+            </div>
+            <form id="saleForm">
+                <div class="form-group">
+                    <label for="saleClient">Cliente *</label>
+                    <input type="text" id="saleClient" required placeholder="Nome do cliente">
+                </div>
+
+                <div class="form-group">
+                    <label for="saleType">Tipo de Venda *</label>
+                    <select id="saleType" required onchange="loadItems()">
+                        <option value="">Selecione...</option>
+                        <option value="produto">Produto</option>
+                        <option value="servico">Serviço</option>
+                        <option value="misto">Misto (Produto + Serviço)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="productGroup" style="display: none;">
+                    <label>Produtos</label>
+                    <div id="productsList"></div>
+                    <button type="button" class="btn btn-secondary" onclick="addProductItem()" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i> Adicionar Produto
+                    </button>
+                </div>
+
+                <div class="form-group" id="serviceGroup" style="display: none;">
+                    <label>Serviços</label>
+                    <div id="servicesList"></div>
+                    <button type="button" class="btn btn-secondary" onclick="addServiceItem()" style="margin-top: 10px;">
+                        <i class="fas fa-plus"></i> Adicionar Serviço
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="saleTotal">Valor Total</label>
+                    <input type="number" id="saleTotal" step="0.01" readonly style="background: #f5f5f5; font-size: 20px; font-weight: 600;">
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeSaleModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar Venda</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Check authentication
+        if (!sessionStorage.getItem('admin_authenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'admin-login.html';
+        });
+
+        let saleItems = [];
+
+        // Load sales
+        function loadSales() {
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const tbody = document.getElementById('salesTable');
+
+            if (vendas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-shopping-cart" style="font-size: 48px; margin-bottom: 15px; display: block;"></i>
+                            Nenhuma venda registrada
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = vendas.reverse().map(venda => `
+                <tr>
+                    <td>${formatDate(venda.data)}</td>
+                    <td>${venda.cliente}</td>
+                    <td>${venda.tipo}</td>
+                    <td>${venda.itens.length} item(s)</td>
+                    <td><strong>${formatCurrency(venda.valorTotal)}</strong></td>
+                    <td>
+                        <button class="btn btn-secondary" onclick="viewSale('${venda.id}')" style="padding: 5px 10px; font-size: 12px;">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Open sale modal
+        function openSaleModal() {
+            const modal = document.getElementById('saleModal');
+            document.getElementById('saleForm').reset();
+            saleItems = [];
+            document.getElementById('saleTotal').value = '0.00';
+            document.getElementById('productGroup').style.display = 'none';
+            document.getElementById('serviceGroup').style.display = 'none';
+            document.getElementById('productsList').innerHTML = '';
+            document.getElementById('servicesList').innerHTML = '';
+            modal.classList.add('show');
+        }
+
+        // Close sale modal
+        function closeSaleModal() {
+            document.getElementById('saleModal').classList.remove('show');
+        }
+
+        // Load items based on type
+        function loadItems() {
+            const type = document.getElementById('saleType').value;
+            const productGroup = document.getElementById('productGroup');
+            const serviceGroup = document.getElementById('serviceGroup');
+
+            if (type === 'produto' || type === 'misto') {
+                productGroup.style.display = 'block';
+                loadProductsForSale();
+            } else {
+                productGroup.style.display = 'none';
+            }
+
+            if (type === 'servico' || type === 'misto') {
+                serviceGroup.style.display = 'block';
+                loadServicesForSale();
+            } else {
+                serviceGroup.style.display = 'none';
+            }
+        }
+
+        // Load products for sale
+        function loadProductsForSale() {
+            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+            const list = document.getElementById('productsList');
+            
+            if (produtos.length === 0) {
+                list.innerHTML = '<p style="color: #999;">Nenhum produto cadastrado</p>';
+                return;
+            }
+
+            list.innerHTML = produtos.map(produto => `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f9f9f9; border-radius: 8px;">
+                    <input type="checkbox" value="${produto.id}" data-name="${produto.nome}" data-price="${produto.preco}" onchange="updateSaleItems()">
+                    <span style="flex: 1;">${produto.nome}</span>
+                    <span style="color: #9B8A6B; font-weight: 600;">${formatCurrency(produto.preco)}</span>
+                </div>
+            `).join('');
+        }
+
+        // Load services for sale
+        function loadServicesForSale() {
+            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const list = document.getElementById('servicesList');
+            
+            if (servicos.length === 0) {
+                list.innerHTML = '<p style="color: #999;">Nenhum serviço cadastrado</p>';
+                return;
+            }
+
+            list.innerHTML = servicos.map(servico => `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f9f9f9; border-radius: 8px;">
+                    <input type="checkbox" value="${servico.id}" data-name="${servico.nome}" data-price="${servico.preco}" onchange="updateSaleItems()">
+                    <span style="flex: 1;">${servico.nome}</span>
+                    <span style="color: #9B8A6B; font-weight: 600;">${formatCurrency(servico.preco)}</span>
+                </div>
+            `).join('');
+        }
+
+        // Update sale items
+        function updateSaleItems() {
+            saleItems = [];
+            const checkboxes = document.querySelectorAll('#productsList input[type="checkbox"]:checked, #servicesList input[type="checkbox"]:checked');
+            
+            checkboxes.forEach(cb => {
+                saleItems.push({
+                    id: cb.value,
+                    nome: cb.getAttribute('data-name'),
+                    preco: parseFloat(cb.getAttribute('data-price'))
+                });
+            });
+
+            const total = saleItems.reduce((sum, item) => sum + item.preco, 0);
+            document.getElementById('saleTotal').value = total.toFixed(2);
+        }
+
+        // Add product item
+        function addProductItem() {
+            // This can be enhanced with a modal to add custom products
+            alert('Selecione os produtos acima');
+        }
+
+        // Add service item
+        function addServiceItem() {
+            // This can be enhanced with a modal to add custom services
+            alert('Selecione os serviços acima');
+        }
+
+        // View sale details
+        function viewSale(id) {
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const venda = vendas.find(v => v.id === id);
+            
+            if (venda) {
+                const itemsList = venda.itens.map(item => `- ${item.nome}: ${formatCurrency(item.preco)}`).join('\n');
+                alert(`Venda #${venda.id}\n\nCliente: ${venda.cliente}\nData: ${formatDate(venda.data)}\nTipo: ${venda.tipo}\n\nItens:\n${itemsList}\n\nTotal: ${formatCurrency(venda.valorTotal)}`);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('saleForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (saleItems.length === 0) {
+                alert('Selecione pelo menos um item para a venda');
+                return;
+            }
+
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            
+            const venda = {
+                id: generateId(),
+                cliente: document.getElementById('saleClient').value,
+                tipo: document.getElementById('saleType').value,
+                itens: saleItems,
+                valorTotal: parseFloat(document.getElementById('saleTotal').value),
+                data: new Date().toISOString()
+            };
+
+            vendas.push(venda);
+            localStorage.setItem('ligon_vendas', JSON.stringify(vendas));
+            
+            // Update product stock if needed
+            if (venda.tipo === 'produto' || venda.tipo === 'misto') {
+                const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+                venda.itens.forEach(item => {
+                    const produto = produtos.find(p => p.id === item.id);
+                    if (produto && produto.estoque !== undefined) {
+                        produto.estoque = Math.max(0, produto.estoque - 1);
+                    }
+                });
+                localStorage.setItem('ligon_produtos', JSON.stringify(produtos));
+            }
+
+            showNotification('Venda registrada com sucesso!');
+            closeSaleModal();
+            loadSales();
+        });
+
+        // Check if should open modal for new sale
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('action') === 'new') {
+            setTimeout(() => openSaleModal(), 100);
+        }
+
+        // Load sales on page load
+        loadSales();
+    </script>
+</body>
+</html>
+

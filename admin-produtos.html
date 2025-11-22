@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Ligon - Produtos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="admin-produtos.html" class="nav-item active">
+                <i class="fas fa-box"></i> Produtos
+            </a>
+            <a href="admin-servicos.html" class="nav-item">
+                <i class="fas fa-spa"></i> Serviços
+            </a>
+            <a href="admin-vendas.html" class="nav-item">
+                <i class="fas fa-shopping-cart"></i> Vendas
+            </a>
+            <a href="admin-relatorios.html" class="nav-item">
+                <i class="fas fa-chart-line"></i> Relatórios
+            </a>
+            <a href="#" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Gerenciar Produtos</h1>
+            <button class="btn btn-primary" onclick="openProductModal()">
+                <i class="fas fa-plus"></i> Novo Produto
+            </button>
+        </header>
+
+        <div class="content-section">
+            <div class="cards-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Produto</h2>
+                <button class="modal-close" onclick="closeProductModal()">&times;</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                
+                <div class="form-group">
+                    <label for="productName">Nome do Produto *</label>
+                    <input type="text" id="productName" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Preço *</label>
+                        <input type="number" id="productPrice" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Estoque *</label>
+                        <input type="number" id="productStock" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productCategory">Categoria *</label>
+                    <select id="productCategory" required>
+                        <option value="">Selecione...</option>
+                        <option value="corporal">Corporal</option>
+                        <option value="facial">Facial</option>
+                        <option value="aromaterapia">Aromaterapia</option>
+                        <option value="cabelo">Cabelo</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="productDescription">Descrição *</label>
+                    <textarea id="productDescription" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Imagens</label>
+                    <input type="file" id="productImages" multiple accept="image/*" onchange="handleImageUpload(event)">
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productVideo">URL do Vídeo (opcional)</label>
+                    <input type="url" id="productVideo" placeholder="https://youtube.com/watch?v=...">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="productFeatured"> Produto em Destaque
+                    </label>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeProductModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Check authentication
+        if (!sessionStorage.getItem('admin_authenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'admin-login.html';
+        });
+
+        let currentImages = [];
+
+        // Load products
+        function loadProducts() {
+            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+            const grid = document.getElementById('productsGrid');
+
+            if (produtos.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-box"></i>
+                        <p>Nenhum produto cadastrado</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = produtos.map(produto => `
+                <div class="card">
+                    ${produto.imagens && produto.imagens.length > 0 ? 
+                        `<img src="${produto.imagens[0]}" alt="${produto.nome}" class="card-image">` : 
+                        `<div class="card-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                            <i class="fas fa-image" style="font-size: 48px;"></i>
+                        </div>`
+                    }
+                    <h3 class="card-title">${produto.nome}</h3>
+                    <p class="card-description">${produto.descricao}</p>
+                    <div class="card-price">${formatCurrency(produto.preco)}</div>
+                    <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                        <strong>Estoque:</strong> ${produto.estoque} | 
+                        <strong>Categoria:</strong> ${produto.categoria}
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="editProduct('${produto.id}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteProduct('${produto.id}')">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open product modal
+        function openProductModal(productId = null) {
+            const modal = document.getElementById('productModal');
+            const form = document.getElementById('productForm');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            form.reset();
+            currentImages = [];
+            document.getElementById('imagePreview').innerHTML = '';
+
+            if (productId) {
+                modalTitle.textContent = 'Editar Produto';
+                const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+                const produto = produtos.find(p => p.id === productId);
+                
+                if (produto) {
+                    document.getElementById('productId').value = produto.id;
+                    document.getElementById('productName').value = produto.nome;
+                    document.getElementById('productPrice').value = produto.preco;
+                    document.getElementById('productStock').value = produto.estoque;
+                    document.getElementById('productCategory').value = produto.categoria;
+                    document.getElementById('productDescription').value = produto.descricao;
+                    document.getElementById('productVideo').value = produto.video || '';
+                    document.getElementById('productFeatured').checked = produto.destaque || false;
+                    
+                    if (produto.imagens) {
+                        currentImages = produto.imagens;
+                        displayImages(produto.imagens);
+                    }
+                }
+            } else {
+                modalTitle.textContent = 'Novo Produto';
+            }
+
+            modal.classList.add('show');
+        }
+
+        // Close product modal
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('show');
+        }
+
+        // Handle image upload
+        async function handleImageUpload(event) {
+            const files = Array.from(event.target.files);
+            for (const file of files) {
+                const base64 = await imageToBase64(file);
+                currentImages.push(base64);
+            }
+            displayImages(currentImages);
+        }
+
+        // Display images
+        function displayImages(images) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = images.map((img, index) => `
+                <div class="image-preview-item">
+                    <img src="${img}" alt="Preview ${index + 1}">
+                    <button type="button" class="remove-image" onclick="removeImage(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Remove image
+        function removeImage(index) {
+            currentImages.splice(index, 1);
+            displayImages(currentImages);
+        }
+
+        // Edit product
+        function editProduct(id) {
+            openProductModal(id);
+        }
+
+        // Delete product
+        function deleteProduct(id) {
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+                const filtered = produtos.filter(p => p.id !== id);
+                localStorage.setItem('ligon_produtos', JSON.stringify(filtered));
+                loadProducts();
+                showNotification('Produto excluído com sucesso!');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('productForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+            const productId = document.getElementById('productId').value;
+            
+            const produto = {
+                id: productId || generateId(),
+                nome: document.getElementById('productName').value,
+                preco: parseFloat(document.getElementById('productPrice').value),
+                estoque: parseInt(document.getElementById('productStock').value),
+                categoria: document.getElementById('productCategory').value,
+                descricao: document.getElementById('productDescription').value,
+                video: document.getElementById('productVideo').value,
+                destaque: document.getElementById('productFeatured').checked,
+                imagens: currentImages,
+                dataCadastro: productId ? produtos.find(p => p.id === productId)?.dataCadastro || new Date().toISOString() : new Date().toISOString(),
+                dataAtualizacao: new Date().toISOString()
+            };
+
+            if (productId) {
+                const index = produtos.findIndex(p => p.id === productId);
+                produtos[index] = produto;
+                showNotification('Produto atualizado com sucesso!');
+            } else {
+                produtos.push(produto);
+                showNotification('Produto cadastrado com sucesso!');
+            }
+
+            localStorage.setItem('ligon_produtos', JSON.stringify(produtos));
+            closeProductModal();
+            loadProducts();
+        });
+
+        // Check if should open modal for new product
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('action') === 'new') {
+            setTimeout(() => openProductModal(), 100);
+        }
+
+        // Load products on page load
+        loadProducts();
+    </script>
+</body>
+</html>
+

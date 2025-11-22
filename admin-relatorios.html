@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Ligon - Relatórios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="admin-produtos.html" class="nav-item">
+                <i class="fas fa-box"></i> Produtos
+            </a>
+            <a href="admin-servicos.html" class="nav-item">
+                <i class="fas fa-spa"></i> Serviços
+            </a>
+            <a href="admin-vendas.html" class="nav-item">
+                <i class="fas fa-shopping-cart"></i> Vendas
+            </a>
+            <a href="admin-relatorios.html" class="nav-item active">
+                <i class="fas fa-chart-line"></i> Relatórios
+            </a>
+            <a href="#" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Relatórios</h1>
+        </header>
+
+        <!-- Financial Reports -->
+        <div class="content-section">
+            <h2>Relatório Financeiro</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #28a745;">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="lucroBruto">R$ 0,00</h3>
+                        <p>Lucro Bruto</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #17a2b8;">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="lucroLiquido">R$ 0,00</h3>
+                        <p>Lucro Líquido</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #ffc107;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="receitaTotal">R$ 0,00</h3>
+                        <p>Receita Total</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dc3545;">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="valorEstoque">R$ 0,00</h3>
+                        <p>Valor do Estoque</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Report -->
+        <div class="content-section">
+            <h2>Relatório de Estoque</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Estoque Atual</th>
+                            <th>Preço Unitário</th>
+                            <th>Valor Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTable">
+                        <!-- Stock data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sales Report -->
+        <div class="content-section">
+            <h2>Relatório de Vendas</h2>
+            <div class="form-group" style="max-width: 300px;">
+                <label for="dateFilter">Filtrar por Período</label>
+                <select id="dateFilter" onchange="loadSalesReport()">
+                    <option value="all">Todos os Períodos</option>
+                    <option value="today">Hoje</option>
+                    <option value="week">Esta Semana</option>
+                    <option value="month">Este Mês</option>
+                    <option value="year">Este Ano</option>
+                </select>
+            </div>
+            <div class="table-container" style="margin-top: 20px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Tipo</th>
+                            <th>Quantidade de Itens</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesReportTable">
+                        <!-- Sales report data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Products vs Services Report -->
+        <div class="content-section">
+            <h2>Vendas por Categoria</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #9B8A6B;">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="vendasProdutos">0</h3>
+                        <p>Vendas de Produtos</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #2E5F35;">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="vendasServicos">0</h3>
+                        <p>Vendas de Serviços</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #BDAB83;">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="vendasMistas">0</h3>
+                        <p>Vendas Mistas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Check authentication
+        if (!sessionStorage.getItem('admin_authenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'admin-login.html';
+        });
+
+        // Load financial reports
+        function loadFinancialReports() {
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+
+            // Calculate revenue
+            const receitaTotal = vendas.reduce((sum, v) => sum + (parseFloat(v.valorTotal) || 0), 0);
+            
+            // For simplicity, assuming 30% cost margin (you can adjust this)
+            const custoTotal = receitaTotal * 0.3;
+            const lucroBruto = receitaTotal - custoTotal;
+            const lucroLiquido = lucroBruto * 0.7; // After taxes and other expenses
+
+            // Calculate stock value
+            const valorEstoque = produtos.reduce((sum, p) => {
+                const estoque = parseInt(p.estoque) || 0;
+                const preco = parseFloat(p.preco) || 0;
+                return sum + (estoque * preco);
+            }, 0);
+
+            document.getElementById('receitaTotal').textContent = formatCurrency(receitaTotal);
+            document.getElementById('lucroBruto').textContent = formatCurrency(lucroBruto);
+            document.getElementById('lucroLiquido').textContent = formatCurrency(lucroLiquido);
+            document.getElementById('valorEstoque').textContent = formatCurrency(valorEstoque);
+        }
+
+        // Load stock report
+        function loadStockReport() {
+            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+            const tbody = document.getElementById('stockTable');
+
+            if (produtos.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: #999;">
+                            Nenhum produto cadastrado
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = produtos.map(produto => {
+                const estoque = parseInt(produto.estoque) || 0;
+                const preco = parseFloat(produto.preco) || 0;
+                const valorTotal = estoque * preco;
+                const status = estoque === 0 ? 'Sem Estoque' : estoque < 5 ? 'Estoque Baixo' : 'Normal';
+                const statusColor = estoque === 0 ? '#dc3545' : estoque < 5 ? '#ffc107' : '#28a745';
+
+                return `
+                    <tr>
+                        <td>${produto.nome}</td>
+                        <td>${estoque}</td>
+                        <td>${formatCurrency(preco)}</td>
+                        <td>${formatCurrency(valorTotal)}</td>
+                        <td><span style="color: ${statusColor}; font-weight: 600;">${status}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Load sales report
+        function loadSalesReport() {
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const filter = document.getElementById('dateFilter').value;
+            const tbody = document.getElementById('salesReportTable');
+
+            let filteredVendas = vendas;
+
+            if (filter !== 'all') {
+                const now = new Date();
+                filteredVendas = vendas.filter(venda => {
+                    const vendaDate = new Date(venda.data);
+                    
+                    switch(filter) {
+                        case 'today':
+                            return vendaDate.toDateString() === now.toDateString();
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return vendaDate >= weekAgo;
+                        case 'month':
+                            return vendaDate.getMonth() === now.getMonth() && vendaDate.getFullYear() === now.getFullYear();
+                        case 'year':
+                            return vendaDate.getFullYear() === now.getFullYear();
+                        default:
+                            return true;
+                    }
+                });
+            }
+
+            if (filteredVendas.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: #999;">
+                            Nenhuma venda no período selecionado
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filteredVendas.reverse().map(venda => `
+                <tr>
+                    <td>${formatDate(venda.data)}</td>
+                    <td>${venda.cliente}</td>
+                    <td>${venda.tipo}</td>
+                    <td>${venda.itens.length}</td>
+                    <td><strong>${formatCurrency(venda.valorTotal)}</strong></td>
+                </tr>
+            `).join('');
+
+            // Update category stats
+            const vendasProdutos = filteredVendas.filter(v => v.tipo === 'produto').length;
+            const vendasServicos = filteredVendas.filter(v => v.tipo === 'servico').length;
+            const vendasMistas = filteredVendas.filter(v => v.tipo === 'misto').length;
+
+            document.getElementById('vendasProdutos').textContent = vendasProdutos;
+            document.getElementById('vendasServicos').textContent = vendasServicos;
+            document.getElementById('vendasMistas').textContent = vendasMistas;
+        }
+
+        // Load all reports
+        function loadAllReports() {
+            loadFinancialReports();
+            loadStockReport();
+            loadSalesReport();
+        }
+
+        // Load on page load
+        loadAllReports();
+    </script>
+</body>
+</html>
+

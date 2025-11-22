@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Ligon - Serviços</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="admin-produtos.html" class="nav-item">
+                <i class="fas fa-box"></i> Produtos
+            </a>
+            <a href="admin-servicos.html" class="nav-item active">
+                <i class="fas fa-spa"></i> Serviços
+            </a>
+            <a href="admin-vendas.html" class="nav-item">
+                <i class="fas fa-shopping-cart"></i> Vendas
+            </a>
+            <a href="admin-relatorios.html" class="nav-item">
+                <i class="fas fa-chart-line"></i> Relatórios
+            </a>
+            <a href="#" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Gerenciar Serviços</h1>
+            <button class="btn btn-primary" onclick="openServiceModal()">
+                <i class="fas fa-plus"></i> Novo Serviço
+            </button>
+        </header>
+
+        <div class="content-section">
+            <div class="cards-grid" id="servicesGrid">
+                <!-- Services will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Novo Serviço</h2>
+                <button class="modal-close" onclick="closeServiceModal()">&times;</button>
+            </div>
+            <form id="serviceForm">
+                <input type="hidden" id="serviceId">
+                
+                <div class="form-group">
+                    <label for="serviceName">Nome do Serviço *</label>
+                    <input type="text" id="serviceName" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="servicePrice">Preço *</label>
+                        <input type="number" id="servicePrice" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceDuration">Duração (minutos) *</label>
+                        <input type="number" id="serviceDuration" min="15" step="15" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="serviceCategory">Categoria *</label>
+                    <select id="serviceCategory" required>
+                        <option value="">Selecione...</option>
+                        <option value="massagem">Massagens</option>
+                        <option value="facial">Tratamentos Faciais</option>
+                        <option value="corporal">Tratamentos Corporais</option>
+                        <option value="relaxamento">Relaxamento</option>
+                        <option value="estetica">Estética</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="serviceDescription">Descrição *</label>
+                    <textarea id="serviceDescription" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Imagens</label>
+                    <input type="file" id="serviceImages" multiple accept="image/*" onchange="handleImageUpload(event)">
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="serviceVideo">URL do Vídeo (opcional)</label>
+                    <input type="url" id="serviceVideo" placeholder="https://youtube.com/watch?v=...">
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeServiceModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Check authentication
+        if (!sessionStorage.getItem('admin_authenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'admin-login.html';
+        });
+
+        let currentImages = [];
+
+        // Load services
+        function loadServices() {
+            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const grid = document.getElementById('servicesGrid');
+
+            if (servicos.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-spa"></i>
+                        <p>Nenhum serviço cadastrado</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = servicos.map(servico => `
+                <div class="card">
+                    ${servico.imagens && servico.imagens.length > 0 ? 
+                        `<img src="${servico.imagens[0]}" alt="${servico.nome}" class="card-image">` : 
+                        `<div class="card-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                            <i class="fas fa-image" style="font-size: 48px;"></i>
+                        </div>`
+                    }
+                    <h3 class="card-title">${servico.nome}</h3>
+                    <p class="card-description">${servico.descricao}</p>
+                    <div class="card-price">${formatCurrency(servico.preco)}</div>
+                    <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                        <strong>Duração:</strong> ${servico.duracao} minutos | 
+                        <strong>Categoria:</strong> ${servico.categoria}
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="editService('${servico.id}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteService('${servico.id}')">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open service modal
+        function openServiceModal(serviceId = null) {
+            const modal = document.getElementById('serviceModal');
+            const form = document.getElementById('serviceForm');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            form.reset();
+            currentImages = [];
+            document.getElementById('imagePreview').innerHTML = '';
+
+            if (serviceId) {
+                modalTitle.textContent = 'Editar Serviço';
+                const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+                const servico = servicos.find(s => s.id === serviceId);
+                
+                if (servico) {
+                    document.getElementById('serviceId').value = servico.id;
+                    document.getElementById('serviceName').value = servico.nome;
+                    document.getElementById('servicePrice').value = servico.preco;
+                    document.getElementById('serviceDuration').value = servico.duracao;
+                    document.getElementById('serviceCategory').value = servico.categoria;
+                    document.getElementById('serviceDescription').value = servico.descricao;
+                    document.getElementById('serviceVideo').value = servico.video || '';
+                    
+                    if (servico.imagens) {
+                        currentImages = servico.imagens;
+                        displayImages(servico.imagens);
+                    }
+                }
+            } else {
+                modalTitle.textContent = 'Novo Serviço';
+            }
+
+            modal.classList.add('show');
+        }
+
+        // Close service modal
+        function closeServiceModal() {
+            document.getElementById('serviceModal').classList.remove('show');
+        }
+
+        // Handle image upload
+        async function handleImageUpload(event) {
+            const files = Array.from(event.target.files);
+            for (const file of files) {
+                const base64 = await imageToBase64(file);
+                currentImages.push(base64);
+            }
+            displayImages(currentImages);
+        }
+
+        // Display images
+        function displayImages(images) {
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = images.map((img, index) => `
+                <div class="image-preview-item">
+                    <img src="${img}" alt="Preview ${index + 1}">
+                    <button type="button" class="remove-image" onclick="removeImage(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Remove image
+        function removeImage(index) {
+            currentImages.splice(index, 1);
+            displayImages(currentImages);
+        }
+
+        // Edit service
+        function editService(id) {
+            openServiceModal(id);
+        }
+
+        // Delete service
+        function deleteService(id) {
+            if (confirm('Tem certeza que deseja excluir este serviço?')) {
+                const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+                const filtered = servicos.filter(s => s.id !== id);
+                localStorage.setItem('ligon_servicos', JSON.stringify(filtered));
+                loadServices();
+                showNotification('Serviço excluído com sucesso!');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('serviceForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const serviceId = document.getElementById('serviceId').value;
+            
+            const servico = {
+                id: serviceId || generateId(),
+                nome: document.getElementById('serviceName').value,
+                preco: parseFloat(document.getElementById('servicePrice').value),
+                duracao: parseInt(document.getElementById('serviceDuration').value),
+                categoria: document.getElementById('serviceCategory').value,
+                descricao: document.getElementById('serviceDescription').value,
+                video: document.getElementById('serviceVideo').value,
+                imagens: currentImages,
+                dataCadastro: serviceId ? servicos.find(s => s.id === serviceId)?.dataCadastro || new Date().toISOString() : new Date().toISOString(),
+                dataAtualizacao: new Date().toISOString()
+            };
+
+            if (serviceId) {
+                const index = servicos.findIndex(s => s.id === serviceId);
+                servicos[index] = servico;
+                showNotification('Serviço atualizado com sucesso!');
+            } else {
+                servicos.push(servico);
+                showNotification('Serviço cadastrado com sucesso!');
+            }
+
+            localStorage.setItem('ligon_servicos', JSON.stringify(servicos));
+            closeServiceModal();
+            loadServices();
+        });
+
+        // Check if should open modal for new service
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('action') === 'new') {
+            setTimeout(() => openServiceModal(), 100);
+        }
+
+        // Load services on page load
+        loadServices();
+    </script>
+</body>
+</html>
+

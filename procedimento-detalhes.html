@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Procedimento - Ligon Resort Spa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #F5F5F5;
+            color: #2E5F35;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: #FFFFFF;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: #2E5F35;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: #E8D5B7;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 400px;
+            background: linear-gradient(135deg, rgba(46, 95, 53, 0.7) 0%, rgba(155, 138, 107, 0.7) 100%);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Main Content */
+        .detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #2E5F35;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #E8D5B7;
+        }
+
+        .detail-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            border-radius: 25px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 100px;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border-color: #9B8A6B;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: #FFFFFF;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        .procedure-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2E5F35;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .procedure-price {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #9B8A6B;
+            margin-bottom: 30px;
+        }
+
+        .procedure-price span {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #999;
+        }
+
+        .procedure-details {
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #F9F9F9;
+            border-radius: 15px;
+        }
+
+        .detail-item i {
+            font-size: 1.5rem;
+            color: #9B8A6B;
+            width: 30px;
+            text-align: center;
+        }
+
+        .detail-item span {
+            font-weight: 600;
+            color: #2E5F35;
+            margin-right: 10px;
+        }
+
+        .procedure-description {
+            margin-bottom: 30px;
+        }
+
+        .procedure-description h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2E5F35;
+            margin-bottom: 15px;
+        }
+
+        .procedure-description p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #25D366 0%, #20BA5A 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-button i {
+            font-size: 1.5rem;
+        }
+
+        /* Benefits Section */
+        .benefits-section {
+            background: #FFFFFF;
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 50px;
+        }
+
+        .benefits-section h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2E5F35;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: #F9F9F9;
+            border-radius: 15px;
+        }
+
+        .benefit-item i {
+            font-size: 2rem;
+            color: #9B8A6B;
+            margin-top: 5px;
+        }
+
+        .benefit-item div h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2E5F35;
+            margin-bottom: 8px;
+        }
+
+        .benefit-item div p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 100px 20px;
+            color: #999;
+        }
+
+        .loading i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #E8D5B7;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .detail-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .main-image {
+                height: 400px;
+            }
+
+            .thumbnail-images {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .procedure-title {
+                font-size: 2rem;
+            }
+
+            .procedure-price {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .info-section,
+            .benefits-section {
+                padding: 30px 20px;
+            }
+
+            .thumbnail-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <a href="Eliá SPA _ Eliá SPA.html">
+                <img src="images/ligon_verde.png" alt="Ligon Resort Spa" style="max-height: 50px;">
+            </a>
+            <a href="procedimentos-catalogo.html">
+                <i class="fas fa-arrow-left"></i> Voltar ao Catálogo
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="detail-container">
+        <a href="procedimentos-catalogo.html" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Voltar ao Catálogo
+        </a>
+
+        <div id="loadingState" class="loading">
+            <i class="fas fa-spinner"></i>
+            <h3>Carregando informações...</h3>
+        </div>
+
+        <div id="detailContent" style="display: none;">
+            <!-- Image Gallery -->
+            <div class="detail-content">
+                <div class="image-gallery">
+                    <div class="main-image">
+                        <img id="mainImage" src="" alt="Procedimento">
+                    </div>
+                    <div class="thumbnail-images" id="thumbnailImages">
+                        <!-- Thumbnails will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Info Section -->
+                <div class="info-section">
+                    <div class="category-badge" id="categoryBadge"></div>
+                    <h1 class="procedure-title" id="procedureTitle"></h1>
+                    <div class="procedure-price" id="procedurePrice"></div>
+
+                    <div class="procedure-details">
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <span>Duração:</span>
+                                <span id="procedureDuration"></span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-tag"></i>
+                            <div>
+                                <span>Categoria:</span>
+                                <span id="procedureCategory"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="procedure-description">
+                        <h3>Sobre o Procedimento</h3>
+                        <p id="procedureDescription"></p>
+                    </div>
+
+                    <a href="#" id="whatsappButton" class="whatsapp-button" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Agendar via WhatsApp
+                    </a>
+                </div>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="benefits-section">
+                <h3>Benefícios do Procedimento</h3>
+                <div class="benefits-grid" id="benefitsGrid">
+                    <!-- Benefits will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample procedures data (same as catalog)
+        let proceduresData = [
+            {
+                id: 1,
+                name: "Massagem Relaxante Completa",
+                category: "massagem",
+                categoryName: "Massagens",
+                description: "Uma massagem profunda que alivia tensões musculares e promove relaxamento total do corpo e mente. Utiliza técnicas suaves e óleos essenciais aromáticos para proporcionar uma experiência única de bem-estar. Ideal para quem busca alívio do estresse do dia a dia e momentos de pura tranquilidade.",
+                price: 250.00,
+                duration: "90 minutos",
+                images: [
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0516.jpg",
+                    "images/IMG-20251114-WA0517.jpg"
+                ],
+                benefits: [
+                    { title: "Alívio de Tensões", description: "Reduz tensões musculares e dores" },
+                    { title: "Relaxamento Profundo", description: "Promove sensação de bem-estar" },
+                    { title: "Melhora da Circulação", description: "Estimula o fluxo sanguíneo" },
+                    { title: "Redução do Estresse", description: "Ajuda a combater o estresse diário" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Tratamento Facial Revitalizante",
+                category: "facial",
+                categoryName: "Tratamentos Faciais",
+                description: "Tratamento facial completo com produtos premium que hidrata, nutre e rejuvenesce a pele, deixando-a radiante e com aspecto saudável. Utiliza técnicas avançadas de limpeza profunda e hidratação intensiva para resultados visíveis imediatamente.",
+                price: 180.00,
+                duration: "60 minutos",
+                images: [
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0516.jpg"
+                ],
+                benefits: [
+                    { title: "Hidratação Intensa", description: "Nutre profundamente a pele" },
+                    { title: "Rejuvenescimento", description: "Reduz sinais de envelhecimento" },
+                    { title: "Pele Radiante", description: "Deixa a pele com aspecto saudável" },
+                    { title: "Limpeza Profunda", description: "Remove impurezas e células mortas" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Massagem Terapêutica",
+                category: "massagem",
+                categoryName: "Massagens",
+                description: "Técnica especializada para alívio de dores musculares e tensões crônicas. Ideal para quem sofre com estresse e dores nas costas. Utiliza movimentos precisos e pressão adequada para tratar áreas específicas de desconforto.",
+                price: 220.00,
+                duration: "75 minutos",
+                images: [
+                    "images/IMG-20251114-WA0516.jpg",
+                    "images/IMG-20251114-WA0517.jpg",
+                    "images/IMG-20251114-WA0504.jpg"
+                ],
+                benefits: [
+                    { title: "Alívio de Dores", description: "Trata dores musculares específicas" },
+                    { title: "Melhora Postural", description: "Corrige problemas de postura" },
+                    { title: "Flexibilidade", description: "Aumenta a amplitude de movimento" },
+                    { title: "Recuperação", description: "Acelera a recuperação muscular" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Ritual de Bem-Estar Corporal",
+                category: "corporal",
+                categoryName: "Tratamentos Corporais",
+                description: "Experiência completa de relaxamento com esfoliação, massagem e hidratação profunda. Renove sua pele e sua energia com este ritual exclusivo que combina diferentes técnicas para um resultado transformador.",
+                price: 320.00,
+                duration: "120 minutos",
+                images: [
+                    "images/IMG-20251114-WA0517.jpg",
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0516.jpg"
+                ],
+                benefits: [
+                    { title: "Renovação da Pele", description: "Esfoliação e hidratação profunda" },
+                    { title: "Energia Renovada", description: "Revigora corpo e mente" },
+                    { title: "Relaxamento Total", description: "Experiência completa de bem-estar" },
+                    { title: "Pele Suave", description: "Deixa a pele macia e sedosa" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Tratamento Anti-Idade",
+                category: "facial",
+                categoryName: "Tratamentos Faciais",
+                description: "Protocolo avançado com produtos anti-idade que estimulam a produção de colágeno e reduzem sinais de envelhecimento. Resultados visíveis e duradouros para uma pele mais jovem e firme.",
+                price: 280.00,
+                duration: "90 minutos",
+                images: [
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0512.jpg"
+                ],
+                benefits: [
+                    { title: "Anti-Envelhecimento", description: "Reduz sinais de idade" },
+                    { title: "Produção de Colágeno", description: "Estimula colágeno natural" },
+                    { title: "Firmeza", description: "Melhora a elasticidade da pele" },
+                    { title: "Resultados Duradouros", description: "Efeitos visíveis e prolongados" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Massagem com Pedras Quentes",
+                category: "relaxamento",
+                categoryName: "Relaxamento",
+                description: "Técnica milenar que combina massagem com pedras vulcânicas aquecidas para relaxamento profundo e alívio de tensões. A temperatura das pedras ajuda a relaxar os músculos e proporciona uma sensação única de bem-estar.",
+                price: 300.00,
+                duration: "90 minutos",
+                images: [
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0516.jpg"
+                ],
+                benefits: [
+                    { title: "Relaxamento Profundo", description: "Técnica milenar de bem-estar" },
+                    { title: "Alívio de Tensões", description: "Calor relaxa músculos profundos" },
+                    { title: "Melhora da Circulação", description: "Aumenta fluxo sanguíneo" },
+                    { title: "Experiência Única", description: "Sensação de calor terapêutico" }
+                ]
+            },
+            {
+                id: 7,
+                name: "Limpeza de Pele Profunda",
+                category: "estetica",
+                categoryName: "Estética",
+                description: "Limpeza facial profunda que remove impurezas, cravos e células mortas, deixando a pele limpa, suave e renovada. Ideal para peles oleosas e com problemas de acne.",
+                price: 150.00,
+                duration: "60 minutos",
+                images: [
+                    "images/IMG-20251114-WA0516.jpg",
+                    "images/IMG-20251114-WA0504.jpg"
+                ],
+                benefits: [
+                    { title: "Limpeza Profunda", description: "Remove impurezas e cravos" },
+                    { title: "Pele Renovada", description: "Elimina células mortas" },
+                    { title: "Controle de Oleosidade", description: "Regula produção de sebo" },
+                    { title: "Prevenção de Acne", description: "Reduz formação de espinhas" }
+                ]
+            },
+            {
+                id: 8,
+                name: "Drenagem Linfática",
+                category: "corporal",
+                categoryName: "Tratamentos Corporais",
+                description: "Técnica que estimula o sistema linfático, reduzindo inchaços e melhorando a circulação sanguínea. Ideal para quem sofre com retenção de líquidos e inchaços.",
+                price: 200.00,
+                duration: "60 minutos",
+                images: [
+                    "images/IMG-20251114-WA0517.jpg",
+                    "images/IMG-20251114-WA0512.jpg"
+                ],
+                benefits: [
+                    { title: "Redução de Inchaços", description: "Elimina retenção de líquidos" },
+                    { title: "Melhora Circulatória", description: "Estimula sistema linfático" },
+                    { title: "Desintoxicação", description: "Elimina toxinas do organismo" },
+                    { title: "Bem-Estar", description: "Sensação de leveza" }
+                ]
+            },
+            {
+                id: 9,
+                name: "Massagem Aromaterapia",
+                category: "relaxamento",
+                categoryName: "Relaxamento",
+                description: "Massagem relaxante com óleos essenciais personalizados que promovem bem-estar físico e emocional. Cada óleo essencial é escolhido de acordo com suas necessidades específicas.",
+                price: 240.00,
+                duration: "75 minutos",
+                images: [
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0516.jpg"
+                ],
+                benefits: [
+                    { title: "Bem-Estar Emocional", description: "Óleos essenciais terapêuticos" },
+                    { title: "Relaxamento", description: "Promove sensação de paz" },
+                    { title: "Equilíbrio", description: "Harmoniza corpo e mente" },
+                    { title: "Personalização", description: "Óleos escolhidos para você" }
+                ]
+            },
+            {
+                id: 10,
+                name: "Tratamento Capilar Premium",
+                category: "estetica",
+                categoryName: "Estética",
+                description: "Tratamento completo para cabelos com produtos de alta qualidade que nutrem, hidratam e reparam os fios. Deixa os cabelos sedosos, brilhantes e com aspecto saudável.",
+                price: 160.00,
+                duration: "90 minutos",
+                images: [
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0504.jpg"
+                ],
+                benefits: [
+                    { title: "Hidratação Intensa", description: "Nutre profundamente os fios" },
+                    { title: "Reparação", description: "Repara danos e pontas duplas" },
+                    { title: "Brilho", description: "Deixa cabelos brilhantes" },
+                    { title: "Força", description: "Fortalece e previne quebra" }
+                ]
+            },
+            {
+                id: 11,
+                name: "Massagem Desportiva",
+                category: "massagem",
+                categoryName: "Massagens",
+                description: "Massagem específica para atletas que ajuda na recuperação muscular, prevenção de lesões e melhora do desempenho. Técnicas especializadas para quem pratica esportes regularmente.",
+                price: 260.00,
+                duration: "75 minutos",
+                images: [
+                    "images/IMG-20251114-WA0516.jpg",
+                    "images/IMG-20251114-WA0517.jpg"
+                ],
+                benefits: [
+                    { title: "Recuperação Muscular", description: "Acelera recuperação pós-treino" },
+                    { title: "Prevenção de Lesões", description: "Prepara músculos para atividade" },
+                    { title: "Melhora de Performance", description: "Aumenta flexibilidade e força" },
+                    { title: "Alívio de Dores", description: "Trata dores musculares" }
+                ]
+            },
+            {
+                id: 12,
+                name: "Ritual de Detox Corporal",
+                category: "corporal",
+                categoryName: "Tratamentos Corporais",
+                description: "Tratamento completo que elimina toxinas, melhora a circulação e promove sensação de leveza e bem-estar. Ideal para desintoxicar o organismo e renovar as energias.",
+                price: 290.00,
+                duration: "105 minutos",
+                images: [
+                    "images/IMG-20251114-WA0517.jpg",
+                    "images/IMG-20251114-WA0504.jpg"
+                ],
+                benefits: [
+                    { title: "Desintoxicação", description: "Elimina toxinas do organismo" },
+                    { title: "Energia Renovada", description: "Revigora corpo e mente" },
+                    { title: "Leveza", description: "Sensação de bem-estar" },
+                    { title: "Saúde", description: "Melhora funcionamento do organismo" }
+                ]
+            },
+            {
+                id: 13,
+                name: "Tratamento Facial Hidratante",
+                category: "facial",
+                categoryName: "Tratamentos Faciais",
+                description: "Hidratação profunda da pele com máscaras e produtos específicos para seu tipo de pele, deixando-a macia e radiante. Ideal para peles secas e desidratadas.",
+                price: 170.00,
+                duration: "60 minutos",
+                images: [
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0512.jpg"
+                ],
+                benefits: [
+                    { title: "Hidratação Profunda", description: "Nutre a pele intensamente" },
+                    { title: "Maciez", description: "Deixa a pele macia e suave" },
+                    { title: "Radiância", description: "Pele com aspecto saudável" },
+                    { title: "Personalização", description: "Produtos para seu tipo de pele" }
+                ]
+            },
+            {
+                id: 14,
+                name: "Massagem Pré-Natal",
+                category: "massagem",
+                categoryName: "Massagens",
+                description: "Massagem especializada e segura para gestantes, aliviando dores, tensões e promovendo relaxamento durante a gravidez. Técnicas adaptadas para o período gestacional.",
+                price: 230.00,
+                duration: "60 minutos",
+                images: [
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0504.jpg"
+                ],
+                benefits: [
+                    { title: "Alívio de Dores", description: "Reduz dores gestacionais" },
+                    { title: "Relaxamento", description: "Promove bem-estar na gravidez" },
+                    { title: "Segurança", description: "Técnicas adaptadas para gestantes" },
+                    { title: "Bem-Estar", description: "Melhora qualidade de vida" }
+                ]
+            },
+            {
+                id: 15,
+                name: "Tratamento Corporal Redutor",
+                category: "corporal",
+                categoryName: "Tratamentos Corporais",
+                description: "Protocolo completo que ajuda a reduzir medidas, melhorar a textura da pele e promover sensação de firmeza. Combina diferentes técnicas para resultados visíveis.",
+                price: 310.00,
+                duration: "90 minutos",
+                images: [
+                    "images/IMG-20251114-WA0516.jpg",
+                    "images/IMG-20251114-WA0517.jpg"
+                ],
+                benefits: [
+                    { title: "Redução de Medidas", description: "Ajuda a reduzir medidas" },
+                    { title: "Firmeza", description: "Melhora tônus muscular" },
+                    { title: "Textura da Pele", description: "Deixa pele mais lisa" },
+                    { title: "Resultados Visíveis", description: "Efeitos imediatos e duradouros" }
+                ]
+            },
+            {
+                id: 16,
+                name: "Massagem Reflexologia",
+                category: "relaxamento",
+                categoryName: "Relaxamento",
+                description: "Técnica de massagem nos pés que estimula pontos reflexos conectados a diferentes partes do corpo, promovendo equilíbrio e bem-estar geral.",
+                price: 190.00,
+                duration: "60 minutos",
+                images: [
+                    "images/IMG-20251114-WA0517.jpg",
+                    "images/IMG-20251114-WA0504.jpg"
+                ],
+                benefits: [
+                    { title: "Equilíbrio", description: "Harmoniza todo o organismo" },
+                    { title: "Bem-Estar Geral", description: "Promove saúde integral" },
+                    { title: "Relaxamento", description: "Alivia tensões e estresse" },
+                    { title: "Energia", description: "Revigora corpo e mente" }
+                ]
+            },
+            {
+                id: 17,
+                name: "Tratamento Facial Iluminador",
+                category: "facial",
+                categoryName: "Tratamentos Faciais",
+                description: "Protocolo que uniformiza o tom da pele, reduz manchas e deixa a pele com aspecto iluminado e radiante. Ideal para quem busca uma pele mais uniforme e clara.",
+                price: 210.00,
+                duration: "75 minutos",
+                images: [
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0512.jpg"
+                ],
+                benefits: [
+                    { title: "Uniformização", description: "Uniformiza tom da pele" },
+                    { title: "Redução de Manchas", description: "Clareia manchas e marcas" },
+                    { title: "Iluminação", description: "Pele com aspecto radiante" },
+                    { title: "Brilho Natural", description: "Realça beleza natural" }
+                ]
+            },
+            {
+                id: 18,
+                name: "Ritual Completo de Relaxamento",
+                category: "relaxamento",
+                categoryName: "Relaxamento",
+                description: "Experiência completa que inclui banho relaxante, massagem, tratamento facial e momento de meditação guiada. O pacote definitivo de bem-estar e renovação.",
+                price: 450.00,
+                duration: "180 minutos",
+                images: [
+                    "images/IMG-20251114-WA0512.jpg",
+                    "images/IMG-20251114-WA0504.jpg",
+                    "images/IMG-20251114-WA0516.jpg",
+                    "images/IMG-20251114-WA0517.jpg"
+                ],
+                benefits: [
+                    { title: "Experiência Completa", description: "Pacote completo de bem-estar" },
+                    { title: "Renovação Total", description: "Renova corpo, mente e espírito" },
+                    { title: "Relaxamento Profundo", description: "Máximo relaxamento e paz" },
+                    { title: "Transformação", description: "Experiência transformadora" }
+                ]
+            }
+        ];
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(price);
+        }
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Carregar procedimentos do admin (localStorage)
+        function loadAdminProcedures() {
+            try {
+                const adminServices = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+                adminServices.forEach(as => {
+                    // Converter serviço do admin para formato completo
+                    const categoryNames = {
+                        'massagem': 'Massagens',
+                        'facial': 'Tratamentos Faciais',
+                        'corporal': 'Tratamentos Corporais',
+                        'relaxamento': 'Relaxamento',
+                        'estetica': 'Estética'
+                    };
+
+                    proceduresData.push({
+                        id: as.id, // Manter ID como string
+                        name: as.nome,
+                        category: as.categoria,
+                        categoryName: categoryNames[as.categoria] || as.categoria,
+                        description: as.descricao,
+                        price: as.preco,
+                        duration: as.duracao ? `${as.duracao} minutos` : '60 minutos',
+                        images: (as.imagens && as.imagens.length > 0) ? as.imagens : ['images/IMG-20251114-WA0504.jpg'],
+                        benefits: as.beneficios || [
+                            { title: "Bem-Estar", description: "Promove sensação de relaxamento" },
+                            { title: "Qualidade", description: "Serviço de alta qualidade" },
+                            { title: "Profissionalismo", description: "Equipe especializada" },
+                            { title: "Resultados", description: "Resultados visíveis" }
+                        ]
+                    });
+                });
+            } catch (e) {
+                console.error('Error loading admin procedures:', e);
+            }
+        }
+
+        function loadProcedureDetails() {
+            const procedureId = getUrlParameter('id'); // Não converter para inteiro
+            const procedure = proceduresData.find(p => p.id == procedureId || p.id === procedureId); // Comparação flexível
+
+            if (!procedure) {
+                document.getElementById('loadingState').innerHTML = `
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Procedimento não encontrado</h3>
+                    <p><a href="procedimentos-catalogo.html">Voltar ao catálogo</a></p>
+                `;
+                return;
+            }
+
+            // Hide loading, show content
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('detailContent').style.display = 'block';
+
+            // Set main image
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = procedure.images[0];
+            mainImage.alt = procedure.name;
+            mainImage.onerror = function() {
+                this.src = 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&h=600&fit=crop';
+            };
+
+            // Set thumbnails
+            const thumbnailContainer = document.getElementById('thumbnailImages');
+            thumbnailContainer.innerHTML = procedure.images.map((img, index) => `
+                <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${img}', this)">
+                    <img src="${img}" alt="Thumbnail ${index + 1}" onerror="this.src='https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=200&h=150&fit=crop'">
+                </div>
+            `).join('');
+
+            // Set info
+            document.getElementById('categoryBadge').textContent = procedure.categoryName;
+            document.getElementById('procedureTitle').textContent = procedure.name;
+            document.getElementById('procedurePrice').innerHTML = `${formatPrice(procedure.price)} <span>por sessão</span>`;
+            document.getElementById('procedureDuration').textContent = procedure.duration;
+            document.getElementById('procedureCategory').textContent = procedure.categoryName;
+            document.getElementById('procedureDescription').textContent = procedure.description;
+
+            // Set WhatsApp button
+            const whatsappMessage = encodeURIComponent(
+                `Olá! Gostaria de agendar o procedimento: ${procedure.name}\n` +
+                `Valor: ${formatPrice(procedure.price)}\n` +
+                `Duração: ${procedure.duration}`
+            );
+            // IMPORTANTE: Substitua '5511999999999' pelo número real do WhatsApp (formato: 5511999999999, sem espaços ou caracteres especiais)
+            const whatsappNumber = '5511999999999';
+            document.getElementById('whatsappButton').href = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+            // Set benefits
+            const benefitsGrid = document.getElementById('benefitsGrid');
+            benefitsGrid.innerHTML = procedure.benefits.map(benefit => `
+                <div class="benefit-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <h4>${benefit.title}</h4>
+                        <p>${benefit.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update page title
+            document.title = `${procedure.name} - Ligon Resort Spa`;
+        }
+
+        function changeMainImage(imageSrc, thumbnailElement) {
+            document.getElementById('mainImage').src = imageSrc;
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            thumbnailElement.classList.add('active');
+        }
+
+        // Load procedure details on page load (após carregar procedimentos do admin)
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAdminProcedures(); // Garantir que está carregado
+            loadProcedureDetails();
+        });
+    </script>
+</body>
+</html>
+

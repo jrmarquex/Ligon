@@ -1,0 +1,74 @@
+==========================================
+CREDENCIAIS DO SISTEMA ADMINISTRATIVO
+LIGON RESORT SPA
+==========================================
+
+ACESSO INICIAL (PRIMEIRA CAMADA)
+==========================================
+
+Arquivo: admin-login.html
+URL: /admin-login.html
+
+Senha de Acesso: ligon@@2025
+
+Descrição: Esta é a primeira camada de segurança. 
+Após inserir esta senha, você será redirecionado 
+para a tela de login com usuário e senha.
+
+
+ACESSO ADMINISTRATIVO (SEGUNDA CAMADA)
+==========================================
+
+Arquivo: admin-auth.html
+URL: /admin-auth.html
+
+Usuário: admin
+Senha: admin123
+
+Descrição: Após passar pela primeira camada de segurança,
+use estas credenciais para acessar o painel administrativo.
+
+
+FUNCIONALIDADES DISPONÍVEIS
+==========================================
+
+Após o login, você terá acesso a:
+
+1. Dashboard - Visão geral do sistema
+2. Produtos - Gerenciar produtos do catálogo
+3. Serviços - Gerenciar serviços/procedimentos
+4. Vendas - Registrar vendas realizadas
+5. Relatórios - Visualizar relatórios financeiros e de estoque
+
+
+IMPORTANTE
+==========================================
+
+- Mantenha este arquivo seguro e não compartilhe as senhas
+- Para produção, altere as senhas padrão
+- As senhas são armazenadas em localStorage (texto simples)
+- Recomenda-se implementar criptografia para ambiente de produção
+- Faça backup regular dos dados do localStorage
+
+
+ALTERAÇÃO DE SENHAS
+==========================================
+
+Para alterar as senhas:
+
+1. Senha inicial (ligon@@2025):
+   - Edite o arquivo: admin-login.html
+   - Procure por: password === 'ligon@@2025'
+   - Altere o valor entre aspas
+
+2. Usuário e senha do admin:
+   - Edite o arquivo: admin-auth.html
+   - Procure por: username === 'admin' && password === 'admin123'
+   - Altere os valores conforme necessário
+   - Ou edite o localStorage diretamente no navegador
+
+
+==========================================
+Última atualização: 2025
+==========================================
+

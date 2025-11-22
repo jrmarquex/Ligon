@@ -1,0 +1,175 @@
+==========================================
+ROTAS DO SITE - LIGON RESORT SPA
+==========================================
+
+PÁGINAS PRINCIPAIS (SITE PÚBLICO)
+==========================================
+
+1. HOME / PÁGINA INICIAL
+   - Arquivo: Eliá SPA _ Eliá SPA.html
+   - URL: / ou index.html
+   - Descrição: Página principal do site com hero section, sobre o resort, carrossel de imagens
+
+2. SOBRE
+   - URL: /sobre
+   - Descrição: Página sobre o Ligon Resort Spa (seção presente na home)
+
+3. EXPERIÊNCIAS / PROCEDIMENTOS
+   - Arquivo: procedimentos-catalogo.html
+   - URL: /procedimentos-catalogo.html ou /experiencias
+   - Descrição: Catálogo completo de serviços/procedimentos disponíveis
+
+4. DETALHES DO PROCEDIMENTO
+   - Arquivo: procedimento-detalhes.html
+   - URL: /procedimento-detalhes.html?id={id}
+   - Descrição: Página de detalhes de um procedimento específico
+
+5. PRODUTOS
+   - Arquivo: produtos.html
+   - URL: /produtos.html
+   - Descrição: Catálogo de produtos disponíveis para venda
+
+6. DETALHES DO PRODUTO
+   - Arquivo: produto-detalhes.html
+   - URL: /produto-detalhes.html?id={id}
+   - Descrição: Página de detalhes de um produto específico
+
+7. GALERIA
+   - Arquivo: galeria.html
+   - URL: /galeria.html
+   - Descrição: Galeria de imagens do resort
+
+8. CONTATO
+   - URL: /contato
+   - Descrição: Página de contato
+
+9. UNIDADES
+   - URL: /unidades
+   - Descrição: Página para seleção de unidades (seção presente na home)
+
+
+SISTEMA ADMINISTRATIVO
+==========================================
+
+10. LOGIN INICIAL DO ADMIN
+    - Arquivo: admin-login.html
+    - URL: /admin-login.html
+    - Descrição: Tela inicial com senha de acesso (ligon@@2025)
+    - Acesso: Público (com senha)
+
+11. AUTENTICAÇÃO DO ADMIN
+    - Arquivo: admin-auth.html
+    - URL: /admin-auth.html
+    - Descrição: Tela de login com usuário e senha
+    - Acesso: Após senha inicial
+    - Credenciais padrão: admin / admin123
+
+12. DASHBOARD DO ADMIN
+    - Arquivo: admin-dashboard.html
+    - URL: /admin-dashboard.html
+    - Descrição: Painel principal com estatísticas e visão geral
+    - Acesso: Requer autenticação
+
+13. GERENCIAMENTO DE PRODUTOS
+    - Arquivo: admin-produtos.html
+    - URL: /admin-produtos.html
+    - Descrição: CRUD de produtos (cadastrar, editar, excluir, visualizar)
+    - Acesso: Requer autenticação
+
+14. GERENCIAMENTO DE SERVIÇOS
+    - Arquivo: admin-servicos.html
+    - URL: /admin-servicos.html
+    - Descrição: CRUD de serviços/procedimentos (cadastrar, editar, excluir, visualizar)
+    - Acesso: Requer autenticação
+
+15. LANÇAMENTO DE VENDAS
+    - Arquivo: admin-vendas.html
+    - URL: /admin-vendas.html
+    - Descrição: Sistema para registrar vendas de produtos e serviços
+    - Acesso: Requer autenticação
+
+16. RELATÓRIOS
+    - Arquivo: admin-relatorios.html
+    - URL: /admin-relatorios.html
+    - Descrição: Relatórios financeiros, estoque e vendas
+    - Acesso: Requer autenticação
+
+
+RECURSOS E ARQUIVOS ESTÁTICOS
+==========================================
+
+17. ESTILOS CSS
+    - Arquivo: styles.css
+    - URL: /styles.css
+    - Descrição: Estilos principais do site
+
+18. ESTILOS ADMIN
+    - Arquivo: admin.css
+    - URL: /admin.css
+    - Descrição: Estilos do painel administrativo
+
+19. SCRIPTS JAVASCRIPT
+    - Arquivo: scripts.js
+    - URL: /scripts.js
+    - Descrição: Scripts principais do site
+
+20. SCRIPTS ADMIN
+    - Arquivo: admin.js
+    - URL: /admin.js
+    - Descrição: Funções utilitárias do admin
+
+21. IMAGENS
+    - Diretório: /images/
+    - Arquivos principais:
+      - ligon_verde.png (logo)
+      - IMG-20251114-WA0504.jpg até IMG-20251114-WA0525.jpg (fotos do resort)
+      - fundadora.jpg
+      - marmore_verde.jpg
+
+
+FLUXO DE NAVEGAÇÃO PRINCIPAL
+==========================================
+
+HOME → SOBRE → EXPERIÊNCIAS → PRODUTOS → GALERIA → CONTATO
+
+Menu Principal:
+- Sobre (/sobre)
+- Experiências (procedimentos-catalogo.html)
+- Contato (/contato)
+
+Links de Ação:
+- "Agende seu horário agora mesmo!" → /unidades
+- "Conheça o Ligon Resort Spa" → /sobre
+- "Conheça nosso espaço" → galeria.html
+- "Saiba Mais" → procedimentos-catalogo.html
+- "Conheça Nossos Produtos" → produtos.html
+
+
+FLUXO DO SISTEMA ADMIN
+==========================================
+
+1. admin-login.html (senha: ligon@@2025)
+   ↓
+2. admin-auth.html (usuário: admin, senha: admin123)
+   ↓
+3. admin-dashboard.html
+   ↓
+   ├─→ admin-produtos.html
+   ├─→ admin-servicos.html
+   ├─→ admin-vendas.html
+   └─→ admin-relatorios.html
+
+
+NOTAS IMPORTANTES
+==========================================
+
+- Todas as rotas do admin requerem autenticação via sessionStorage
+- Os dados são armazenados no localStorage do navegador
+- Produtos e serviços cadastrados no admin aparecem automaticamente nas páginas públicas
+- As rotas /sobre, /contato, /experiencias, /unidades podem ser seções da home ou páginas separadas
+- O arquivo principal é "Eliá SPA _ Eliá SPA.html" que serve como landing page
+
+==========================================
+Última atualização: 2025
+==========================================
+

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto - Ligon Resort Spa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #F5E6D3 0%, #E8D5B7 50%, #D4C4A8 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            color: #2E5F35;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #9B8A6B;
+            transform: translateX(-5px);
+        }
+
+        .logo-header {
+            max-height: 50px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .product-detail {
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            padding: 50px;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-image-container {
+            width: 100%;
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #F5E6D3;
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .main-image:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-destaque {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #9B8A6B 0%, #8B7A5B 100%);
+            color: #FFFFFF;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 120px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: #9B8A6B;
+            transform: scale(1.05);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Product Info Section */
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .product-category-badge {
+            display: inline-block;
+            background: #F5E6D3;
+            color: #2E5F35;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: fit-content;
+        }
+
+        .product-name {
+            font-size: 2.5rem;
+            color: #2E5F35;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 10px 0;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #9B8A6B;
+        }
+
+        .stars {
+            color: #FFD700;
+        }
+
+        .product-price-section {
+            background: linear-gradient(135deg, #F5E6D3 0%, #E8D5B7 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .product-price {
+            font-size: 3rem;
+            color: #2E5F35;
+            font-weight: 700;
+        }
+
+        .price-installment {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+            margin: 15px 0;
+        }
+
+        .product-specs {
+            background: #F9F9F9;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .specs-title {
+            font-size: 1.3rem;
+            color: #2E5F35;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .specs-list {
+            list-style: none;
+        }
+
+        .specs-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid #E0E0E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .specs-list li:last-child {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .spec-value {
+            color: #666;
+        }
+
+        .benefits-section {
+            margin: 20px 0;
+        }
+
+        .benefits-title {
+            font-size: 1.3rem;
+            color: #2E5F35;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefits-list {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            padding: 10px 0;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .benefits-list li i {
+            color: #2E5F35;
+            margin-top: 3px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: #FFFFFF;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-whatsapp:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .btn-whatsapp i {
+            font-size: 1.5rem;
+        }
+
+        .btn-catalog {
+            background: transparent;
+            color: #9B8A6B;
+            padding: 18px 40px;
+            border: 2px solid #9B8A6B;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-catalog:hover {
+            background: #9B8A6B;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 25px;
+            background: #F9F9F9;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .trust-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+        }
+
+        .trust-badge i {
+            font-size: 2rem;
+            color: #2E5F35;
+        }
+
+        .trust-badge span {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .product-detail {
+                gap: 40px;
+                padding: 40px;
+            }
+
+            .product-name {
+                font-size: 2.2rem;
+            }
+
+            .product-price {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 30px;
+            }
+
+            .main-image-container {
+                height: 400px;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+                margin: 20px auto;
+            }
+
+            .product-detail {
+                padding: 25px;
+            }
+
+            .header-content {
+                padding: 0 20px;
+            }
+
+            .logo-header {
+                max-height: 40px;
+            }
+
+            .product-name {
+                font-size: 1.8rem;
+            }
+
+            .product-price {
+                font-size: 2rem;
+            }
+
+            .main-image-container {
+                height: 300px;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .thumbnail {
+                height: 100px;
+            }
+
+            .btn-whatsapp {
+                font-size: 1.1rem;
+                padding: 18px 30px;
+            }
+
+            .btn-catalog {
+                font-size: 1rem;
+                padding: 16px 30px;
+            }
+
+            .trust-badges {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-detail {
+                padding: 20px;
+            }
+
+            .product-name {
+                font-size: 1.5rem;
+            }
+
+            .product-price {
+                font-size: 1.75rem;
+            }
+
+            .product-price-section {
+                padding: 20px;
+            }
+
+            .main-image-container {
+                height: 250px;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .btn-whatsapp {
+                font-size: 1rem;
+                padding: 16px 25px;
+            }
+
+            .btn-catalog {
+                font-size: 0.95rem;
+                padding: 14px 25px;
+            }
+
+            .product-specs,
+            .benefits-section {
+                padding: 20px;
+            }
+
+            .specs-title,
+            .benefits-title {
+                font-size: 1.1rem;
+            }
+
+            .trust-badge i {
+                font-size: 1.5rem;
+            }
+
+            .trust-badge span {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="produtos.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Voltar ao Catálogo
+            </a>
+            <img src="images/ligon_verde.png" alt="Ligon Resort Spa" class="logo-header">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="product-detail">
+            <!-- Gallery Section -->
+            <div class="gallery-section">
+                <div class="main-image-container">
+                    <img id="mainImage" class="main-image" src="" alt="">
+                    <div id="badgeDestaque" class="badge-destaque" style="display: none;">
+                        <i class="fas fa-star"></i> Destaque
+                    </div>
+                </div>
+                <div class="thumbnail-grid" id="thumbnailGrid">
+                    <!-- Thumbnails will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Product Info Section -->
+            <div class="info-section">
+                <div class="product-category-badge" id="productCategory"></div>
+                <h1 class="product-name" id="productName"></h1>
+
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span>(5.0)</span>
+                </div>
+
+                <div class="product-price-section">
+                    <div class="product-price" id="productPrice"></div>
+                    <div class="price-installment">ou 3x sem juros no cartão</div>
+                </div>
+
+                <p class="product-description" id="productDescription"></p>
+
+                <div class="product-specs">
+                    <h3 class="specs-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Especificações
+                    </h3>
+                    <ul class="specs-list" id="specsList">
+                        <!-- Specs will be inserted here by JavaScript -->
+                    </ul>
+                </div>
+
+                <div class="benefits-section">
+                    <h3 class="benefits-title">
+                        <i class="fas fa-check-circle"></i>
+                        Benefícios
+                    </h3>
+                    <ul class="benefits-list" id="benefitsList">
+                        <!-- Benefits will be inserted here by JavaScript -->
+                    </ul>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#" id="btnWhatsApp" class="btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        Comprar pelo WhatsApp
+                    </a>
+                    <a href="produtos.html" class="btn-catalog">
+                        <i class="fas fa-th-large"></i>
+                        Ver Outros Produtos
+                    </a>
+                </div>
+
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Compra<br>Segura</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fas fa-truck"></i>
+                        <span>Entrega<br>Rápida</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fas fa-leaf"></i>
+                        <span>100%<br>Natural</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fas fa-award"></i>
+                        <span>Qualidade<br>Premium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Número do WhatsApp (formato internacional sem + e sem espaços)
+        const WHATSAPP_NUMBER = '5511999999999'; // ALTERAR PARA O NÚMERO REAL
+
+        // Database completo de produtos com múltiplas imagens, specs e benefits
+        let produtosCompletos = {
+            1: {
+                nome: "Loção Hidratante Corporal",
+                categoria: "corporal",
+                descricao: "Nossa Loção Hidratante Corporal proporciona hidratação profunda e duradoura com uma fórmula exclusiva de ingredientes naturais. Enriquecida com óleos essenciais e extratos botânicos, penetra rapidamente na pele sem deixar sensação oleosa. Perfeita para uso diário, mantém sua pele macia, sedosa e perfumada por até 24 horas.",
+                preco: 89.90,
+                destaque: true,
+                imagens: [
+                    "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1571875257727-256c39da42af?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&h=800&fit=crop"
+                ],
+                especificacoes: {
+                    "Conteúdo": "300ml",
+                    "Tipo de Pele": "Todos os tipos",
+                    "Fragrância": "Floral suave",
+                    "Validade": "24 meses",
+                    "Origem": "Brasil",
+                    "Cruelty-free": "Sim",
+                    "Vegano": "Sim"
+                },
+                beneficios: [
+                    "Hidratação intensa por 24 horas",
+                    "Absorção rápida sem deixar oleosidade",
+                    "Fragrância delicada e duradoura",
+                    "Ingredientes 100% naturais",
+                    "Dermatologicamente testado",
+                    "Não testado em animais"
+                ]
+            },
+            2: {
+                nome: "Sabonete Artesanal Aromático",
+                categoria: "aromaterapia",
+                descricao: "Sabonete artesanal produzido com técnicas tradicionais e ingredientes selecionados. Cada barra é única, confeccionada manualmente com óleos essenciais puros que proporcionam uma experiência aromática única durante o banho. Limpeza suave e eficaz que respeita o pH natural da pele.",
+                preco: 45.90,
+                destaque: false,
+                imagens: [
+                    "https://images.unsplash.com/photo-1588016919788-f60db6ee9f8c?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1602874801006-e747be5a43e1?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=800&h=800&fit=crop"
+                ],
+                especificacoes: {
+                    "Peso": "120g",
+                    "Fragrância": "Lavanda e Alecrim",
+                    "Base": "Glicerina vegetal",
+                    "pH": "5.5",
+                    "Produção": "Artesanal",
+                    "Validade": "12 meses",
+                    "Vegano": "Sim"
+                },
+                beneficios: [
+                    "Limpeza suave e profunda",
+                    "Aromaterapia relaxante",
+                    "Espuma cremosa e abundante",
+                    "Não resseca a pele",
+                    "Produto artesanal único",
+                    "Ingredientes naturais selecionados"
+                ]
+            },
+            3: {
+                nome: "Creme Facial Revitalizante",
+                categoria: "facial",
+                descricao: "Creme facial de alta performance desenvolvido com tecnologia avançada e ativos naturais. Sua fórmula exclusiva combate os sinais do tempo, reduz linhas de expressão e proporciona luminosidade à pele. Textura leve e sedosa que é rapidamente absorvida, deixando a pele macia, hidratada e com aspecto rejuvenescido.",
+                preco: 129.90,
+                destaque: true,
+                imagens: [
+                    "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&h=800&fit=crop",
+                    "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&h=800&fit=crop"
+                ],
+                especificacoes: {
+                    "Conteúdo": "50ml",
+                    "Tipo de Pele": "Todos os tipos",
+                    "Textura": "Creme leve",
+                    "Aplicação": "Dia e Noite",
+                    "FPS": "Não contém",
+                    "Validade": "18 meses",
+                    "Dermatologicamente testado": "Sim"
+                },
+                beneficios: [
+                    "Reduz linhas finas e rugas",
+                    "Hidratação profunda e duradoura",
+                    "Aumenta a elasticidade da pele",
+                    "Ilumina e uniformiza o tom",
+                    "Textura aveludada não oleosa",
+                    "Resultados visíveis em 28 dias"
+                ]
+            }
+        };
+
+        // Carregar produtos do admin (localStorage)
+        function loadAdminProducts() {
+            try {
+                const adminProducts = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+                adminProducts.forEach(ap => {
+                    // Converter produto do admin para formato completo
+                    produtosCompletos[ap.id] = {
+                        nome: ap.nome,
+                        categoria: ap.categoria,
+                        descricao: ap.descricao,
+                        preco: ap.preco,
+                        destaque: ap.destaque || false,
+                        imagens: (ap.imagens && ap.imagens.length > 0) ? ap.imagens : ['https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=800&h=800&fit=crop'],
+                        especificacoes: ap.especificacoes || {
+                            "Categoria": ap.categoria,
+                            "Origem": "Brasil",
+                            "Qualidade": "Premium",
+                            "Validade": "24 meses"
+                        },
+                        beneficios: ap.beneficios || [
+                            "Produto de alta qualidade",
+                            "Ingredientes selecionados",
+                            "Resultados comprovados",
+                            "Satisfação garantida"
+                        ]
+                    };
+                });
+            } catch (e) {
+                console.error('Error loading admin products:', e);
+            }
+        }
+
+        // Carregar produtos do admin ao inicializar
+        loadAdminProducts();
+
+        // Função para obter parâmetros da URL
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Função para carregar produto
+        function loadProduct() {
+            const productId = getUrlParameter('id');
+
+            if (!productId || !produtosCompletos[productId]) {
+                // Produto padrão se não encontrar
+                const defaultProduct = produtosCompletos[1];
+                displayProduct(defaultProduct);
+                return;
+            }
+
+            const produto = produtosCompletos[productId];
+            displayProduct(produto);
+        }
+
+        // Função para exibir produto
+        function displayProduct(produto) {
+            // Nome e categoria
+            document.getElementById('productName').textContent = produto.nome;
+            document.getElementById('productCategory').textContent = produto.categoria.toUpperCase();
+
+            // Descrição
+            document.getElementById('productDescription').textContent = produto.descricao;
+
+            // Preço
+            document.getElementById('productPrice').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
+
+            // Badge destaque
+            if (produto.destaque) {
+                document.getElementById('badgeDestaque').style.display = 'block';
+            }
+
+            // Imagem principal
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = produto.imagens[0];
+            mainImage.alt = produto.nome;
+
+            // Thumbnails
+            const thumbnailGrid = document.getElementById('thumbnailGrid');
+            thumbnailGrid.innerHTML = produto.imagens.map((img, index) => `
+                <div class="thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}">
+                    <img src="${img}" alt="${produto.nome} - Imagem ${index + 1}">
+                </div>
+            `).join('');
+
+            // Event listeners para thumbnails
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    const index = this.dataset.index;
+                    mainImage.src = produto.imagens[index];
+
+                    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Especificações
+            const specsList = document.getElementById('specsList');
+            specsList.innerHTML = Object.entries(produto.especificacoes).map(([label, value]) => `
+                <li>
+                    <span class="spec-label">${label}:</span>
+                    <span class="spec-value">${value}</span>
+                </li>
+            `).join('');
+
+            // Benefícios
+            const benefitsList = document.getElementById('benefitsList');
+            benefitsList.innerHTML = produto.beneficios.map(benefit => `
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>${benefit}</span>
+                </li>
+            `).join('');
+
+            // WhatsApp button
+            const btnWhatsApp = document.getElementById('btnWhatsApp');
+            const message = `Olá vim através do site, tenho interesse no produto ${produto.nome}`;
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            btnWhatsApp.href = whatsappUrl;
+        }
+
+        // Carregar produto ao carregar a página
+        document.addEventListener('DOMContentLoaded', loadProduct);
+    </script>
+</body>
+</html>
