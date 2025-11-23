@@ -934,6 +934,40 @@ document.addEventListener('DOMContentLoaded', function() {
         initProcedimentosCarousel();
     }
     
+    // Controlar visibilidade dos botões de navegação do hero baseado no scroll
+    function toggleHeroButtons() {
+        const heroWrap = document.querySelector('.hero-wrap');
+        const hsButtons = document.querySelectorAll('.hs_btn');
+        
+        if (!heroWrap || !hsButtons.length) return;
+        
+        const heroRect = heroWrap.getBoundingClientRect();
+        const heroBottom = heroRect.bottom;
+        const heroTop = heroRect.top;
+        const viewportHeight = window.innerHeight;
+        
+        // Mostrar botões apenas quando a seção hero está visível na tela
+        // Considerar visível se pelo menos 30% da seção hero está na viewport
+        const isHeroVisible = heroBottom > viewportHeight * 0.3 && heroTop < viewportHeight * 0.7;
+        
+        hsButtons.forEach(function(btn) {
+            if (isHeroVisible) {
+                btn.style.opacity = '1';
+                btn.style.visibility = 'visible';
+                btn.style.pointerEvents = 'auto';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.visibility = 'hidden';
+                btn.style.pointerEvents = 'none';
+            }
+        });
+    }
+    
+    // Executar ao carregar e no scroll
+    toggleHeroButtons();
+    window.addEventListener('scroll', toggleHeroButtons);
+    window.addEventListener('resize', toggleHeroButtons);
+    
     // Também tentar inicializar após um delay adicional para garantir
     setTimeout(initProcedimentosCarousel, 500);
     
