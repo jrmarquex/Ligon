@@ -946,6 +946,25 @@ footer.main-footer,
     display: none !important;
 }
 
+/* Remover pseudo-elementos :after dos elementos especificados */
+.fw-search-wrap::after,
+.fw-search-wrap:after,
+.st-gallery::after,
+.st-gallery:after,
+.about-img-hotifer::after,
+.about-img-hotifer:after,
+.column-section-wrap::after,
+.column-section-wrap:after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    content: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    height: 0 !important;
+    width: 0 !important;
+}
+
 /* Remover sombreado azul escuro e substituir por creme/dourado */
 .bg-parallax-wrap-gradien::before,
 .bg-parallax-wrap-gradien::after,
@@ -1088,7 +1107,7 @@ footer.main-footer,
 }
 
 .st-gallery .section-title h2.titulo-principal {
-    color: #2E5F35 !important;
+    color: #FFFFFF !important;
     font-size: 2.8rem !important;
     font-weight: 700 !important;
     margin-bottom: 25px !important;
@@ -1100,7 +1119,7 @@ footer.main-footer,
 }
 
 .st-gallery .section-title h2 {
-    color: #2E5F35 !important;
+    color: #FFFFFF !important;
     font-size: 2.5rem !important;
     font-weight: 700 !important;
     margin-bottom: 20px !important;
@@ -2597,6 +2616,7 @@ th:not(.stg_link):not(button):not(.btn) {
 .content-section.dark-bg.no-padding .st-gallery .section-title p.texto-convidativo,
 .st-gallery .section-title .texto-convidativo,
 .st-gallery .section-title p.texto-convidativo {
+    color: #FFFFFF !important;
     color: #2E5F35 !important;
     display: block !important;
     visibility: visible !important;
