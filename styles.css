@@ -2687,13 +2687,33 @@ button[style*="blue"],
         padding: 0 !important;
     }
     
-    /* Garantir que não haja elementos azuis */
+    /* Garantir que não haja elementos azuis - Remover tarja azul escura */
     [style*="blue"],
     [style*="#007bff"],
     [style*="#3490f3"],
-    [style*="#2e7fd6"] {
+    [style*="#2e7fd6"],
+    [style*="rgb(52, 144, 243)"],
+    [style*="rgb(46, 127, 214)"],
+    [class*="blue"],
+    [id*="blue"] {
         background: transparent !important;
         background-color: transparent !important;
+        display: none !important;
+    }
+    
+    /* Remover qualquer overlay ou elemento que crie tarja azul */
+    .hero-wrap::before,
+    .hero-wrap::after,
+    .fs-slider::before,
+    .fs-slider::after,
+    .fs-slider-item::before,
+    .fs-slider-item::after,
+    .swiper-container::before,
+    .swiper-container::after {
+        background: transparent !important;
+        background-color: transparent !important;
+        display: none !important;
+        content: none !important;
     }
     
     /* Posicionar conteúdo do hero na parte inferior no mobile - Ordem e espaçamento profissional */
