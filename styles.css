@@ -627,6 +627,18 @@ body.loaded .loader-wrap {
     transform: none !important;
 }
 
+/* Desktop - Centralizar setas verticalmente */
+.hs_btn {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.hs_btn_prev,
+.hs_btn_next {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
 .hero-wrap .swiper-slide {
     width: 100% !important;
     height: 100vh !important;
@@ -2619,10 +2631,12 @@ button[style*="blue"],
         background: #FFFFFF !important;
     }
     
-    /* Aumentar altura das imagens do hero para preencher a tela e cobrir tarja azul */
+    /* Subir imagem e aumentar altura para cobrir tarja azul */
     .hero-wrap {
         margin-top: 0 !important;
         padding-top: 0 !important;
+        position: relative !important;
+        top: 0 !important;
     }
     
     .hero-wrap .fs-slider-item,
@@ -2630,11 +2644,17 @@ button[style*="blue"],
     .hero-wrap .swiper-slide,
     .hero-wrap .swiper-container,
     .hero-wrap .swiper-wrapper {
-        min-height: calc(100vh + 100px) !important;
-        height: calc(100vh + 100px) !important;
+        min-height: calc(100vh + 150px) !important;
+        height: calc(100vh + 150px) !important;
     }
     
-    /* Centralizar setas verticalmente na imagem - Mobile e Desktop */
+    .hero-wrap .fs-slider-item .bg {
+        top: -50px !important;
+        min-height: calc(100vh + 200px) !important;
+        height: calc(100vh + 200px) !important;
+    }
+    
+    /* Centralizar setas verticalmente no centro da imagem */
     .hs_btn {
         top: 50% !important;
         transform: translateY(-50%) !important;
@@ -2645,6 +2665,7 @@ button[style*="blue"],
     .hs_btn_next {
         top: 50% !important;
         transform: translateY(-50%) !important;
+        position: absolute !important;
     }
     
     /* Remover qualquer barra azul ou lacuna */
