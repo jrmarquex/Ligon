@@ -2619,7 +2619,7 @@ button[style*="blue"],
         background: #FFFFFF !important;
     }
     
-    /* Aumentar altura das imagens do hero para preencher a tela */
+    /* Aumentar altura das imagens do hero para preencher a tela e cobrir tarja azul */
     .hero-wrap {
         margin-top: 0 !important;
         padding-top: 0 !important;
@@ -2630,8 +2630,14 @@ button[style*="blue"],
     .hero-wrap .swiper-slide,
     .hero-wrap .swiper-container,
     .hero-wrap .swiper-wrapper {
-        min-height: 100vh !important;
-        height: 100vh !important;
+        min-height: calc(100vh + 100px) !important;
+        height: calc(100vh + 100px) !important;
+    }
+    
+    /* Centralizar setas verticalmente na imagem */
+    .hs_btn {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
     }
     
     /* Remover qualquer barra azul ou lacuna */
@@ -2662,10 +2668,10 @@ button[style*="blue"],
         background-color: transparent !important;
     }
     
-    /* Posicionar conteúdo do hero na parte inferior no mobile - mais para baixo */
+    /* Posicionar conteúdo do hero na parte inferior no mobile - Ordem e espaçamento profissional */
     .hero-wrap .hero-title-container {
         position: absolute !important;
-        bottom: 30px !important;
+        bottom: 60px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         width: 90% !important;
@@ -2679,14 +2685,89 @@ button[style*="blue"],
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
-        gap: 10px !important;
+        gap: 0 !important;
         justify-content: flex-end !important;
     }
     
-    /* Botão na parte de baixo no mobile - dar espaço para a imagem */
+    /* Ordem dos elementos: h4, h2, logo, scroll icon, botão */
+    .hero-wrap .hero-title-container h4 {
+        order: 1 !important;
+        font-size: 0.95rem !important;
+        margin-bottom: 12px !important;
+        margin-top: 0 !important;
+    }
+    
+    .hero-wrap .hero-title-container h2 {
+        order: 2 !important;
+        font-size: 1.6rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 20px !important;
+        margin-top: 0 !important;
+    }
+    
+    .hero-wrap .section-separator {
+        order: 3 !important;
+        margin: 20px 0 !important;
+    }
+    
+    .hero-wrap .section-separator img {
+        max-width: 120px !important;
+        height: auto !important;
+    }
+    
+    /* Ícone de scroll - mais para baixo */
+    .hero-scroll-icon-wrapper {
+        order: 4 !important;
+        margin: 25px 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .hero-scroll-icon {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .hero-scroll-icon .mousey {
+        width: 30px !important;
+        height: 50px !important;
+        border: 2px solid rgba(255, 255, 255, 0.8) !important;
+        border-radius: 20px !important;
+        position: relative !important;
+        display: flex !important;
+        justify-content: center !important;
+        padding-top: 8px !important;
+    }
+    
+    .hero-scroll-icon .scroller {
+        width: 4px !important;
+        height: 10px !important;
+        background: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 2px !important;
+        animation: scrollDown 2s infinite !important;
+    }
+    
+    @keyframes scrollDown {
+        0% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        50% {
+            transform: translateY(15px);
+            opacity: 0.5;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    
+    /* Botão - não colado na parte de baixo, com espaço profissional */
     .hero-wrap .hero-title-container .stg_link {
-        margin-top: 15px !important;
-        order: 999 !important;
+        order: 5 !important;
+        margin-top: 20px !important;
         width: 100% !important;
         max-width: 100% !important;
         padding: 12px 25px !important;
@@ -2695,34 +2776,13 @@ button[style*="blue"],
         line-height: 1.4 !important;
     }
     
-    /* Ajustar tamanhos de texto no mobile */
-    .hero-wrap .hero-title-container h2 {
-        font-size: 1.6rem !important;
-        line-height: 1.3 !important;
-        margin-bottom: 10px !important;
-    }
-    
-    .hero-wrap .hero-title-container h4 {
-        font-size: 0.95rem !important;
-        margin-bottom: 8px !important;
-    }
-    
-    .hero-wrap .section-separator {
-        margin: 8px 0 !important;
-    }
-    
-    .hero-wrap .section-separator img {
-        max-width: 90px !important;
-        height: auto !important;
-    }
-    
     /* Garantir que a imagem apareça completamente */
     .hero-wrap .fs-slider-item {
-        min-height: 100vh !important;
+        min-height: calc(100vh + 100px) !important;
     }
     
     .hero-wrap .fs-slider-item .bg {
-        min-height: 100vh !important;
+        min-height: calc(100vh + 100px) !important;
     }
     
     .produto-imagem {
