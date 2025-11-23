@@ -2717,6 +2717,41 @@ button[style*="blue"],
         z-index: -1 !important;
     }
     
+    /* Remover elemento com width 390px height 100px float left (quadrado azul escuro) */
+    [style*="width: 390px"],
+    [style*="width:390px"],
+    [style*="width: 390px;"],
+    [style*="height: 100px"],
+    [style*="height:100px"],
+    [style*="height: 100px;"],
+    [style*="float: left"],
+    [style*="float:left"],
+    [style*="float: left;"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        height: 0 !important;
+        width: 0 !important;
+        float: none !important;
+    }
+    
+    /* Remover qualquer elemento que combine essas propriedades */
+    div[style*="390px"][style*="100px"][style*="float"],
+    div[style*="390px"][style*="100px"][style*="left"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        height: 0 !important;
+        width: 0 !important;
+        float: none !important;
+        position: absolute !important;
+        z-index: -1 !important;
+    }
+    
     /* Remover qualquer elemento azul */
     [style*="blue"],
     [style*="#007bff"],
