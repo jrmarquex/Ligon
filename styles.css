@@ -1409,7 +1409,7 @@ footer.main-footer,
 .rc-button:hover {
     background-color: #A59470 !important;
     color: #FFFFFF !important;
-    transform: scale(1.1) !important;
+    transform: translateY(-50%) scale(1.1) !important;
     box-shadow: 0 6px 20px rgba(165, 148, 112, 0.5) !important;
 }
 
