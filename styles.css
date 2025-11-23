@@ -2588,28 +2588,53 @@ button[style*="blue"],
         visibility: hidden !important;
     }
     
-    /* Mobile - Menu e imagem iguais ao desktop */
-    /* Remover apenas espaços extras, mas manter estilo igual ao desktop */
+    /* Mobile - Subir menu para o topo e aumentar altura das imagens */
     body,
     html {
         margin: 0 !important;
         padding: 0 !important;
+        background: #FFFFFF !important;
     }
     
-    /* Manter header igual ao desktop */
+    /* Fazer menu começar no topo absoluto */
     .main-header {
-        /* Usar valores do desktop - não sobrescrever */
+        margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
+        top: 0 !important;
+    }
+    
+    .main-header .container {
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .nav-holder-wrap.init-fix-header,
     .nav-holder-wrap {
-        /* Usar valores do desktop - não sobrescrever padding e min-height */
+        margin: 0 !important;
+        padding: 20px 30px !important;
         position: sticky !important;
         top: 0 !important;
         z-index: 1000 !important;
+        background: #FFFFFF !important;
     }
     
-    /* Remover qualquer barra azul */
+    /* Aumentar altura das imagens do hero para preencher a tela */
+    .hero-wrap {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    .hero-wrap .fs-slider-item,
+    .hero-wrap .fs-slider-item .bg,
+    .hero-wrap .swiper-slide,
+    .hero-wrap .swiper-container,
+    .hero-wrap .swiper-wrapper {
+        min-height: 100vh !important;
+        height: 100vh !important;
+    }
+    
+    /* Remover qualquer barra azul ou lacuna */
     body::before,
     html::before,
     body::after,
@@ -2621,6 +2646,11 @@ button[style*="blue"],
         display: none !important;
         background: transparent !important;
         content: none !important;
+    }
+    
+    #main {
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Garantir que não haja elementos azuis */
