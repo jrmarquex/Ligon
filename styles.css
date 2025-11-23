@@ -2576,36 +2576,61 @@ button[style*="blue"],
         visibility: hidden !important;
     }
     
-    /* Remover barra azul do topo no mobile */
+    /* Remover barra azul do topo no mobile - Regras mais abrangentes */
+    body,
+    html {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+    }
+    
+    body::before,
+    html::before,
+    body::after,
+    html::after {
+        display: none !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        content: none !important;
+    }
+    
     .main-header,
     .nav-holder-wrap.init-fix-header,
     .header-overlay,
-    .nav-holder-wrap {
+    .nav-holder-wrap,
+    .main-header *,
+    .nav-holder-wrap * {
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
         border-bottom: none !important;
     }
     
     /* Remover qualquer barra de status ou elemento azul no topo */
-    body::before,
-    html::before,
     #main::before,
     .main-header::before,
-    .nav-holder-wrap::before {
+    .nav-holder-wrap::before,
+    .header-overlay::before {
         display: none !important;
         background: transparent !important;
+        background-color: transparent !important;
         content: none !important;
     }
     
-    /* Garantir que não haja elementos azuis no header */
-    .main-header *,
-    .nav-holder-wrap * {
+    /* Remover qualquer elemento com cor azul no topo */
+    [style*="blue"],
+    [style*="#007bff"],
+    [style*="#3490f3"],
+    [style*="#2e7fd6"],
+    [class*="blue"],
+    [id*="blue"] {
+        background: transparent !important;
         background-color: transparent !important;
     }
     
+    /* Garantir que header e nav sejam brancos */
     .main-header,
     .nav-holder-wrap {
         background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
     }
     
     /* Posicionar conteúdo do hero na parte inferior no mobile - mais para baixo */
