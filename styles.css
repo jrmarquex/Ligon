@@ -1705,10 +1705,10 @@ footer.main-footer,
     visibility: hidden !important;
 }
 
-/* Estilizar setas de navegação do hero slider */
+/* Estilizar setas de navegação do hero slider - Centralizadas no meio da tela */
 .hs_btn {
-    position: absolute !important;
-    top: 50% !important;
+    position: fixed !important;
+    top: 50vh !important;
     transform: translateY(-50%) !important;
     width: 70px !important;
     height: 70px !important;
