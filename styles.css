@@ -2704,8 +2704,9 @@ button[style*="blue"],
         padding: 0 !important;
     }
     
-    /* REMOVER COMPLETAMENTE TARJA AZUL ESCURA - SOLUÇÃO DEFINITIVA */
-    .header-overlay {
+    /* REMOVER COMPLETAMENTE TARJA AZUL ESCURA E QUADRADO AZUL - SOLUÇÃO DEFINITIVA */
+    .header-overlay,
+    .close_cart-init {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -2715,6 +2716,7 @@ button[style*="blue"],
         width: 0 !important;
         position: absolute !important;
         z-index: -1 !important;
+        float: none !important;
     }
     
     /* Remover elemento com width 390px height 100px float left (quadrado azul escuro) */
@@ -2739,7 +2741,8 @@ button[style*="blue"],
     
     /* Remover qualquer elemento que combine essas propriedades */
     div[style*="390px"][style*="100px"][style*="float"],
-    div[style*="390px"][style*="100px"][style*="left"] {
+    div[style*="390px"][style*="100px"][style*="left"],
+    div[style*="display: flex"][style*="390px"][style*="100px"][style*="float"] {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
