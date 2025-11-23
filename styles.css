@@ -1700,6 +1700,39 @@ footer.main-footer,
     overflow: hidden !important;
 }
 
+/* REMOVER QUADRADO AZUL ESCURO - REGRAS GLOBAIS */
+.header-overlay,
+.close_cart-init {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    height: 0 !important;
+    width: 0 !important;
+    position: absolute !important;
+    z-index: -1 !important;
+    float: none !important;
+}
+
+/* Remover elemento com width 390px height 100px float left (quadrado azul escuro) - Global */
+[style*="width: 390px"],
+[style*="width:390px"],
+[style*="width: 390px;"],
+[style*="height: 100px"][style*="float"],
+[style*="display: flex"][style*="390px"][style*="100px"][style*="float"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    height: 0 !important;
+    width: 0 !important;
+    float: none !important;
+    position: absolute !important;
+    z-index: -1 !important;
+}
+
 .tcs-pagination_wrap * {
     display: none !important;
     visibility: hidden !important;
