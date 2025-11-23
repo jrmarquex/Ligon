@@ -1572,6 +1572,7 @@ footer.main-footer,
     scrollbar-width: thin !important;
     scrollbar-color: rgba(155, 138, 107, 0.5) transparent !important;
     -webkit-overflow-scrolling: touch !important;
+    padding: 0 !important;
 }
 
 /* Estilizar scrollbar para WebKit browsers */
@@ -1608,7 +1609,7 @@ footer.main-footer,
     flex-shrink: 0 !important;
 }
 
-/* Setas de navegação do carousel */
+/* Setas de navegação do carousel - Posicionadas nas pontas do bloco */
 .procedimentos-carousel-prev,
 .procedimentos-carousel-next {
     position: absolute;
@@ -1632,11 +1633,11 @@ footer.main-footer,
 }
 
 .procedimentos-carousel-prev {
-    left: -30px !important;
+    left: 10px !important;
 }
 
 .procedimentos-carousel-next {
-    right: -30px !important;
+    right: 10px !important;
 }
 
 .procedimentos-carousel-prev:hover,
@@ -1869,7 +1870,7 @@ a.dwonload_btn.stg_link:hover {
 
 @media (max-width: 768px) {
     .procedimentos-carousel-wrapper {
-        padding: 0 50px;
+        padding: 0 60px !important;
     }
 
     .procedimentos-carousel .procedimento-card {
@@ -1902,13 +1903,21 @@ a.dwonload_btn.stg_link:hover {
     
     .procedimentos-carousel-prev,
     .procedimentos-carousel-next {
-        width: 40px;
-        height: 40px;
+        width: 50px !important;
+        height: 50px !important;
     }
     
-    .procedimentos-carousel-prev i,
-    .procedimentos-carousel-next i {
-        font-size: 16px;
+    .procedimentos-carousel-prev {
+        left: 5px !important;
+    }
+    
+    .procedimentos-carousel-next {
+        right: 5px !important;
+    }
+    
+    .procedimentos-carousel-prev span,
+    .procedimentos-carousel-next span {
+        font-size: 28px !important;
     }
 }
 
