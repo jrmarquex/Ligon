@@ -1705,10 +1705,14 @@ footer.main-footer,
     visibility: hidden !important;
 }
 
-/* Estilizar setas de navegação do hero slider - Centralizadas no meio da tela */
+/* Estilizar setas de navegação do hero slider - Apenas na seção hero, centralizadas */
+.hero-wrap {
+    position: relative !important;
+}
+
 .hs_btn {
-    position: fixed !important;
-    top: 50vh !important;
+    position: absolute !important;
+    top: 50% !important;
     transform: translateY(-50%) !important;
     width: 70px !important;
     height: 70px !important;
@@ -2654,18 +2658,22 @@ button[style*="blue"],
         height: 100vh !important;
     }
     
-    /* Centralizar setas no meio da tela (viewport) - Mobile */
+    /* Centralizar setas no meio da seção hero - Mobile */
+    .hero-wrap {
+        position: relative !important;
+    }
+    
     .hs_btn {
-        position: fixed !important;
-        top: 50vh !important;
+        position: absolute !important;
+        top: 50% !important;
         transform: translateY(-50%) !important;
         margin-top: 0 !important;
     }
     
     .hs_btn_prev,
     .hs_btn_next {
-        position: fixed !important;
-        top: 50vh !important;
+        position: absolute !important;
+        top: 50% !important;
         transform: translateY(-50%) !important;
     }
     
@@ -2696,13 +2704,27 @@ button[style*="blue"],
         padding: 0 !important;
     }
     
-    /* Garantir que não haja elementos azuis - Remover tarja azul escura */
+    /* REMOVER COMPLETAMENTE TARJA AZUL ESCURA - SOLUÇÃO DEFINITIVA */
+    .header-overlay {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        height: 0 !important;
+        width: 0 !important;
+        position: absolute !important;
+        z-index: -1 !important;
+    }
+    
+    /* Remover qualquer elemento azul */
     [style*="blue"],
     [style*="#007bff"],
     [style*="#3490f3"],
     [style*="#2e7fd6"],
     [style*="rgb(52, 144, 243)"],
     [style*="rgb(46, 127, 214)"],
+    [style*="rgb(0, 123, 255)"],
     [class*="blue"],
     [id*="blue"] {
         background: transparent !important;
@@ -2718,11 +2740,32 @@ button[style*="blue"],
     .fs-slider-item::before,
     .fs-slider-item::after,
     .swiper-container::before,
-    .swiper-container::after {
+    .swiper-container::after,
+    body::before,
+    body::after,
+    html::before,
+    html::after,
+    #main::before,
+    #main::after,
+    .main-header::before,
+    .main-header::after {
         background: transparent !important;
         background-color: transparent !important;
         display: none !important;
         content: none !important;
+        height: 0 !important;
+        width: 0 !important;
+    }
+    
+    /* Garantir que não haja espaço vazio no topo */
+    body {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+    
+    html {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
     }
     
     /* Posicionar conteúdo do hero na parte inferior no mobile - Ordem e espaçamento profissional */

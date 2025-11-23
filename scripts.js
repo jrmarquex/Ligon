@@ -935,6 +935,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Controlar visibilidade dos botões de navegação do hero baseado no scroll
+    // Botões só aparecem quando a seção hero está visível
     function toggleHeroButtons() {
         const heroWrap = document.querySelector('.hero-wrap');
         const hsButtons = document.querySelectorAll('.hs_btn');
@@ -947,18 +948,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const viewportHeight = window.innerHeight;
         
         // Mostrar botões apenas quando a seção hero está visível na tela
-        // Considerar visível se pelo menos 30% da seção hero está na viewport
-        const isHeroVisible = heroBottom > viewportHeight * 0.3 && heroTop < viewportHeight * 0.7;
+        // Considerar visível se pelo menos parte da seção hero está na viewport
+        const isHeroVisible = heroBottom > 0 && heroTop < viewportHeight;
         
         hsButtons.forEach(function(btn) {
             if (isHeroVisible) {
                 btn.style.opacity = '1';
                 btn.style.visibility = 'visible';
                 btn.style.pointerEvents = 'auto';
+                btn.style.display = 'flex';
             } else {
                 btn.style.opacity = '0';
                 btn.style.visibility = 'hidden';
                 btn.style.pointerEvents = 'none';
+                btn.style.display = 'none';
             }
         });
     }
