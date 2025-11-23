@@ -2576,7 +2576,7 @@ button[style*="blue"],
         visibility: hidden !important;
     }
     
-    /* Remover tarja branca e fazer menu começar no topo - Mobile */
+    /* Remover tarja branca e fazer menu começar no topo - Mobile - Header compacto */
     body,
     html {
         margin: 0 !important;
@@ -2595,20 +2595,25 @@ button[style*="blue"],
         content: none !important;
     }
     
-    /* Fazer header começar no topo absoluto */
+    /* Fazer header começar no topo absoluto - Muito compacto */
     .main-header {
         margin: 0 !important;
+        padding: 0 !important;
         padding-top: 0 !important;
         padding-bottom: 0 !important;
         position: relative !important;
         top: 0 !important;
+        min-height: auto !important;
+        height: auto !important;
     }
     
     .nav-holder-wrap.init-fix-header,
     .nav-holder-wrap {
         margin: 0 !important;
-        padding-top: 15px !important;
-        padding-bottom: 15px !important;
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
         position: sticky !important;
         top: 0 !important;
         z-index: 1000 !important;
@@ -2616,6 +2621,13 @@ button[style*="blue"],
         background-color: #FFFFFF !important;
         border-bottom: none !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+        min-height: 60px !important;
+        height: auto !important;
+    }
+    
+    .nav-holder-wrap .logo-holder.logo-left img {
+        max-width: 120px !important;
+        height: auto !important;
     }
     
     .header-overlay {
@@ -2652,6 +2664,12 @@ button[style*="blue"],
     
     /* Garantir que não haja espaços antes do header */
     .main-header .container {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Reduzir tamanho do logo no mobile */
+    .nav-holder-wrap .logo-holder {
         margin: 0 !important;
         padding: 0 !important;
     }
