@@ -2634,8 +2634,15 @@ button[style*="blue"],
         height: calc(100vh + 100px) !important;
     }
     
-    /* Centralizar setas verticalmente na imagem */
+    /* Centralizar setas verticalmente na imagem - Mobile e Desktop */
     .hs_btn {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin-top: 0 !important;
+    }
+    
+    .hs_btn_prev,
+    .hs_btn_next {
         top: 50% !important;
         transform: translateY(-50%) !important;
     }
