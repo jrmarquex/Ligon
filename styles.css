@@ -698,6 +698,9 @@ a.btn.fl-btn.stg_link {
     text-transform: uppercase !important;
     letter-spacing: 1px !important;
     box-shadow: 0 8px 25px rgba(155, 138, 107, 0.4) !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 .stg_link:hover,
