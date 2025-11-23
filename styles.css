@@ -2576,9 +2576,11 @@ button[style*="blue"],
         visibility: hidden !important;
     }
     
-    /* Remover barra azul do topo no mobile - Regras mais abrangentes */
+    /* Remover tarja branca e fazer menu começar no topo - Mobile */
     body,
     html {
+        margin: 0 !important;
+        padding: 0 !important;
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
     }
@@ -2593,18 +2595,40 @@ button[style*="blue"],
         content: none !important;
     }
     
-    .main-header,
+    /* Fazer header começar no topo absoluto */
+    .main-header {
+        margin: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        position: relative !important;
+        top: 0 !important;
+    }
+    
     .nav-holder-wrap.init-fix-header,
-    .header-overlay,
-    .nav-holder-wrap,
-    .main-header *,
-    .nav-holder-wrap * {
+    .nav-holder-wrap {
+        margin: 0 !important;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
         background: #FFFFFF !important;
         background-color: #FFFFFF !important;
         border-bottom: none !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+    }
+    
+    .header-overlay {
+        background: transparent !important;
+        background-color: transparent !important;
     }
     
     /* Remover qualquer barra de status ou elemento azul no topo */
+    #main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
     #main::before,
     .main-header::before,
     .nav-holder-wrap::before,
@@ -2626,11 +2650,10 @@ button[style*="blue"],
         background-color: transparent !important;
     }
     
-    /* Garantir que header e nav sejam brancos */
-    .main-header,
-    .nav-holder-wrap {
-        background: #FFFFFF !important;
-        background-color: #FFFFFF !important;
+    /* Garantir que não haja espaços antes do header */
+    .main-header .container {
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Posicionar conteúdo do hero na parte inferior no mobile - mais para baixo */
