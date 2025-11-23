@@ -1359,16 +1359,20 @@ footer.main-footer,
     box-shadow: 0 6px 20px rgba(155, 138, 107, 0.6) !important;
 }
 
-/* Controles do carousel - Setas visíveis e luxuosas */
+/* Controles do carousel - Setas visíveis e luxuosas - Um em cada lado, centralizadas */
 .rc-controls-wrap {
-    display: flex !important;
+    display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
     z-index: 100 !important;
     position: absolute !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    gap: 15px !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
 }
 
 .rc-button {
@@ -1386,6 +1390,20 @@ footer.main-footer,
     box-shadow: 0 4px 15px rgba(165, 148, 112, 0.3) !important;
     visibility: visible !important;
     opacity: 1 !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    pointer-events: auto !important;
+}
+
+.rc-button-prev {
+    left: 20px !important;
+    right: auto !important;
+}
+
+.rc-button-next {
+    right: 20px !important;
+    left: auto !important;
 }
 
 .rc-button:hover {
