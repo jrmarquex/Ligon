@@ -1720,14 +1720,18 @@ footer.main-footer,
     box-shadow: 0 6px 20px rgba(46, 95, 53, 0.5) !important;
 }
 
-.hs_btn i {
+.hs_btn i,
+.hs_btn span {
     color: #2E5F35 !important;
-    font-size: 28px !important;
+    font-size: 32px !important;
     font-weight: 900 !important;
     transition: color 0.3s ease !important;
+    display: inline-block !important;
+    line-height: 1 !important;
 }
 
-.hs_btn:hover i {
+.hs_btn:hover i,
+.hs_btn:hover span {
     color: #FFFFFF !important;
 }
 
@@ -2563,10 +2567,42 @@ button[style*="blue"],
         visibility: hidden !important;
     }
     
-    /* Posicionar conteúdo do hero na parte inferior no mobile */
+    /* Remover barra azul do topo no mobile */
+    .main-header,
+    .nav-holder-wrap.init-fix-header,
+    .header-overlay,
+    .nav-holder-wrap {
+        background: #FFFFFF !important;
+        background-color: #FFFFFF !important;
+        border-bottom: none !important;
+    }
+    
+    /* Remover qualquer barra de status ou elemento azul no topo */
+    body::before,
+    html::before,
+    #main::before,
+    .main-header::before,
+    .nav-holder-wrap::before {
+        display: none !important;
+        background: transparent !important;
+        content: none !important;
+    }
+    
+    /* Garantir que não haja elementos azuis no header */
+    .main-header *,
+    .nav-holder-wrap * {
+        background-color: transparent !important;
+    }
+    
+    .main-header,
+    .nav-holder-wrap {
+        background: #FFFFFF !important;
+    }
+    
+    /* Posicionar conteúdo do hero na parte inferior no mobile - mais para baixo */
     .hero-wrap .hero-title-container {
         position: absolute !important;
-        bottom: 60px !important;
+        bottom: 30px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         width: 90% !important;
