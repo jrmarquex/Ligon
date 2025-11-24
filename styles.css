@@ -708,6 +708,14 @@ a.btn.fl-btn.stg_link {
 a.btn.fl-btn.stg_link {
     text-align: center !important;
     display: inline-block !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+/* Garantir que o texto dentro do botão esteja centralizado */
+.btn.fl-btn.stg_link *,
+a.btn.fl-btn.stg_link * {
+    text-align: center !important;
 }
 
 /* Botões produtos.html - largura proporcional */
@@ -1547,6 +1555,8 @@ footer.main-footer,
     display: inline-block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    text-align: center !important;
+    width: 100% !important;
 }
 
 .rc-button-prev span {
