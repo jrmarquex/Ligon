@@ -3062,13 +3062,14 @@ button[style*="blue"],
     /* Botão - não colado na parte de baixo, com espaço profissional */
     .hero-wrap .hero-title-container .stg_link {
         order: 5 !important;
-        margin-top: 20px !important;
-        width: 100% !important;
-        max-width: 100% !important;
+        margin-top: 30px !important;
+        width: auto !important;
+        max-width: 90% !important;
         padding: 12px 25px !important;
         font-size: 13px !important;
         white-space: normal !important;
         line-height: 1.4 !important;
+        display: inline-block !important;
     }
     
     /* Garantir que a imagem apareça completamente */
