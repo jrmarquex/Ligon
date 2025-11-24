@@ -703,19 +703,34 @@ a.btn.fl-btn.stg_link {
     max-width: none !important;
 }
 
-/* Centralizar texto no botão btn fl-btn stg_link */
+/* Centralizar texto no botão btn fl-btn stg_link - FORÇAR CENTRALIZAÇÃO */
 .btn.fl-btn.stg_link,
 a.btn.fl-btn.stg_link {
     text-align: center !important;
     display: inline-block !important;
     justify-content: center !important;
     align-items: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* Garantir que o texto dentro do botão esteja centralizado */
+.btn.fl-btn.stg_link,
+a.btn.fl-btn.stg_link,
 .btn.fl-btn.stg_link *,
 a.btn.fl-btn.stg_link * {
     text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Forçar centralização do conteúdo do botão */
+.btn.fl-btn.stg_link::before,
+a.btn.fl-btn.stg_link::before,
+.btn.fl-btn.stg_link::after,
+a.btn.fl-btn.stg_link::after {
+    content: '' !important;
+    display: none !important;
 }
 
 /* Botões produtos.html - largura proporcional */
