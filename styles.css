@@ -703,6 +703,21 @@ a.btn.fl-btn.stg_link {
     max-width: none !important;
 }
 
+/* Centralizar texto no botão btn fl-btn stg_link */
+.btn.fl-btn.stg_link,
+a.btn.fl-btn.stg_link {
+    text-align: center !important;
+    display: inline-block !important;
+}
+
+/* Botões produtos.html - largura proporcional */
+a.stg_link[href="produtos.html"],
+a.stg_link[href*="produtos.html"] {
+    width: auto !important;
+    max-width: none !important;
+    display: inline-block !important;
+}
+
 /* Botão no hero section - largura proporcional e posição ajustada */
 .hero-title-container .stg_link,
 .hero-wrap .hero-title-container .stg_link {
@@ -1122,7 +1137,7 @@ footer.main-footer,
 }
 
 .st-gallery .section-title h2.titulo-principal {
-    color: #FFFFFF !important;
+    color: #000000 !important;
     font-size: 2.8rem !important;
     font-weight: 700 !important;
     margin-bottom: 25px !important;
@@ -1516,25 +1531,28 @@ footer.main-footer,
 }
 
 .rc-button i {
-    font-size: 24px !important;
-    color: inherit !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    font-family: "Font Awesome 6 Free" !important;
+    display: none !important;
+}
+
+.rc-button span {
+    font-size: 32px !important;
+    color: #2E5F35 !important;
     font-weight: 900 !important;
     line-height: 1 !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-.rc-button-prev i {
+.rc-button-prev span {
     color: #2E5F35 !important;
 }
 
-.rc-button-next i {
+.rc-button-next span {
     color: #2E5F35 !important;
 }
 
-.rc-button:hover i {
+.rc-button:hover span {
     color: #FFFFFF !important;
 }
 
@@ -2631,7 +2649,7 @@ th:not(.stg_link):not(button):not(.btn) {
 .content-section.dark-bg.no-padding .st-gallery .section-title p.texto-convidativo,
 .st-gallery .section-title .texto-convidativo,
 .st-gallery .section-title p.texto-convidativo {
-    color: #FFFFFF !important;
+    color: #000000 !important;
     color: #2E5F35 !important;
     display: block !important;
     visibility: visible !important;
