@@ -699,8 +699,23 @@ a.btn.fl-btn.stg_link {
     letter-spacing: 1px !important;
     box-shadow: 0 8px 25px rgba(155, 138, 107, 0.4) !important;
     text-align: center !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* Botão no hero section - largura proporcional e posição ajustada */
+.hero-title-container .stg_link,
+.hero-wrap .hero-title-container .stg_link {
+    width: auto !important;
+    max-width: none !important;
+    margin-top: 30px !important;
+    margin-bottom: 0 !important;
+    display: inline-block !important;
+}
+
+/* Ajustar espaçamento do ícone de scroll para dar mais espaço ao botão */
+.hero-scroll-icon-wrapper {
+    margin-bottom: 10px !important;
 }
 
 .stg_link:hover,
