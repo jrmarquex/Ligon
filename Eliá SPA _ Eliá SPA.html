@@ -2046,22 +2046,22 @@
                                 'X-CSRF-TOKEN': csrfToken
                             }
                         });
-                        $.ajax({
-                            type:"POST",
-                            url: 'https://eliaspa.com.br/getlocation',
-                            data: {latitude: lat, longitude: lng},
-                            success: function(data){
-                                if (data.status === 'success') {
-                                    window.location.href = '/unidade/' + data.shop_slug;
-                                } else {
-                                    console.log('Erro:', data.message);
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                // Manipule o erro aqui
-                                console.error('Erro na solicitação AJAX:', error);
-                            }
-                        });
+                        // BACKUP API: $.ajax({
+                        //     type:"POST",
+                        //     url: 'https://eliaspa.com.br/getlocation',
+                        //     data: {latitude: lat, longitude: lng},
+                        //     success: function(data){
+                        //         if (data.status === 'success') {
+                        //             window.location.href = '/unidade/' + data.shop_slug;
+                        //         } else {
+                        //             console.log('Erro:', data.message);
+                        //         }
+                        //     },
+                        //     error: function(xhr, status, error) {
+                        //         console.error('Erro na solicitação AJAX:', error);
+                        //     }
+                        // });
+                        console.log('API desabilitada: getlocation - lat:', lat, 'lng:', lng);
                     }
                 });
 
@@ -2075,30 +2075,35 @@
                             'X-CSRF-TOKEN': csrfToken
                         }
                     });
-                    $.ajax({
-                        type:"POST",
-                        url: 'https://eliaspa.com.br/getlocation',
-                        success: function(data){
-                            if (data.status === 'success') {
-                                let endereco3 = document.getElementById('endereco3');
-                                if(endereco3){
-                                    endereco3.innerHTML = "";
-                                    endereco3.innerHTML = shop;
-                                }
-                                let telefone3 = document.getElementById('telefone3');
-                                if(telefone3){
-                                    telefone3.innerHTML = "";
-                                    telefone3.innerHTML = shopTelefone;
-                                }
-                            } else {
-                                console.log('Erro:', data.message);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            // Manipule o erro aqui
-                            console.error('Erro na solicitação AJAX:', error);
+                    // BACKUP API: $.ajax({
+                    //     type:"POST",
+                    //     url: 'https://eliaspa.com.br/getlocation',
+                    //     success: function(data){
+                    //         if (data.status === 'success') {
+                    //             let endereco3 = document.getElementById('endereco3');
+                    //             if(endereco3){
+                    //                 endereco3.innerHTML = "";
+                    //                 endereco3.innerHTML = shop;
+                    //             }
+                    //             let telefone3 = document.getElementById('telefone3');
+                    //             if(telefone3){
+                    console.log('API desabilitada: getlocation');
+                    var data = {status: 'error'};
+                    if (data.status === 'success') {
+                        let endereco3 = document.getElementById('endereco3');
+                        if(endereco3){
+                            endereco3.innerHTML = "";
+                            endereco3.innerHTML = shop;
                         }
-                    });
+                        let telefone3 = document.getElementById('telefone3');
+                        if(telefone3){
+                            telefone3.innerHTML = "";
+                            telefone3.innerHTML = shopTelefone;
+                        }
+                    } else {
+                        console.log('Erro:', data.message);
+                    }
+                    // });
                 }
             }
         // Mexendo
