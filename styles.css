@@ -969,11 +969,16 @@ footer.main-footer,
     z-index: 2 !important;
 }
 
-/* Remover elementos decorativos sc-dec */
+/* Remover elementos decorativos sc-dec e section-dec */
 .sc-dec,
 .sc-dec2,
-.sc-dec3 {
+.sc-dec3,
+.section-dec {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
 }
 
 /* Remover pseudo-elementos :after dos elementos especificados */
