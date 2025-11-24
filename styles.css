@@ -716,12 +716,15 @@ a.btn.fl-btn.stg_link {
 
 /* Garantir que o texto dentro do botão esteja centralizado */
 .btn.fl-btn.stg_link,
-a.btn.fl-btn.stg_link,
+a.btn.fl-btn.stg_link {
+    text-align: center !important;
+    display: inline-block !important;
+}
+
 .btn.fl-btn.stg_link *,
 a.btn.fl-btn.stg_link * {
     text-align: center !important;
-    display: block !important;
-    width: 100% !important;
+    display: inline !important;
 }
 
 /* Forçar centralização do conteúdo do botão */
