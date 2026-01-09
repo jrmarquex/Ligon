@@ -523,12 +523,15 @@
         
         // Initialize charts
         function initCharts() {
-            // Clear existing chart canvas
             const canvas = document.getElementById('salesChart');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (!canvas) {
+                console.error('Canvas salesChart not found');
+                return;
             }
+            
+            // Clear existing chart canvas
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
             // Sales Chart (Bar Chart) - Enhanced with stats
             const salesData = generateSalesData(currentPeriod);
@@ -552,9 +555,13 @@
                 }
             }
             
-            // Wait a bit for canvas to be ready
+            // Initialize chart - ensure canvas is visible and has dimensions
             setTimeout(() => {
                 try {
+                    // Reset canvas dimensions
+                    canvas.width = 0;
+                    canvas.height = 0;
+                    
                     new SimpleChart('salesChart', {
                         type: 'bar',
                         data: salesData.values,
@@ -566,7 +573,7 @@
                 } catch (error) {
                     console.error('Error initializing chart:', error);
                 }
-            }, 100);
+            }, 200);
             
             // Progress Chart (Donut Chart)
             const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
@@ -860,7 +867,20 @@
 
         loadDashboardStats();
         loadMetas();
-        setTimeout(initCharts, 300);
+        
+        // Initialize charts after DOM is fully loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initCharts, 500);
+            });
+        } else {
+            setTimeout(initCharts, 500);
+        }
+        
+        // Also try on window load as fallback
+        window.addEventListener('load', () => {
+            setTimeout(initCharts, 300);
+        });
     </script>
 </body>
 </html>

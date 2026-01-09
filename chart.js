@@ -28,21 +28,32 @@ class SimpleChart {
     }
     
     setupCanvas() {
+        if (!this.canvas) {
+            console.error('Canvas element not found');
+            return;
+        }
+        
         const dpr = window.devicePixelRatio || 1;
         const rect = this.canvas.getBoundingClientRect();
         
-        // Ensure minimum dimensions
-        const minWidth = 600;
-        const minHeight = 300;
-        const width = Math.max(rect.width || minWidth, minWidth);
-        const height = Math.max(rect.height || minHeight, minHeight);
+        // Ensure minimum dimensions - use container width or fallback
+        const container = this.canvas.parentElement;
+        const containerWidth = container ? container.clientWidth : 800;
+        const containerHeight = 320; // Fixed height from CSS
         
+        const width = Math.max(rect.width || containerWidth - 60, 600);
+        const height = Math.max(rect.height || containerHeight - 20, 280);
+        
+        // Set canvas dimensions
         this.canvas.width = width * dpr;
         this.canvas.height = height * dpr;
         
         this.ctx.scale(dpr, dpr);
         this.canvas.style.width = width + 'px';
         this.canvas.style.height = height + 'px';
+        
+        // Ensure canvas is visible
+        this.canvas.style.display = 'block';
     }
     
     drawBarChart() {
