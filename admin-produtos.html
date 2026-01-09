@@ -11,49 +11,127 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <h2>Ligon Admin</h2>
+            </div>
         </div>
+        
+        <div class="sidebar-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search" id="sidebarSearch">
+            <span class="search-shortcut">⌘K</span>
+        </div>
+
         <nav class="sidebar-nav">
-            <a href="admin-dashboard.html" class="nav-item">
-                <i class="fas fa-home"></i> Dashboard
-            </a>
-            <a href="admin-produtos.html" class="nav-item active">
-                <i class="fas fa-box"></i> Produtos
-            </a>
-            <a href="admin-servicos.html" class="nav-item">
-                <i class="fas fa-spa"></i> Serviços
-            </a>
-            <a href="admin-galeria.html" class="nav-item">
-                <i class="fas fa-images"></i> Galeria
-            </a>
-            <a href="admin-vendas.html" class="nav-item">
-                <i class="fas fa-shopping-cart"></i> Vendas
-            </a>
-            <a href="admin-relatorios.html" class="nav-item">
-                <i class="fas fa-chart-line"></i> Relatórios
-            </a>
-            <div class="nav-divider"></div>
-            <a href="admin-agenda.html" class="nav-item">
-                <i class="fas fa-calendar-alt"></i> Agenda
-            </a>
-            <a href="#" class="nav-item" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i> Sair
-            </a>
+            <div class="nav-section">
+                <div class="nav-section-title">MENU</div>
+                <a href="admin-dashboard.html" class="nav-item">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-produtos.html" class="nav-item active">
+                    <i class="fas fa-box"></i>
+                    <span>Produtos</span>
+                </a>
+                <a href="admin-servicos.html" class="nav-item">
+                    <i class="fas fa-spa"></i>
+                    <span>Serviços</span>
+                </a>
+                <a href="admin-galeria.html" class="nav-item">
+                    <i class="fas fa-images"></i>
+                    <span>Galeria</span>
+                </a>
+                <a href="admin-vendas.html" class="nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Vendas</span>
+                </a>
+                <a href="admin-relatorios.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">AGENDA</div>
+                <a href="admin-agenda.html" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agenda</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">GENERAL</div>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </a>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
         </nav>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <header class="header">
-            <h1>Gerenciar Produtos</h1>
-            <button class="btn btn-primary" onclick="openProductModal()">
-                <i class="fas fa-plus"></i> Novo Produto
-            </button>
+        <!-- Top Header Bar -->
+        <header class="top-header">
+            <div class="breadcrumb-nav">
+                <button class="breadcrumb-arrow"><i class="fas fa-chevron-left"></i></button>
+                <span class="breadcrumb-text">Ligon Admin > Produtos</span>
+                <button class="breadcrumb-arrow"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="header-actions">
+                <button class="header-icon-btn" title="Help">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+                <button class="header-icon-btn" title="Messages">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <button class="header-icon-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="header-icon-btn" title="Refresh">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" id="userName">Administrador</span>
+                    <span class="user-email">admin@ligon.com</span>
+                </div>
+                <button class="btn-share">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
         </header>
 
-        <div class="content-section">
-            <div class="cards-grid" id="productsGrid">
-                <!-- Products will be loaded here -->
+        <div class="dashboard-wrapper">
+            <div class="dashboard-title-section">
+                <div>
+                    <h1>Gerenciar Produtos</h1>
+                    <p class="dashboard-subtitle">Gerencie os produtos do Ligon Resort Spa</p>
+                </div>
+                <div class="dashboard-actions">
+                    <button class="btn-primary-large" onclick="openProductModal()">
+                        <i class="fas fa-plus"></i> Novo Produto
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="cards-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
             </div>
         </div>
     </div>
@@ -313,6 +391,26 @@
 
         // Load products on page load
         loadProducts();
+
+        // Check authentication
+        if (!sessionStorage.getItem('admin_authenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Load user info
+        const user = JSON.parse(sessionStorage.getItem('admin_user') || '{}');
+        if (user.name) {
+            document.getElementById('userName').textContent = user.name;
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Deseja realmente sair?')) {
+                sessionStorage.clear();
+                window.location.href = 'admin-login.html';
+            }
+        });
     </script>
 </body>
 </html>

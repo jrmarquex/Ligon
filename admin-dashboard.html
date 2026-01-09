@@ -11,205 +11,283 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-header">
-            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <h2>Ligon Admin</h2>
+            </div>
         </div>
+        
+        <div class="sidebar-search">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search" id="sidebarSearch">
+            <span class="search-shortcut">⌘K</span>
+        </div>
+
         <nav class="sidebar-nav">
-            <a href="admin-dashboard.html" class="nav-item active">
-                <i class="fas fa-home"></i> Dashboard
-            </a>
-            <a href="admin-produtos.html" class="nav-item">
-                <i class="fas fa-box"></i> Produtos
-            </a>
-            <a href="admin-servicos.html" class="nav-item">
-                <i class="fas fa-spa"></i> Serviços
-            </a>
-            <a href="admin-galeria.html" class="nav-item">
-                <i class="fas fa-images"></i> Galeria
-            </a>
-            <a href="admin-vendas.html" class="nav-item">
-                <i class="fas fa-shopping-cart"></i> Vendas
-            </a>
-            <a href="admin-relatorios.html" class="nav-item">
-                <i class="fas fa-chart-line"></i> Relatórios
-            </a>
-            <div class="nav-divider"></div>
-            <a href="admin-agenda.html" class="nav-item">
-                <i class="fas fa-calendar-alt"></i> Agenda
-            </a>
-            <a href="#" class="nav-item" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i> Sair
-            </a>
+            <div class="nav-section">
+                <div class="nav-section-title">MENU</div>
+                <a href="admin-dashboard.html" class="nav-item active">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="admin-produtos.html" class="nav-item">
+                    <i class="fas fa-box"></i>
+                    <span>Produtos</span>
+                </a>
+                <a href="admin-servicos.html" class="nav-item">
+                    <i class="fas fa-spa"></i>
+                    <span>Serviços</span>
+                </a>
+                <a href="admin-galeria.html" class="nav-item">
+                    <i class="fas fa-images"></i>
+                    <span>Galeria</span>
+                </a>
+                <a href="admin-vendas.html" class="nav-item">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Vendas</span>
+                </a>
+                <a href="admin-relatorios.html" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">AGENDA</div>
+                <a href="admin-agenda.html" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Agenda</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">GENERAL</div>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </a>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
         </nav>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Header -->
-        <header class="header">
-            <h1>Dashboard</h1>
-            <div class="user-info">
-                <span id="userName">Administrador</span>
-                <i class="fas fa-user-circle"></i>
+        <!-- Top Header Bar -->
+        <header class="top-header">
+            <div class="breadcrumb-nav">
+                <button class="breadcrumb-arrow"><i class="fas fa-chevron-left"></i></button>
+                <span class="breadcrumb-text">Ligon Admin > Dashboard</span>
+                <button class="breadcrumb-arrow"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="header-actions">
+                <button class="header-icon-btn" title="Help">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+                <button class="header-icon-btn" title="Messages">
+                    <i class="fas fa-envelope"></i>
+                </button>
+                <button class="header-icon-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="header-icon-btn" title="Refresh">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" id="userName">Administrador</span>
+                    <span class="user-email">admin@ligon.com</span>
+                </div>
+                <button class="btn-share">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
             </div>
         </header>
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-                    <i class="fas fa-box"></i>
+        <!-- Dashboard Content -->
+        <div class="dashboard-wrapper">
+            <!-- Dashboard Title -->
+            <div class="dashboard-title-section">
+                <div>
+                    <h1>Dashboard</h1>
+                    <p class="dashboard-subtitle">Gerencie produtos, serviços e agendamentos do Ligon Resort Spa com facilidade.</p>
                 </div>
-                <div class="stat-info">
-                    <h3 id="totalProdutos">0</h3>
-                    <p>Total de Produtos</p>
-                    <span class="stat-trend" id="trendProdutos">
-                        <i class="fas fa-arrow-up"></i> Aumentou este mês
-                    </span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
-                    <i class="fas fa-spa"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="totalServicos">0</h3>
-                    <p>Total de Serviços</p>
-                    <span class="stat-trend" id="trendServicos">
-                        <i class="fas fa-arrow-up"></i> Aumentou este mês
-                    </span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                    <i class="fas fa-shopping-cart"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="totalVendas">0</h3>
-                    <p>Total de Vendas</p>
-                    <span class="stat-trend" id="trendVendas">
-                        <i class="fas fa-arrow-up"></i> Aumentou este mês
-                    </span>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                    <i class="fas fa-dollar-sign"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 id="receitaTotal">R$ 0,00</h3>
-                    <p>Receita Total</p>
-                    <span class="stat-trend" id="trendReceita">
-                        <i class="fas fa-arrow-up"></i> Aumentou este mês
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Row -->
-        <div class="charts-row">
-            <!-- Analytics Chart -->
-            <div class="content-section chart-section">
-                <div class="section-header">
-                    <div>
-                        <h2>Análise de Vendas</h2>
-                        <p class="section-subtitle">Visão geral das vendas por período</p>
-                    </div>
-                    <div class="chart-controls">
-                        <button class="chart-toggle active" data-period="monthly">Mensal</button>
-                        <button class="chart-toggle" data-period="yearly">Anual</button>
-                    </div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="salesChart" width="800" height="300"></canvas>
-                </div>
-            </div>
-
-            <!-- Progress Donut Chart -->
-            <div class="content-section chart-section">
-                <div class="section-header">
-                    <h2>Progresso Geral</h2>
-                    <p class="section-subtitle">Status dos projetos e serviços</p>
-                </div>
-                <div class="donut-chart-container">
-                    <canvas id="progressChart" width="300" height="300"></canvas>
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <span class="legend-dot" style="background: #10b981;"></span>
-                            <span>Concluído</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot" style="background: #6366f1;"></span>
-                            <span>Em Progresso</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-dot" style="background: #f59e0b;"></span>
-                            <span>Pendente</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Two Column Layout -->
-        <div class="dashboard-grid">
-            <!-- Recent Activity -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h2>Atividades Recentes</h2>
-                    <button class="btn-icon" title="Ver todas">
-                        <i class="fas fa-ellipsis-v"></i>
+                <div class="dashboard-actions">
+                    <button class="btn-primary-large">
+                        <i class="fas fa-plus"></i> Adicionar Projeto
+                    </button>
+                    <button class="btn-secondary-large">
+                        <i class="fas fa-download"></i> Importar Dados
                     </button>
                 </div>
-                <div class="activity-list" id="activityList">
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <p>Nenhuma atividade recente</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid-modern">
+                <div class="stat-card-modern">
+                    <div class="stat-card-header">
+                        <span class="stat-label">Total de Produtos</span>
+                        <button class="stat-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                    <div class="stat-value" id="totalProdutos">0</div>
+                    <div class="stat-trend-up">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </div>
+                </div>
+
+                <div class="stat-card-modern">
+                    <div class="stat-card-header">
+                        <span class="stat-label">Serviços Finalizados</span>
+                        <button class="stat-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                    <div class="stat-value" id="totalServicos">0</div>
+                    <div class="stat-trend-up">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </div>
+                </div>
+
+                <div class="stat-card-modern">
+                    <div class="stat-card-header">
+                        <span class="stat-label">Serviços em Andamento</span>
+                        <button class="stat-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                    <div class="stat-value" id="totalVendas">0</div>
+                    <div class="stat-trend-up">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </div>
+                </div>
+
+                <div class="stat-card-modern">
+                    <div class="stat-card-header">
+                        <span class="stat-label">Projetos Pendentes</span>
+                        <button class="stat-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                    <div class="stat-value" id="receitaTotal">R$ 0,00</div>
+                    <div class="stat-trend-discuss">
+                        Em Discussão
                     </div>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h2>Ações Rápidas</h2>
-                    <button class="btn-icon" title="Mais opções">
-                        <i class="fas fa-plus"></i>
-                    </button>
+            <!-- Charts Row -->
+            <div class="charts-row-modern">
+                <!-- Analytics Chart -->
+                <div class="content-card-modern">
+                    <div class="card-header-modern">
+                        <div>
+                            <h3>Análise de Vendas</h3>
+                        </div>
+                        <div class="chart-controls-modern">
+                            <button class="chart-toggle-modern active" data-period="monthly">Mensal</button>
+                            <button class="chart-toggle-modern" data-period="yearly">Anual</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="salesChart" width="800" height="300"></canvas>
+                    </div>
                 </div>
-                <div class="quick-actions-grid">
-                    <a href="admin-produtos.html?action=new" class="quick-action-card">
-                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-                            <i class="fas fa-box"></i>
+
+                <!-- Progress Donut Chart -->
+                <div class="content-card-modern">
+                    <div class="card-header-modern">
+                        <h3>Progresso do Spa</h3>
+                    </div>
+                    <div class="donut-wrapper">
+                        <canvas id="progressChart" width="300" height="300"></canvas>
+                        <div class="chart-legend-modern">
+                            <div class="legend-item-modern">
+                                <span class="legend-dot-modern completed"></span>
+                                <span>Concluído</span>
+                            </div>
+                            <div class="legend-item-modern">
+                                <span class="legend-dot-modern in-progress"></span>
+                                <span>Em Progresso</span>
+                            </div>
+                            <div class="legend-item-modern">
+                                <span class="legend-dot-modern pending"></span>
+                                <span>Pendente</span>
+                            </div>
                         </div>
-                        <span>Novo Produto</span>
-                    </a>
-                    <a href="admin-servicos.html?action=new" class="quick-action-card">
-                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
-                            <i class="fas fa-spa"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="dashboard-grid-modern">
+                <!-- Recent Activity -->
+                <div class="content-card-modern">
+                    <div class="card-header-modern">
+                        <h3>Atividades Recentes</h3>
+                        <button class="btn-icon-modern">
+                            <i class="fas fa-plus"></i> Novo
+                        </button>
+                    </div>
+                    <div class="activity-list-modern" id="activityList">
+                        <div class="empty-state-modern">
+                            <i class="fas fa-inbox"></i>
+                            <p>Nenhuma atividade recente</p>
                         </div>
-                        <span>Novo Serviço</span>
-                    </a>
-                    <a href="admin-vendas.html?action=new" class="quick-action-card">
-                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <span>Nova Venda</span>
-                    </a>
-                    <a href="admin-relatorios.html" class="quick-action-card">
-                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
-                            <i class="fas fa-chart-bar"></i>
-                        </div>
-                        <span>Relatórios</span>
-                    </a>
-                    <a href="admin-agenda.html" class="quick-action-card">
-                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <span>Agenda</span>
-                    </a>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="content-card-modern">
+                    <div class="card-header-modern">
+                        <h3>Ações Rápidas</h3>
+                        <button class="btn-icon-modern">
+                            <i class="fas fa-plus"></i> Adicionar
+                        </button>
+                    </div>
+                    <div class="quick-actions-grid-modern">
+                        <a href="admin-produtos.html?action=new" class="quick-action-item">
+                            <div class="quick-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div class="quick-info">
+                                <span class="quick-title">Novo Produto</span>
+                                <span class="quick-date">Adicionar produto</span>
+                            </div>
+                        </a>
+                        <a href="admin-servicos.html?action=new" class="quick-action-item">
+                            <div class="quick-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
+                                <i class="fas fa-spa"></i>
+                            </div>
+                            <div class="quick-info">
+                                <span class="quick-title">Novo Serviço</span>
+                                <span class="quick-date">Adicionar serviço</span>
+                            </div>
+                        </a>
+                        <a href="admin-vendas.html?action=new" class="quick-action-item">
+                            <div class="quick-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="quick-info">
+                                <span class="quick-title">Nova Venda</span>
+                                <span class="quick-date">Registrar venda</span>
+                            </div>
+                        </a>
+                        <a href="admin-agenda.html" class="quick-action-item">
+                            <div class="quick-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="quick-info">
+                                <span class="quick-title">Agenda</span>
+                                <span class="quick-date">Ver agendamentos</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -232,8 +310,10 @@
         // Logout
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
-            sessionStorage.clear();
-            window.location.href = 'admin-login.html';
+            if (confirm('Deseja realmente sair?')) {
+                sessionStorage.clear();
+                window.location.href = 'admin-login.html';
+            }
         });
 
         // Load dashboard stats
@@ -241,6 +321,7 @@
             const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
             const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
             const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
 
             document.getElementById('totalProdutos').textContent = produtos.length;
             document.getElementById('totalServicos').textContent = servicos.length;
@@ -250,16 +331,17 @@
             document.getElementById('receitaTotal').textContent = formatCurrency(receitaTotal);
 
             // Load recent activity
-            loadRecentActivity(vendas);
+            loadRecentActivity(vendas, agendamentos);
         }
 
-        function loadRecentActivity(vendas) {
+        function loadRecentActivity(vendas, agendamentos) {
             const activityList = document.getElementById('activityList');
             const recentVendas = vendas.slice(-5).reverse();
+            const recentAgendamentos = agendamentos.slice(-3).reverse();
 
-            if (recentVendas.length === 0) {
+            if (recentVendas.length === 0 && recentAgendamentos.length === 0) {
                 activityList.innerHTML = `
-                    <div class="empty-state">
+                    <div class="empty-state-modern">
                         <i class="fas fa-inbox"></i>
                         <p>Nenhuma atividade recente</p>
                     </div>
@@ -267,17 +349,39 @@
                 return;
             }
 
-            activityList.innerHTML = recentVendas.map(venda => `
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-shopping-cart"></i>
+            let html = '';
+            
+            recentVendas.forEach(venda => {
+                html += `
+                    <div class="activity-item-modern">
+                        <div class="activity-icon-modern" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Nova venda realizada</div>
+                            <div class="activity-meta">${venda.data || 'Hoje'} - ${formatCurrency(venda.valorTotal)}</div>
+                        </div>
+                        <div class="activity-status completed">Concluído</div>
                     </div>
-                    <div class="activity-info">
-                        <h4>Nova venda realizada</h4>
-                        <p>${venda.data} - ${formatCurrency(venda.valorTotal)}</p>
+                `;
+            });
+
+            recentAgendamentos.forEach(ag => {
+                html += `
+                    <div class="activity-item-modern">
+                        <div class="activity-icon-modern" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Agendamento: ${ag.clienteNome}</div>
+                            <div class="activity-meta">${ag.data} às ${ag.hora}</div>
+                        </div>
+                        <div class="activity-status ${ag.compareceu ? 'completed' : 'pending'}">${ag.compareceu ? 'Concluído' : 'Pendente'}</div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            });
+
+            activityList.innerHTML = html;
         }
 
         // Initialize charts
@@ -289,18 +393,19 @@
                 data: salesData.values,
                 labels: salesData.labels,
                 colors: ['#10b981'],
-                highlightedIndex: 2 // Highlight current month
+                highlightedIndex: new Date().getMonth() % 7
             });
             
             // Progress Chart (Donut Chart)
             const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
             const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
             const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
             
-            const total = produtos.length + servicos.length + vendas.length;
-            const completed = vendas.length;
-            const inProgress = servicos.length;
-            const pending = produtos.length;
+            const total = produtos.length + servicos.length + vendas.length + agendamentos.length;
+            const completed = vendas.length + agendamentos.filter(a => a.compareceu).length;
+            const inProgress = servicos.length + agendamentos.filter(a => !a.compareceu && a.status !== 'cancelado').length;
+            const pending = produtos.length + agendamentos.filter(a => a.status === 'cancelado').length;
             
             new SimpleChart('progressChart', {
                 type: 'donut',
@@ -313,36 +418,35 @@
         
         // Generate sample sales data
         function generateSalesData() {
-            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'];
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
             const currentMonth = new Date().getMonth();
+            
+            // Group sales by month (simplified)
             const values = months.map((_, index) => {
-                if (index === currentMonth) {
-                    return Math.random() * 50 + 30; // Current month higher
+                if (index === currentMonth % 7) {
+                    return Math.max(30, vendas.length * 5 + Math.random() * 20);
                 }
                 return Math.random() * 40 + 10;
             });
             
             return {
-                labels: months.slice(0, 7), // Show last 7 months
-                values: values.slice(0, 7)
+                labels: months,
+                values: values
             };
         }
         
         // Chart period toggle
-        document.querySelectorAll('.chart-toggle').forEach(btn => {
+        document.querySelectorAll('.chart-toggle-modern').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.chart-toggle').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.chart-toggle-modern').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                // Reinitialize chart with new data
                 setTimeout(initCharts, 100);
             });
         });
 
         loadDashboardStats();
-        
-        // Initialize charts after a short delay to ensure canvas is ready
         setTimeout(initCharts, 300);
     </script>
 </body>
 </html>
-
