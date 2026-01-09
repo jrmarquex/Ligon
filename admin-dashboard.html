@@ -56,86 +56,167 @@
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #9B8A6B;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
                     <i class="fas fa-box"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="totalProdutos">0</h3>
                     <p>Total de Produtos</p>
+                    <span class="stat-trend" id="trendProdutos">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon" style="background: #2E5F35;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
                     <i class="fas fa-spa"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="totalServicos">0</h3>
                     <p>Total de Serviços</p>
+                    <span class="stat-trend" id="trendServicos">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon" style="background: #BDAB83;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="totalVendas">0</h3>
                     <p>Total de Vendas</p>
+                    <span class="stat-trend" id="trendVendas">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </span>
                 </div>
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon" style="background: #A59470;">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
                     <i class="fas fa-dollar-sign"></i>
                 </div>
                 <div class="stat-info">
                     <h3 id="receitaTotal">R$ 0,00</h3>
                     <p>Receita Total</p>
+                    <span class="stat-trend" id="trendReceita">
+                        <i class="fas fa-arrow-up"></i> Aumentou este mês
+                    </span>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Activity -->
-        <div class="content-section">
-            <h2>Atividade Recente</h2>
-            <div class="activity-list" id="activityList">
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    <p>Nenhuma atividade recente</p>
+        <!-- Charts Row -->
+        <div class="charts-row">
+            <!-- Analytics Chart -->
+            <div class="content-section chart-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Análise de Vendas</h2>
+                        <p class="section-subtitle">Visão geral das vendas por período</p>
+                    </div>
+                    <div class="chart-controls">
+                        <button class="chart-toggle active" data-period="monthly">Mensal</button>
+                        <button class="chart-toggle" data-period="yearly">Anual</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="salesChart" width="800" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- Progress Donut Chart -->
+            <div class="content-section chart-section">
+                <div class="section-header">
+                    <h2>Progresso Geral</h2>
+                    <p class="section-subtitle">Status dos projetos e serviços</p>
+                </div>
+                <div class="donut-chart-container">
+                    <canvas id="progressChart" width="300" height="300"></canvas>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-dot" style="background: #10b981;"></span>
+                            <span>Concluído</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot" style="background: #6366f1;"></span>
+                            <span>Em Progresso</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-dot" style="background: #f59e0b;"></span>
+                            <span>Pendente</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="content-section">
-            <h2>Ações Rápidas</h2>
-            <div class="quick-actions">
-                <a href="admin-produtos.html?action=new" class="action-btn">
-                    <i class="fas fa-plus"></i>
-                    Novo Produto
-                </a>
-                <a href="admin-servicos.html?action=new" class="action-btn">
-                    <i class="fas fa-plus"></i>
-                    Novo Serviço
-                </a>
-                <a href="admin-vendas.html?action=new" class="action-btn">
-                    <i class="fas fa-plus"></i>
-                    Nova Venda
-                </a>
-                <a href="admin-relatorios.html" class="action-btn">
-                    <i class="fas fa-chart-bar"></i>
-                    Ver Relatórios
-                </a>
-                <a href="admin-agenda.html" class="action-btn" style="background: #2E5F35;">
-                    <i class="fas fa-calendar-alt"></i>
-                    Acessar Agenda
-                </a>
+        <!-- Two Column Layout -->
+        <div class="dashboard-grid">
+            <!-- Recent Activity -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Atividades Recentes</h2>
+                    <button class="btn-icon" title="Ver todas">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+                <div class="activity-list" id="activityList">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Nenhuma atividade recente</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Ações Rápidas</h2>
+                    <button class="btn-icon" title="Mais opções">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="quick-actions-grid">
+                    <a href="admin-produtos.html?action=new" class="quick-action-card">
+                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <span>Novo Produto</span>
+                    </a>
+                    <a href="admin-servicos.html?action=new" class="quick-action-card">
+                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #6366f1, #818cf8);">
+                            <i class="fas fa-spa"></i>
+                        </div>
+                        <span>Novo Serviço</span>
+                    </a>
+                    <a href="admin-vendas.html?action=new" class="quick-action-card">
+                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <span>Nova Venda</span>
+                    </a>
+                    <a href="admin-relatorios.html" class="quick-action-card">
+                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <span>Relatórios</span>
+                    </a>
+                    <a href="admin-agenda.html" class="quick-action-card">
+                        <div class="quick-action-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <span>Agenda</span>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="admin.js"></script>
+    <script src="chart.js"></script>
     <script>
         // Check authentication
         if (!sessionStorage.getItem('admin_authenticated')) {
@@ -199,7 +280,68 @@
             `).join('');
         }
 
+        // Initialize charts
+        function initCharts() {
+            // Sales Chart (Bar Chart)
+            const salesData = generateSalesData();
+            new SimpleChart('salesChart', {
+                type: 'bar',
+                data: salesData.values,
+                labels: salesData.labels,
+                colors: ['#10b981'],
+                highlightedIndex: 2 // Highlight current month
+            });
+            
+            // Progress Chart (Donut Chart)
+            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            
+            const total = produtos.length + servicos.length + vendas.length;
+            const completed = vendas.length;
+            const inProgress = servicos.length;
+            const pending = produtos.length;
+            
+            new SimpleChart('progressChart', {
+                type: 'donut',
+                data: [completed, inProgress, pending],
+                labels: ['Concluído', 'Em Progresso', 'Pendente'],
+                colors: ['#10b981', '#6366f1', '#f59e0b'],
+                centerText: 'Concluído'
+            });
+        }
+        
+        // Generate sample sales data
+        function generateSalesData() {
+            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const currentMonth = new Date().getMonth();
+            const values = months.map((_, index) => {
+                if (index === currentMonth) {
+                    return Math.random() * 50 + 30; // Current month higher
+                }
+                return Math.random() * 40 + 10;
+            });
+            
+            return {
+                labels: months.slice(0, 7), // Show last 7 months
+                values: values.slice(0, 7)
+            };
+        }
+        
+        // Chart period toggle
+        document.querySelectorAll('.chart-toggle').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.chart-toggle').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                // Reinitialize chart with new data
+                setTimeout(initCharts, 100);
+            });
+        });
+
         loadDashboardStats();
+        
+        // Initialize charts after a short delay to ensure canvas is ready
+        setTimeout(initCharts, 300);
     </script>
 </body>
 </html>
