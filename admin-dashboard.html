@@ -675,53 +675,69 @@
             document.getElementById('userName').textContent = user.name;
         }
 
-        // Dark Mode Toggle
+        // Dark Mode Toggle - Simplified version
+        let darkModeInitialized = false;
+
         function initDarkMode() {
-            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkModeInitialized) {
+                console.log('Dark mode already initialized, skipping...');
+                return;
+            }
+
             const body = document.body;
             const icon = document.getElementById('darkModeIcon');
             const toggleBtn = document.getElementById('darkModeToggle');
 
-            console.log('Initializing dark mode. Current mode:', darkMode);
-            console.log('Toggle button found:', toggleBtn);
-            console.log('Icon found:', icon);
+            console.log('=== INIT DARK MODE ===');
+            console.log('Toggle button:', toggleBtn);
+            console.log('Icon:', icon);
+
+            if (!toggleBtn || !icon) {
+                console.error('Dark mode elements not found!');
+                return;
+            }
+
+            // Load saved state
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            console.log('Saved dark mode state:', darkMode);
 
             if (darkMode) {
                 body.classList.add('dark-mode');
-                if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+
+            // Add click handler
+            toggleBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                console.log('=== DARK MODE CLICKED ===');
+
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+
+                console.log('New dark mode state:', isDark);
+
+                // Toggle icon
+                if (isDark) {
                     icon.classList.remove('fa-moon');
                     icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
                 }
-            }
 
-            if (toggleBtn) {
-                toggleBtn.addEventListener('click', function() {
-                    console.log('Dark mode button clicked!');
-                    body.classList.toggle('dark-mode');
-                    const isDark = body.classList.contains('dark-mode');
-                    localStorage.setItem('darkMode', isDark);
+                // Reinitialize charts
+                setTimeout(() => {
+                    console.log('Reinitializing charts...');
+                    initCharts();
+                }, 100);
+            };
 
-                    console.log('Dark mode toggled. New state:', isDark);
-
-                    if (icon) {
-                        if (isDark) {
-                            icon.classList.remove('fa-moon');
-                            icon.classList.add('fa-sun');
-                        } else {
-                            icon.classList.remove('fa-sun');
-                            icon.classList.add('fa-moon');
-                        }
-                    }
-
-                    // Reinitialize charts with new colors
-                    setTimeout(() => {
-                        console.log('Reinitializing charts with dark mode:', isDark);
-                        initCharts();
-                    }, 100);
-                });
-            } else {
-                console.error('Dark mode toggle button not found!');
-            }
+            darkModeInitialized = true;
+            console.log('Dark mode initialized successfully!');
         }
 
         // Logout
