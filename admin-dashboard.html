@@ -90,17 +90,17 @@
                 <button class="breadcrumb-arrow"><i class="fas fa-chevron-right"></i></button>
             </div>
             <div class="header-actions">
-                <button class="header-icon-btn" title="Help">
+                <button class="header-icon-btn" id="helpBtn" title="Ajuda" onclick="openHelpModal()">
                     <i class="fas fa-question-circle"></i>
                 </button>
-                <button class="header-icon-btn" title="Messages">
+                <button class="header-icon-btn" id="supportBtn" title="Abrir Chamado" onclick="openSupportModal()">
                     <i class="fas fa-envelope"></i>
                 </button>
-                <button class="header-icon-btn" title="Notifications">
+                <button class="header-icon-btn" id="notificationsBtn" title="Notificações" onclick="openNotificationsModal()">
                     <i class="fas fa-bell"></i>
-                    <span class="notification-badge">3</span>
+                    <span class="notification-badge" id="notificationCount">3</span>
                 </button>
-                <button class="header-icon-btn" title="Refresh">
+                <button class="header-icon-btn" id="refreshBtn" title="Atualizar Dados" onclick="refreshDashboard()">
                     <i class="fas fa-sync-alt"></i>
                 </button>
                 <button class="header-icon-btn" id="darkModeToggle" title="Alternar Modo Noturno">
@@ -174,7 +174,7 @@
 
                 <div class="stat-card-modern">
                     <div class="stat-card-header">
-                        <span class="stat-label">Projetos Pendentes</span>
+                        <span class="stat-label">Total Faturado</span>
                         <button class="stat-menu-btn"><i class="fas fa-ellipsis-v"></i></button>
                     </div>
                     <div class="stat-value" id="receitaTotal">R$ 0,00</div>
@@ -223,7 +223,7 @@
                         <h3>Progresso do Spa</h3>
                     </div>
                     <div class="donut-wrapper">
-                        <canvas id="progressChart" width="300" height="300"></canvas>
+                        <canvas id="progressChart" width="400" height="400"></canvas>
                         <div class="chart-legend-modern">
                             <div class="legend-item-modern">
                                 <span class="legend-dot-modern completed"></span>
@@ -264,8 +264,8 @@
                 <div class="content-card-modern">
                     <div class="card-header-modern">
                         <h3>Atividades Recentes</h3>
-                        <button class="btn-icon-modern">
-                            <i class="fas fa-plus"></i> Novo
+                        <button class="btn-icon-modern" onclick="openAtividadesModal()">
+                            <i class="fas fa-external-link-alt"></i> Ver mais
                         </button>
                     </div>
                     <div class="activity-list-modern" id="activityList">
@@ -395,6 +395,272 @@
         </div>
     </div>
 
+    <!-- Modal de Ajuda (Help) -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i class="fas fa-question-circle"></i> Central de Ajuda</h2>
+                <button class="modal-close" onclick="closeHelpModal()">&times;</button>
+            </div>
+            <div class="help-content">
+                <div class="help-section">
+                    <h3><i class="fas fa-th-large"></i> Dashboard</h3>
+                    <p>A tela principal com visão geral do sistema. Aqui você encontra:</p>
+                    <ul>
+                        <li><strong>Cards de Estatísticas:</strong> Total de produtos, serviços finalizados, serviços em andamento e projetos pendentes</li>
+                        <li><strong>Análise de Vendas:</strong> Gráfico com visualização mensal/anual das vendas</li>
+                        <li><strong>Progresso do Spa:</strong> Gráfico circular mostrando status dos projetos</li>
+                        <li><strong>Metas:</strong> Acompanhamento de metas cadastradas</li>
+                        <li><strong>Atividades Recentes:</strong> Últimas vendas e agendamentos</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-box"></i> Produtos</h3>
+                    <p>Gerenciamento completo do catálogo de produtos do spa.</p>
+                    <ul>
+                        <li>Cadastrar novos produtos com nome, descrição, preço e imagens</li>
+                        <li>Editar informações de produtos existentes</li>
+                        <li>Controlar estoque e disponibilidade</li>
+                        <li>Visualizar histórico de vendas por produto</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-spa"></i> Serviços</h3>
+                    <p>Cadastro e gestão dos serviços oferecidos pelo spa.</p>
+                    <ul>
+                        <li>Criar novos serviços com duração e valor</li>
+                        <li>Associar profissionais aos serviços</li>
+                        <li>Definir disponibilidade e horários</li>
+                        <li>Acompanhar serviços mais requisitados</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-calendar-alt"></i> Agenda</h3>
+                    <p>Sistema completo de agendamentos para o spa.</p>
+                    <ul>
+                        <li>Visualizar agenda por dia, semana ou mês</li>
+                        <li>Criar novos agendamentos para clientes</li>
+                        <li>Gerenciar horários dos profissionais</li>
+                        <li>Receber notificações de agendamentos próximos</li>
+                        <li>Confirmar comparecimento dos clientes</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-shopping-cart"></i> Vendas</h3>
+                    <p>Registro e controle de todas as vendas realizadas.</p>
+                    <ul>
+                        <li>Registrar novas vendas de produtos e serviços</li>
+                        <li>Selecionar múltiplos itens em uma venda</li>
+                        <li>Escolher forma de pagamento</li>
+                        <li>Emitir comprovantes</li>
+                        <li>Visualizar histórico de vendas com filtros</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-chart-bar"></i> Analytics</h3>
+                    <p>Relatórios e análises detalhadas do negócio.</p>
+                    <ul>
+                        <li>Gráficos de desempenho de vendas</li>
+                        <li>Análise de produtos e serviços mais vendidos</li>
+                        <li>Relatórios financeiros por período</li>
+                        <li>Comparativos mensais e anuais</li>
+                        <li>Exportação de dados para Excel/CSV</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3><i class="fas fa-images"></i> Galeria</h3>
+                    <p>Gerenciamento de imagens do spa.</p>
+                    <ul>
+                        <li>Upload de fotos do spa e serviços</li>
+                        <li>Organização por categorias</li>
+                        <li>Edição e exclusão de imagens</li>
+                        <li>Utilização em marketing e redes sociais</li>
+                    </ul>
+                </div>
+
+                <div class="help-tips">
+                    <h3><i class="fas fa-lightbulb"></i> Dicas Rápidas</h3>
+                    <ul>
+                        <li><strong>Dark Mode:</strong> Clique no ícone de lua/sol para alternar entre modo claro e escuro</li>
+                        <li><strong>Atualizar:</strong> Use o botão de sincronização para atualizar os dados em tempo real</li>
+                        <li><strong>Notificações:</strong> O sino mostra agendamentos e eventos importantes</li>
+                        <li><strong>Suporte:</strong> Precisa de ajuda? Clique no ícone de envelope para abrir um chamado</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeHelpModal()">Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Suporte (Chamado) -->
+    <div class="modal" id="supportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-headset"></i> Abrir Chamado de Suporte</h2>
+                <button class="modal-close" onclick="closeSupportModal()">&times;</button>
+            </div>
+            <form id="supportForm">
+                <div class="form-group">
+                    <label for="supportAssunto">Assunto *</label>
+                    <input type="text" id="supportAssunto" required placeholder="Ex: Erro ao salvar produto">
+                </div>
+
+                <div class="form-group">
+                    <label for="supportCategoria">Categoria *</label>
+                    <select id="supportCategoria" required>
+                        <option value="">Selecione...</option>
+                        <option value="bug">Bug / Erro</option>
+                        <option value="duvida">Dúvida</option>
+                        <option value="melhoria">Sugestão de Melhoria</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="supportDescricao">Descrição Detalhada *</label>
+                    <textarea id="supportDescricao" rows="6" required placeholder="Descreva o problema ou dúvida em detalhes..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="supportImagem">Anexar Imagem (opcional)</label>
+                    <input type="file" id="supportImagem" accept="image/*">
+                    <small>Formatos aceitos: JPG, PNG, GIF (máx. 5MB)</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeSupportModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-paper-plane"></i> Enviar Chamado
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Notificações -->
+    <div class="modal" id="notificationsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-bell"></i> Notificações</h2>
+                <button class="modal-close" onclick="closeNotificationsModal()">&times;</button>
+            </div>
+            <div class="notifications-list" id="notificationsList">
+                <!-- Notificações serão carregadas aqui -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="markAllAsRead()">Marcar Todas como Lidas</button>
+                <button class="btn-primary" onclick="closeNotificationsModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Atividades Detalhadas -->
+    <div class="modal" id="atividadesModal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Todas as Atividades</h2>
+                <button class="modal-close" onclick="closeAtividadesModal()">&times;</button>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filters-section">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="filterDataInicio">Data Início</label>
+                        <input type="date" id="filterDataInicio" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterDataFim">Data Fim</label>
+                        <input type="date" id="filterDataFim" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterTipo">Tipo</label>
+                        <select id="filterTipo" class="filter-input">
+                            <option value="">Todos</option>
+                            <option value="venda">Vendas</option>
+                            <option value="agendamento">Agendamentos</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterProcedimento">Procedimento</label>
+                        <input type="text" id="filterProcedimento" class="filter-input" placeholder="Buscar procedimento...">
+                    </div>
+                </div>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="filterPagamento">Forma de Pagamento</label>
+                        <select id="filterPagamento" class="filter-input">
+                            <option value="">Todas</option>
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="cartao">Cartão</option>
+                            <option value="pix">PIX</option>
+                            <option value="transferencia">Transferência</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterVendedor">Vendedor</label>
+                        <input type="text" id="filterVendedor" class="filter-input" placeholder="Buscar vendedor...">
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterStatus">Status</label>
+                        <select id="filterStatus" class="filter-input">
+                            <option value="">Todos</option>
+                            <option value="completed">Concluído</option>
+                            <option value="pending">Pendente</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group filter-actions">
+                        <button class="btn-primary" onclick="applyFilters()">
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                        <button class="btn-secondary" onclick="clearFilters()">
+                            <i class="fas fa-times"></i> Limpar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Atividades -->
+            <div class="activities-table-container">
+                <table class="activities-table" id="atividadesTable">
+                    <thead>
+                        <tr>
+                            <th>Data/Hora</th>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Cliente</th>
+                            <th>Valor</th>
+                            <th>Pagamento</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="atividadesTableBody">
+                        <tr>
+                            <td colspan="8" class="empty-table">Nenhuma atividade encontrada</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeAtividadesModal()">Fechar</button>
+                <button class="btn-primary" onclick="exportarAtividades()">
+                    <i class="fas fa-download"></i> Exportar CSV
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="admin.js"></script>
     <script src="chart.js"></script>
     <script>
@@ -414,32 +680,56 @@
             const darkMode = localStorage.getItem('darkMode') === 'true';
             const body = document.body;
             const icon = document.getElementById('darkModeIcon');
-            
+            const toggleBtn = document.getElementById('darkModeToggle');
+
+            console.log('Initializing dark mode. Current mode:', darkMode);
+            console.log('Toggle button found:', toggleBtn);
+            console.log('Icon found:', icon);
+
             if (darkMode) {
                 body.classList.add('dark-mode');
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-            
-            document.getElementById('darkModeToggle').addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                const isDark = body.classList.contains('dark-mode');
-                localStorage.setItem('darkMode', isDark);
-                
-                if (isDark) {
+                if (icon) {
                     icon.classList.remove('fa-moon');
                     icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
                 }
-                
-                // Reinitialize charts with new colors
-                setTimeout(initCharts, 100);
-            });
+            }
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    console.log('Dark mode button clicked!');
+                    body.classList.toggle('dark-mode');
+                    const isDark = body.classList.contains('dark-mode');
+                    localStorage.setItem('darkMode', isDark);
+
+                    console.log('Dark mode toggled. New state:', isDark);
+
+                    if (icon) {
+                        if (isDark) {
+                            icon.classList.remove('fa-moon');
+                            icon.classList.add('fa-sun');
+                        } else {
+                            icon.classList.remove('fa-sun');
+                            icon.classList.add('fa-moon');
+                        }
+                    }
+
+                    // Reinitialize charts with new colors
+                    setTimeout(() => {
+                        console.log('Reinitializing charts with dark mode:', isDark);
+                        initCharts();
+                    }, 100);
+                });
+            } else {
+                console.error('Dark mode toggle button not found!');
+            }
         }
-        
-        initDarkMode();
+
+        // Wait for DOM to be fully loaded before initializing
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDarkMode);
+        } else {
+            initDarkMode();
+        }
 
         // Logout
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
@@ -557,85 +847,115 @@
 
         // Chart period state
         let currentPeriod = 'monthly';
-        
+        let salesChartInstance = null;
+
         // Initialize charts
         function initCharts() {
+            console.log('Initializing charts...');
+
             // Sales Chart (Bar Chart) - Enhanced with stats
             const salesData = generateSalesData(currentPeriod);
             const isDark = document.body.classList.contains('dark-mode');
-            const chartColors = ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#86efac', '#bbf7d0'];
-            
+            // Cores mais vibrantes e destacadas da paleta Ligon
+            const chartColors = ['#059669', '#10b981', '#34d399', '#10b981', '#059669', '#047857', '#065f46'];
+
+            console.log('Sales data:', salesData);
+
             // Update chart stats
-            const total = salesData.values.reduce((a, b) => a + b, 0);
-            const media = total / salesData.values.length;
-            const crescimento = salesData.values.length > 1 
+            const totalVendas = salesData.values.reduce((a, b) => a + b, 0);
+            const mediaVendas = totalVendas / salesData.values.length;
+            const crescimentoVendas = salesData.values.length > 1
                 ? ((salesData.values[salesData.values.length - 1] - salesData.values[0]) / salesData.values[0] * 100).toFixed(1)
                 : 96.0; // Static growth value
-            
+
             const totalVendasEl = document.getElementById('totalVendasChart');
             const mediaVendasEl = document.getElementById('mediaVendasChart');
             const crescimentoEl = document.getElementById('crescimentoVendasChart');
-            
-            if (totalVendasEl) totalVendasEl.textContent = formatCurrency(total);
-            if (mediaVendasEl) mediaVendasEl.textContent = formatCurrency(media);
+
+            console.log('Updating stats elements...');
+            if (totalVendasEl) {
+                totalVendasEl.textContent = formatCurrency(totalVendas);
+                console.log('Total vendas updated:', totalVendas);
+            }
+            if (mediaVendasEl) {
+                mediaVendasEl.textContent = formatCurrency(mediaVendas);
+                console.log('Media vendas updated:', mediaVendas);
+            }
             if (crescimentoEl) {
-                crescimentoEl.textContent = (crescimento >= 0 ? '+' : '') + crescimento + '%';
-                crescimentoEl.className = 'chart-stat-value ' + (crescimento >= 0 ? 'positive' : 'negative');
+                crescimentoEl.textContent = (crescimentoVendas >= 0 ? '+' : '') + crescimentoVendas + '%';
+                crescimentoEl.className = 'chart-stat-value ' + (crescimentoVendas >= 0 ? 'positive' : 'negative');
+                console.log('Crescimento updated:', crescimentoVendas);
+            }
+
+            // Initialize chart - ensure canvas is visible and has dimensions
+            try {
+                const canvasElement = document.getElementById('salesChart');
+                if (!canvasElement) {
+                    console.error('Canvas element not found');
+                    return;
+                }
+
+                console.log('Canvas found, initializing...');
+
+                // Clear existing canvas
+                const ctx = canvasElement.getContext('2d');
+                if (ctx) {
+                    ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                }
+
+                // Ensure canvas container is visible
+                const container = canvasElement.parentElement;
+                if (container) {
+                    container.style.display = 'block';
+                    container.style.visibility = 'visible';
+                    container.style.opacity = '1';
+                }
+
+                // Set explicit dimensions
+                canvasElement.style.width = '100%';
+                canvasElement.style.height = '320px';
+                canvasElement.style.display = 'block';
+
+                console.log('Creating chart with data:', salesData.values);
+
+                // Create new chart instance
+                salesChartInstance = new SimpleChart('salesChart', {
+                    type: 'bar',
+                    data: salesData.values,
+                    labels: salesData.labels,
+                    colors: chartColors,
+                    highlightedIndex: currentPeriod === 'monthly' ? 6 : 5, // Highlight last bar
+                    darkMode: isDark
+                });
+
+                console.log('Chart created successfully');
+            } catch (error) {
+                console.error('Error initializing chart:', error);
             }
             
-            // Initialize chart - ensure canvas is visible and has dimensions
-            setTimeout(() => {
-                try {
-                    const canvasElement = document.getElementById('salesChart');
-                    if (!canvasElement) {
-                        console.error('Canvas element not found');
-                        return;
-                    }
-                    
-                    // Ensure canvas container is visible
-                    const container = canvasElement.parentElement;
-                    if (container) {
-                        container.style.display = 'block';
-                        container.style.visibility = 'visible';
-                        container.style.opacity = '1';
-                    }
-                    
-                    // Set explicit dimensions
-                    canvasElement.style.width = '100%';
-                    canvasElement.style.height = '320px';
-                    canvasElement.style.display = 'block';
-                    
-                    // Create new chart instance
-                    new SimpleChart('salesChart', {
-                        type: 'bar',
-                        data: salesData.values,
-                        labels: salesData.labels,
-                        colors: chartColors,
-                        highlightedIndex: currentPeriod === 'monthly' ? new Date().getMonth() % salesData.labels.length : salesData.labels.length - 1,
-                        darkMode: isDark
-                    });
-                } catch (error) {
-                    console.error('Error initializing chart:', error);
-                }
-            }, 500);
-            
             // Progress Chart (Donut Chart)
-            const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
-            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
-            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
-            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
-            
-            const total = produtos.length + servicos.length + vendas.length + agendamentos.length;
-            const completed = vendas.length + agendamentos.filter(a => a.compareceu).length;
-            const inProgress = servicos.length + agendamentos.filter(a => !a.compareceu && a.status !== 'cancelado').length;
-            const pending = produtos.length + agendamentos.filter(a => a.status === 'cancelado').length;
-            
+            const produtosData = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
+            const servicosData = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const vendasData = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const agendamentosData = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+
+            const totalProgress = produtosData.length + servicosData.length + vendasData.length + agendamentosData.length;
+            const completed = vendasData.length + agendamentosData.filter(a => a.compareceu).length;
+            const inProgress = servicosData.length + agendamentosData.filter(a => !a.compareceu && a.status !== 'cancelado').length;
+            const pending = produtosData.length + agendamentosData.filter(a => a.status === 'cancelado').length;
+
+            // Use static data if no real data exists
+            const progressData = totalProgress > 0
+                ? [completed, inProgress, pending]
+                : [65, 25, 10]; // Static values for demonstration
+
             new SimpleChart('progressChart', {
                 type: 'donut',
-                data: [completed, inProgress, pending],
+                data: progressData,
                 labels: ['Concluído', 'Em Progresso', 'Pendente'],
-                colors: ['#10b981', '#6366f1', '#f59e0b'],
-                centerText: 'Concluído'
+                colors: ['#059669', '#6366f1', '#f59e0b'], // Verde mais vibrante para destaque
+                centerText: 'Concluído',
+                darkMode: isDark
             });
         }
         
@@ -645,36 +965,51 @@
                 // Dados estáticos mensais (últimos 7 meses)
                 const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'];
                 const staticValues = [12500, 18200, 15200, 21000, 19500, 22800, 24500];
-                
+
                 return {
                     labels: months,
                     values: staticValues
                 };
-            } else {
-                // Dados estáticos anuais (últimos 6 meses do ano)
-                const months = ['Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-                const staticValues = [24500, 26800, 25200, 28900, 31200, 32800];
-                
+            } else if (period === 'yearly') {
+                // Dados estáticos anuais (últimos 6 anos)
+                const years = ['2019', '2020', '2021', '2022', '2023', '2024'];
+                const staticValues = [145000, 168000, 192000, 215000, 248000, 285000];
+
                 return {
-                    labels: months,
+                    labels: years,
                     values: staticValues
                 };
             }
+
+            // Default: monthly
+            return {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                values: [12500, 18200, 15200, 21000, 19500, 22800, 24500]
+            };
         }
-        
-        // Chart period toggle
-        document.querySelectorAll('.chart-toggle-modern').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const period = this.getAttribute('data-period');
-                currentPeriod = period;
-                
-                document.querySelectorAll('.chart-toggle-modern').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Reinitialize chart with new period
-                setTimeout(initCharts, 100);
+
+        // Chart period toggle - Fixed to work properly
+        function setupChartToggle() {
+            document.querySelectorAll('.chart-toggle-modern').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const period = this.getAttribute('data-period');
+
+                    // Update current period
+                    if (period === 'monthly') {
+                        currentPeriod = 'monthly';
+                    } else if (period === 'yearly') {
+                        currentPeriod = 'yearly';
+                    }
+
+                    // Update button states
+                    document.querySelectorAll('.chart-toggle-modern').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Reinitialize chart with new period
+                    initCharts();
+                });
             });
-        });
+        }
 
         // Metas Management
         function loadMetas() {
@@ -913,16 +1248,17 @@
         function initializeDashboard() {
             loadDashboardStats();
             loadMetas();
+            setupChartToggle();
             initCharts();
         }
-        
+
         // Run initialization
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeDashboard);
         } else {
             initializeDashboard();
         }
-        
+
         // Also try on window load as fallback
         window.addEventListener('load', () => {
             setTimeout(() => {
@@ -930,6 +1266,435 @@
                 initCharts();
             }, 100);
         });
+
+        // ==================== Modal de Atividades ====================
+
+        let allActivities = [];
+        let filteredActivities = [];
+
+        function openAtividadesModal() {
+            loadAllActivities();
+            document.getElementById('atividadesModal').classList.add('show');
+        }
+
+        function closeAtividadesModal() {
+            document.getElementById('atividadesModal').classList.remove('show');
+        }
+
+        function loadAllActivities() {
+            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+
+            allActivities = [];
+
+            // Adicionar vendas
+            vendas.forEach(venda => {
+                allActivities.push({
+                    tipo: 'venda',
+                    data: venda.data || new Date().toISOString(),
+                    hora: venda.hora || '00:00',
+                    descricao: venda.itens ? venda.itens.map(i => i.nome).join(', ') : 'Venda',
+                    cliente: venda.clienteNome || 'Cliente',
+                    valor: parseFloat(venda.valorTotal) || 0,
+                    pagamento: venda.formaPagamento || 'N/A',
+                    status: venda.pago ? 'completed' : 'pending',
+                    vendedor: venda.vendedor || 'N/A',
+                    id: venda.id
+                });
+            });
+
+            // Adicionar agendamentos
+            agendamentos.forEach(ag => {
+                allActivities.push({
+                    tipo: 'agendamento',
+                    data: ag.data || new Date().toISOString(),
+                    hora: ag.hora || '00:00',
+                    descricao: ag.servicoNome || 'Agendamento',
+                    cliente: ag.clienteNome || 'Cliente',
+                    valor: parseFloat(ag.valor) || 0,
+                    pagamento: ag.formaPagamento || 'N/A',
+                    status: ag.compareceu ? 'completed' : (ag.status === 'cancelado' ? 'cancelled' : 'pending'),
+                    vendedor: ag.profissional || 'N/A',
+                    id: ag.id
+                });
+            });
+
+            // Ordenar por data decrescente
+            allActivities.sort((a, b) => {
+                const dateA = new Date(a.data + ' ' + a.hora);
+                const dateB = new Date(b.data + ' ' + b.hora);
+                return dateB - dateA;
+            });
+
+            // Adicionar dados estáticos se não houver dados reais
+            if (allActivities.length === 0) {
+                allActivities = [
+                    {
+                        tipo: 'venda',
+                        data: new Date().toISOString().split('T')[0],
+                        hora: '14:30',
+                        descricao: 'Massagem Relaxante + Aromaterapia',
+                        cliente: 'Maria Silva',
+                        valor: 2450.00,
+                        pagamento: 'Cartão',
+                        status: 'completed',
+                        vendedor: 'Ana Costa',
+                        id: 'static-1'
+                    },
+                    {
+                        tipo: 'agendamento',
+                        data: new Date().toISOString().split('T')[0],
+                        hora: '16:00',
+                        descricao: 'Spa Day Completo',
+                        cliente: 'João Santos',
+                        valor: 3500.00,
+                        pagamento: 'PIX',
+                        status: 'pending',
+                        vendedor: 'Carlos Mendes',
+                        id: 'static-2'
+                    },
+                    {
+                        tipo: 'venda',
+                        data: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+                        hora: '10:15',
+                        descricao: 'Tratamento Facial Premium',
+                        cliente: 'Ana Costa',
+                        valor: 1890.00,
+                        pagamento: 'Dinheiro',
+                        status: 'completed',
+                        vendedor: 'Maria Souza',
+                        id: 'static-3'
+                    }
+                ];
+            }
+
+            filteredActivities = [...allActivities];
+            renderActivitiesTable();
+        }
+
+        function applyFilters() {
+            const dataInicio = document.getElementById('filterDataInicio').value;
+            const dataFim = document.getElementById('filterDataFim').value;
+            const tipo = document.getElementById('filterTipo').value;
+            const procedimento = document.getElementById('filterProcedimento').value.toLowerCase();
+            const pagamento = document.getElementById('filterPagamento').value;
+            const vendedor = document.getElementById('filterVendedor').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+
+            filteredActivities = allActivities.filter(activity => {
+                let match = true;
+
+                if (dataInicio && activity.data < dataInicio) match = false;
+                if (dataFim && activity.data > dataFim) match = false;
+                if (tipo && activity.tipo !== tipo) match = false;
+                if (procedimento && !activity.descricao.toLowerCase().includes(procedimento)) match = false;
+                if (pagamento && activity.pagamento.toLowerCase() !== pagamento) match = false;
+                if (vendedor && !activity.vendedor.toLowerCase().includes(vendedor)) match = false;
+                if (status && activity.status !== status) match = false;
+
+                return match;
+            });
+
+            renderActivitiesTable();
+        }
+
+        function clearFilters() {
+            document.getElementById('filterDataInicio').value = '';
+            document.getElementById('filterDataFim').value = '';
+            document.getElementById('filterTipo').value = '';
+            document.getElementById('filterProcedimento').value = '';
+            document.getElementById('filterPagamento').value = '';
+            document.getElementById('filterVendedor').value = '';
+            document.getElementById('filterStatus').value = '';
+
+            filteredActivities = [...allActivities];
+            renderActivitiesTable();
+        }
+
+        function renderActivitiesTable() {
+            const tbody = document.getElementById('atividadesTableBody');
+
+            if (filteredActivities.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-table">Nenhuma atividade encontrada</td></tr>';
+                return;
+            }
+
+            const html = filteredActivities.map(activity => {
+                const statusClass = activity.status === 'completed' ? 'status-completed' :
+                                  activity.status === 'cancelled' ? 'status-cancelled' : 'status-pending';
+                const statusText = activity.status === 'completed' ? 'Concluído' :
+                                 activity.status === 'cancelled' ? 'Cancelado' : 'Pendente';
+                const tipoIcon = activity.tipo === 'venda' ? 'fa-shopping-cart' : 'fa-calendar-check';
+                const tipoText = activity.tipo === 'venda' ? 'Venda' : 'Agendamento';
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="table-date">${formatDate(activity.data)}</div>
+                            <div class="table-time">${activity.hora}</div>
+                        </td>
+                        <td>
+                            <span class="tipo-badge tipo-${activity.tipo}">
+                                <i class="fas ${tipoIcon}"></i> ${tipoText}
+                            </span>
+                        </td>
+                        <td>${activity.descricao}</td>
+                        <td>${activity.cliente}</td>
+                        <td class="table-value">${formatCurrency(activity.valor)}</td>
+                        <td>${activity.pagamento}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>
+                            <button class="btn-icon-small" onclick="viewActivityDetails('${activity.id}')" title="Ver detalhes">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            tbody.innerHTML = html;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function viewActivityDetails(id) {
+            const activity = allActivities.find(a => a.id === id);
+            if (activity) {
+                alert('Detalhes da atividade:\n\n' + JSON.stringify(activity, null, 2));
+                // Aqui você pode implementar um modal de detalhes mais elaborado
+            }
+        }
+
+        function exportarAtividades() {
+            if (filteredActivities.length === 0) {
+                alert('Nenhuma atividade para exportar');
+                return;
+            }
+
+            const csv = [
+                ['Data', 'Hora', 'Tipo', 'Descrição', 'Cliente', 'Valor', 'Pagamento', 'Status', 'Vendedor'],
+                ...filteredActivities.map(a => [
+                    formatDate(a.data),
+                    a.hora,
+                    a.tipo === 'venda' ? 'Venda' : 'Agendamento',
+                    a.descricao,
+                    a.cliente,
+                    a.valor.toFixed(2),
+                    a.pagamento,
+                    a.status === 'completed' ? 'Concluído' : a.status === 'cancelled' ? 'Cancelado' : 'Pendente',
+                    a.vendedor
+                ])
+            ].map(row => row.join(';')).join('\n');
+
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `atividades_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+
+        // ==================== Modal de Ajuda ====================
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('show');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('show');
+        }
+
+        // ==================== Modal de Suporte ====================
+
+        function openSupportModal() {
+            document.getElementById('supportModal').classList.add('show');
+        }
+
+        function closeSupportModal() {
+            document.getElementById('supportModal').classList.remove('show');
+            document.getElementById('supportForm').reset();
+        }
+
+        // Handle support form submission
+        document.getElementById('supportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const user = JSON.parse(sessionStorage.getItem('admin_user') || '{}');
+            const imageFile = document.getElementById('supportImagem').files[0];
+
+            const chamado = {
+                id: generateId(),
+                usuario: user.email || 'admin@ligon.com',
+                nomeUsuario: user.name || 'Administrador',
+                assunto: document.getElementById('supportAssunto').value,
+                categoria: document.getElementById('supportCategoria').value,
+                descricao: document.getElementById('supportDescricao').value,
+                dataAbertura: new Date().toISOString(),
+                status: 'aberto',
+                imagem: null
+            };
+
+            // Se houver imagem, converter para base64
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    chamado.imagem = e.target.result;
+                    saveChamado(chamado);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveChamado(chamado);
+            }
+        });
+
+        function saveChamado(chamado) {
+            const chamados = JSON.parse(localStorage.getItem('ligon_chamados') || '[]');
+            chamados.push(chamado);
+            localStorage.setItem('ligon_chamados', JSON.stringify(chamados));
+
+            showNotification('Chamado enviado com sucesso! Em breve entraremos em contato.');
+            closeSupportModal();
+
+            console.log('Chamado registrado:', chamado);
+        }
+
+        // ==================== Modal de Notificações ====================
+
+        function openNotificationsModal() {
+            loadNotifications();
+            document.getElementById('notificationsModal').classList.add('show');
+        }
+
+        function closeNotificationsModal() {
+            document.getElementById('notificationsModal').classList.remove('show');
+        }
+
+        function loadNotifications() {
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const hoje = new Date().toISOString().split('T')[0];
+            const amanha = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+            // Filtrar agendamentos de hoje e amanhã
+            const notificacoes = [];
+
+            agendamentos.forEach(ag => {
+                if (ag.data === hoje && !ag.compareceu) {
+                    notificacoes.push({
+                        tipo: 'agendamento-hoje',
+                        titulo: 'Agendamento Hoje',
+                        mensagem: `${ag.clienteNome} - ${ag.servicoNome} às ${ag.hora}`,
+                        data: ag.data,
+                        hora: ag.hora,
+                        lida: false,
+                        id: ag.id
+                    });
+                } else if (ag.data === amanha && !ag.compareceu) {
+                    notificacoes.push({
+                        tipo: 'agendamento-amanha',
+                        titulo: 'Agendamento Amanhã',
+                        mensagem: `${ag.clienteNome} - ${ag.servicoNome} às ${ag.hora}`,
+                        data: ag.data,
+                        hora: ag.hora,
+                        lida: false,
+                        id: ag.id
+                    });
+                }
+            });
+
+            // Adicionar notificações estáticas se não houver dados
+            if (notificacoes.length === 0) {
+                notificacoes.push(
+                    {
+                        tipo: 'agendamento-hoje',
+                        titulo: 'Agendamento Hoje',
+                        mensagem: 'Maria Silva - Massagem Relaxante às 14:00',
+                        data: hoje,
+                        hora: '14:00',
+                        lida: false,
+                        id: 'notif-1'
+                    },
+                    {
+                        tipo: 'agendamento-hoje',
+                        titulo: 'Agendamento Hoje',
+                        mensagem: 'João Santos - Spa Day às 16:00',
+                        data: hoje,
+                        hora: '16:00',
+                        lida: false,
+                        id: 'notif-2'
+                    },
+                    {
+                        tipo: 'agendamento-amanha',
+                        titulo: 'Agendamento Amanhã',
+                        mensagem: 'Ana Costa - Tratamento Facial às 10:00',
+                        data: amanha,
+                        hora: '10:00',
+                        lida: false,
+                        id: 'notif-3'
+                    }
+                );
+            }
+
+            // Atualizar contador
+            document.getElementById('notificationCount').textContent = notificacoes.length;
+
+            // Renderizar notificações
+            const lista = document.getElementById('notificationsList');
+            if (notificacoes.length === 0) {
+                lista.innerHTML = '<div class="empty-notifications"><i class="fas fa-bell-slash"></i><p>Nenhuma notificação no momento</p></div>';
+                return;
+            }
+
+            const html = notificacoes.map(notif => {
+                const iconClass = notif.tipo.includes('hoje') ? 'fa-calendar-day' : 'fa-calendar-alt';
+                const colorClass = notif.tipo.includes('hoje') ? 'notif-urgent' : 'notif-warning';
+
+                return `
+                    <div class="notification-item ${colorClass}">
+                        <div class="notif-icon">
+                            <i class="fas ${iconClass}"></i>
+                        </div>
+                        <div class="notif-content">
+                            <h4>${notif.titulo}</h4>
+                            <p>${notif.mensagem}</p>
+                            <span class="notif-time">${notif.data} às ${notif.hora}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lista.innerHTML = html;
+        }
+
+        function markAllAsRead() {
+            document.getElementById('notificationCount').textContent = '0';
+            showNotification('Todas as notificações foram marcadas como lidas');
+        }
+
+        // ==================== Função de Refresh ====================
+
+        function refreshDashboard() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const icon = refreshBtn.querySelector('i');
+
+            // Adicionar animação de rotação
+            icon.classList.add('fa-spin');
+            refreshBtn.disabled = true;
+
+            // Recarregar dados
+            setTimeout(() => {
+                loadDashboardStats();
+                loadMetas();
+                initCharts();
+                loadNotifications();
+
+                icon.classList.remove('fa-spin');
+                refreshBtn.disabled = false;
+
+                showNotification('Dados atualizados com sucesso!');
+            }, 1000);
+        }
     </script>
 </body>
 </html>

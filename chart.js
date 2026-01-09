@@ -147,19 +147,21 @@ class SimpleChart {
             const x = padding.left + (index * barWidth) + spacing;
             const y = padding.top + chartHeight - barHeight;
             const actualBarWidth = barWidth - (spacing * 2);
-            
-            // Bar color with gradient
+
+            // Bar color with gradient - cores mais vibrantes
             const color = Array.isArray(colors) ? colors[index % colors.length] : colors;
             const isHighlighted = this.options.highlightedIndex === index;
-            
-            // Create gradient for bar
+
+            // Create gradient for bar com cores mais saturadas
             const barGradient = this.ctx.createLinearGradient(x, y, x, y + barHeight);
             if (isHighlighted) {
-                barGradient.addColorStop(0, this.lightenColor(color, 0.15));
+                // Barra destacada: mais vibrante
+                barGradient.addColorStop(0, this.lightenColor(color, 0.25));
                 barGradient.addColorStop(1, color);
             } else {
-                barGradient.addColorStop(0, this.lightenColor(color, 0.35));
-                barGradient.addColorStop(1, this.lightenColor(color, 0.2));
+                // Barras normais: mantém cores mais saturadas
+                barGradient.addColorStop(0, this.lightenColor(color, 0.15));
+                barGradient.addColorStop(1, color);
             }
             
             // Draw rounded rectangle bar with gradient
@@ -263,8 +265,9 @@ class SimpleChart {
         const height = this.canvas.height / (window.devicePixelRatio || 1);
         const centerX = width / 2;
         const centerY = height / 2;
-        const radius = Math.min(width, height) / 2 - 30;
-        const innerRadius = radius * 0.65;
+        // Aumentar o raio para melhor visualização
+        const radius = Math.min(width, height) / 2 - 20;
+        const innerRadius = radius * 0.68; // Anel mais fino para melhor proporção
         
         const total = data.reduce((sum, val) => sum + val, 0);
         if (total === 0) return;
@@ -304,14 +307,17 @@ class SimpleChart {
         
         // Draw center text with better styling
         const percentage = Math.round((data[0] / total) * 100);
-        this.ctx.fillStyle = '#111827';
-        this.ctx.font = 'bold 28px Inter';
+        const isDark = this.options.darkMode || false;
+
+        // Texto sempre branco para melhor contraste no centro escuro
+        this.ctx.fillStyle = '#ffffff';
+        this.ctx.font = 'bold 36px Inter';
         this.ctx.textAlign = 'center';
-        this.ctx.fillText(`${percentage}%`, centerX, centerY - 8);
-        
-        this.ctx.fillStyle = '#6b7280';
-        this.ctx.font = '13px Inter';
-        this.ctx.fillText(this.options.centerText || 'Concluído', centerX, centerY + 18);
+        this.ctx.fillText(`${percentage}%`, centerX, centerY - 5);
+
+        this.ctx.fillStyle = '#e2e8f0';
+        this.ctx.font = '14px Inter';
+        this.ctx.fillText(this.options.centerText || 'Concluído', centerX, centerY + 25);
     }
     
     lightenColor(color, amount) {

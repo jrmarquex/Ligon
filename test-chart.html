@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste - Gráfico de Vendas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f3f4f6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #111827;
+            margin-bottom: 20px;
+        }
+        .chart-controls {
+            margin-bottom: 20px;
+        }
+        .chart-toggle {
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .chart-toggle.active {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .chart-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .stat-item {
+            flex: 1;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+        }
+        .chart-wrapper {
+            width: 100%;
+            height: 400px;
+            position: relative;
+        }
+        canvas {
+            display: block !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .success {
+            color: #10b981;
+            padding: 15px;
+            background: #d1fae5;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Teste do Gráfico de Análise de Vendas</h1>
+
+        <div class="chart-controls">
+            <button class="chart-toggle active" data-period="monthly">Mensal</button>
+            <button class="chart-toggle" data-period="yearly">Anual</button>
+        </div>
+
+        <div class="chart-stats">
+            <div class="stat-item">
+                <div class="stat-label">Total</div>
+                <div class="stat-value" id="totalVendas">R$ 0,00</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Média</div>
+                <div class="stat-value" id="mediaVendas">R$ 0,00</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Crescimento</div>
+                <div class="stat-value" id="crescimento">+0%</div>
+            </div>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="salesChart" width="1000" height="400"></canvas>
+        </div>
+
+        <div class="success" id="status">Aguardando inicialização...</div>
+    </div>
+
+    <script src="chart.js"></script>
+    <script>
+        console.log('=== INICIANDO TESTE DO GRÁFICO ===');
+
+        let currentPeriod = 'monthly';
+
+        // Função para formatar moeda
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+
+        // Gerar dados de vendas
+        function generateSalesData(period = 'monthly') {
+            console.log('Gerando dados para período:', period);
+
+            if (period === 'monthly') {
+                return {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                    values: [12500, 18200, 15200, 21000, 19500, 22800, 24500]
+                };
+            } else if (period === 'yearly') {
+                return {
+                    labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
+                    values: [145000, 168000, 192000, 215000, 248000, 285000]
+                };
+            }
+
+            return {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'],
+                values: [12500, 18200, 15200, 21000, 19500, 22800, 24500]
+            };
+        }
+
+        // Inicializar gráfico
+        function initChart() {
+            console.log('=== Inicializando gráfico ===');
+
+            const salesData = generateSalesData(currentPeriod);
+            console.log('Dados gerados:', salesData);
+
+            // Atualizar estatísticas
+            const total = salesData.values.reduce((a, b) => a + b, 0);
+            const media = total / salesData.values.length;
+            const crescimento = ((salesData.values[salesData.values.length - 1] - salesData.values[0]) / salesData.values[0] * 100).toFixed(1);
+
+            document.getElementById('totalVendas').textContent = formatCurrency(total);
+            document.getElementById('mediaVendas').textContent = formatCurrency(media);
+            document.getElementById('crescimento').textContent = (crescimento >= 0 ? '+' : '') + crescimento + '%';
+
+            console.log('Estatísticas atualizadas - Total:', total, 'Média:', media, 'Crescimento:', crescimento);
+
+            // Verificar canvas
+            const canvas = document.getElementById('salesChart');
+            if (!canvas) {
+                console.error('Canvas não encontrado!');
+                document.getElementById('status').textContent = 'ERRO: Canvas não encontrado';
+                document.getElementById('status').style.background = '#fee2e2';
+                document.getElementById('status').style.color = '#dc2626';
+                return;
+            }
+
+            console.log('Canvas encontrado:', canvas);
+
+            // Criar gráfico
+            try {
+                const chart = new SimpleChart('salesChart', {
+                    type: 'bar',
+                    data: salesData.values,
+                    labels: salesData.labels,
+                    colors: ['#059669', '#10b981', '#34d399', '#10b981', '#059669', '#047857', '#065f46'],
+                    highlightedIndex: salesData.labels.length - 1,
+                    darkMode: false
+                });
+
+                console.log('Gráfico criado com sucesso!', chart);
+                document.getElementById('status').textContent = '✓ Gráfico criado com sucesso! Os dados estáticos estão sendo exibidos.';
+            } catch (error) {
+                console.error('Erro ao criar gráfico:', error);
+                document.getElementById('status').textContent = 'ERRO: ' + error.message;
+                document.getElementById('status').style.background = '#fee2e2';
+                document.getElementById('status').style.color = '#dc2626';
+            }
+        }
+
+        // Configurar botões de toggle
+        function setupToggle() {
+            document.querySelectorAll('.chart-toggle').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('=== Alternando período ===');
+
+                    const period = this.getAttribute('data-period');
+                    console.log('Novo período:', period);
+
+                    currentPeriod = period;
+
+                    // Atualizar botões
+                    document.querySelectorAll('.chart-toggle').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Reinicializar gráfico
+                    initChart();
+                });
+            });
+        }
+
+        // Inicializar tudo
+        window.addEventListener('load', () => {
+            console.log('=== Página carregada ===');
+            setupToggle();
+            setTimeout(() => {
+                initChart();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
