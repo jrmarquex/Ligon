@@ -724,13 +724,6 @@
             }
         }
 
-        // Wait for DOM to be fully loaded before initializing
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initDarkMode);
-        } else {
-            initDarkMode();
-        }
-
         // Logout
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
@@ -1246,16 +1239,18 @@
 
         // Initialize everything
         function initializeDashboard() {
+            initDarkMode();  // Initialize dark mode first
             loadDashboardStats();
             loadMetas();
             setupChartToggle();
             initCharts();
         }
 
-        // Run initialization
+        // Run initialization - wait for DOM to be ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializeDashboard);
         } else {
+            // DOM is already ready
             initializeDashboard();
         }
 
