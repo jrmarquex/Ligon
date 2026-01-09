@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Time Comercial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="agenda.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-calendar-alt"></i> Agenda Ligon</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="agenda-comercial.html" class="nav-item active">
+                <i class="fas fa-calendar-plus"></i> Novo Agendamento
+            </a>
+            <a href="agenda-login.html" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Novo Agendamento</h1>
+            <div class="user-info">
+                <span id="userName">Time Comercial</span>
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </header>
+
+        <div class="content-section">
+            <form id="agendamentoForm" style="max-width: 800px;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clienteNome">Nome da Cliente *</label>
+                        <input type="text" id="clienteNome" required placeholder="Digite o nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="clienteTelefone">Telefone</label>
+                        <input type="tel" id="clienteTelefone" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="profissional">Profissional *</label>
+                        <select id="profissional" required>
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataAgendamento">Data *</label>
+                        <input type="date" id="dataAgendamento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horaAgendamento">Horário *</label>
+                        <select id="horaAgendamento" required>
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="procedimento">Procedimento *</label>
+                        <select id="procedimento" required>
+                            <option value="">Selecione...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formaPagamento">Forma de Pagamento *</label>
+                        <select id="formaPagamento" required>
+                            <option value="">Selecione...</option>
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="cartao_debito">Cartão de Débito</option>
+                            <option value="cartao_credito">Cartão de Crédito</option>
+                            <option value="pix">PIX</option>
+                            <option value="transferencia">Transferência</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="jaPago"> Já foi pago?
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="observacoes">Observações</label>
+                    <textarea id="observacoes" rows="4" placeholder="Observações adicionais..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='agenda-login.html'">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Salvar Agendamento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Verificar autenticação
+        const userData = JSON.parse(sessionStorage.getItem('agenda_user') || '{}');
+        if (!sessionStorage.getItem('agenda_authenticated') || userData.perfil !== 'comercial') {
+            window.location.href = 'agenda-login.html';
+        }
+
+        document.getElementById('userName').textContent = userData.nome || 'Time Comercial';
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'agenda-login.html';
+        });
+
+        // Carregar profissionais
+        function loadProfissionais() {
+            const profissionais = JSON.parse(localStorage.getItem('ligon_profissionais') || '[]');
+            const select = document.getElementById('profissional');
+            profissionais.forEach(prof => {
+                select.innerHTML += `<option value="${prof.id}">${prof.nome}</option>`;
+            });
+        }
+
+        // Carregar procedimentos (serviços)
+        function loadProcedimentos() {
+            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const select = document.getElementById('procedimento');
+            servicos.forEach(servico => {
+                select.innerHTML += `<option value="${servico.id}">${servico.nome} - ${formatCurrency(servico.preco)}</option>`;
+            });
+        }
+
+        // Carregar horários (10h às 20h)
+        function loadHorarios() {
+            const select = document.getElementById('horaAgendamento');
+            for (let h = 10; h <= 20; h++) {
+                for (let m = 0; m < 60; m += 30) {
+                    const hora = String(h).padStart(2, '0');
+                    const minuto = String(m).padStart(2, '0');
+                    const horario = `${hora}:${minuto}`;
+                    select.innerHTML += `<option value="${horario}">${horario}</option>`;
+                }
+            }
+        }
+
+        // Definir data mínima como hoje
+        document.getElementById('dataAgendamento').min = new Date().toISOString().split('T')[0];
+
+        // Form submission
+        document.getElementById('agendamentoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            
+            // Buscar dados do procedimento
+            const procedimentoId = document.getElementById('procedimento').value;
+            const servicos = JSON.parse(localStorage.getItem('ligon_servicos') || '[]');
+            const procedimento = servicos.find(s => s.id === procedimentoId);
+
+            const agendamento = {
+                id: generateId(),
+                clienteNome: document.getElementById('clienteNome').value,
+                clienteTelefone: document.getElementById('clienteTelefone').value || '',
+                profissionalId: document.getElementById('profissional').value,
+                profissionalNome: document.getElementById('profissional').selectedOptions[0].text,
+                data: document.getElementById('dataAgendamento').value,
+                hora: document.getElementById('horaAgendamento').value,
+                procedimentoId: procedimentoId,
+                procedimentoNome: procedimento ? procedimento.nome : '',
+                procedimentoPreco: procedimento ? procedimento.preco : 0,
+                formaPagamento: document.getElementById('formaPagamento').value,
+                jaPago: document.getElementById('jaPago').checked,
+                observacoes: document.getElementById('observacoes').value || '',
+                status: 'agendado',
+                compareceu: false,
+                dataCadastro: new Date().toISOString(),
+                criadoPor: userData.nome || 'Time Comercial'
+            };
+
+            agendamentos.push(agendamento);
+            localStorage.setItem('ligon_agendamentos', JSON.stringify(agendamentos));
+
+            showNotification('Agendamento criado com sucesso!');
+            
+            // Limpar formulário
+            document.getElementById('agendamentoForm').reset();
+            document.getElementById('dataAgendamento').min = new Date().toISOString().split('T')[0];
+        });
+
+        // Inicializar
+        loadProfissionais();
+        loadProcedimentos();
+        loadHorarios();
+    </script>
+</body>
+</html>
+

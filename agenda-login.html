@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Ligon - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2E5F35 0%, #9B8A6B 100%);
+            padding: 20px;
+        }
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .login-box h1 {
+            text-align: center;
+            color: #2E5F35;
+            margin-bottom: 10px;
+        }
+        .login-box p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2E5F35;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #2E5F35;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-login:hover {
+            background: #1e4a25;
+        }
+        .perfil-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .perfil-comercial { background: #007bff; color: white; }
+        .perfil-recepcao { background: #28a745; color: white; }
+        .perfil-profissional { background: #ffc107; color: #333; }
+        .perfil-gerencial { background: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <h1><i class="fas fa-calendar-alt"></i> Agenda Ligon</h1>
+            <p>Sistema de Agendamento de Procedimentos</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="perfil">Perfil de Acesso *</label>
+                    <select id="perfil" required>
+                        <option value="">Selecione seu perfil...</option>
+                        <option value="comercial">Time Comercial</option>
+                        <option value="recepcao">Recepção</option>
+                        <option value="profissional">Profissional</option>
+                        <option value="gerencial">Gerencial</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="recepcionistaGroup" style="display: none;">
+                    <label for="recepcionista">Recepcionista *</label>
+                    <select id="recepcionista">
+                        <option value="recepcionista1">Recepcionista 1</option>
+                        <option value="recepcionista2">Recepcionista 2</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="profissionalGroup" style="display: none;">
+                    <label for="profissional">Profissional *</label>
+                    <select id="profissional">
+                        <!-- Será preenchido dinamicamente -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Usuário *</label>
+                    <input type="text" id="username" required placeholder="Digite seu usuário">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha *</label>
+                    <input type="password" id="password" required placeholder="Digite sua senha">
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Entrar
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="admin-login.html" style="color: #666; text-decoration: none; font-size: 14px;">
+                    <i class="fas fa-arrow-left"></i> Voltar ao Admin
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Inicializar dados padrão
+        function initAgendaData() {
+            // Profissionais padrão
+            if (!localStorage.getItem('ligon_profissionais')) {
+                const profissionais = [
+                    { id: 'prof1', nome: 'Profissional 1', login: 'prof1', senha: '123456' },
+                    { id: 'prof2', nome: 'Profissional 2', login: 'prof2', senha: '123456' },
+                    { id: 'prof3', nome: 'Profissional 3', login: 'prof3', senha: '123456' }
+                ];
+                localStorage.setItem('ligon_profissionais', JSON.stringify(profissionais));
+            }
+
+            // Usuários do sistema
+            if (!localStorage.getItem('ligon_usuarios_agenda')) {
+                const usuarios = [
+                    { perfil: 'comercial', login: 'comercial', senha: '123456', nome: 'Time Comercial' },
+                    { perfil: 'recepcao', login: 'recepcionista1', senha: '123456', nome: 'Recepcionista 1', recepcionista: 'recepcionista1' },
+                    { perfil: 'recepcao', login: 'recepcionista2', senha: '123456', nome: 'Recepcionista 2', recepcionista: 'recepcionista2' },
+                    { perfil: 'gerencial', login: 'gerente', senha: '123456', nome: 'Gerente' }
+                ];
+                localStorage.setItem('ligon_usuarios_agenda', JSON.stringify(usuarios));
+            }
+
+            // Agendamentos
+            if (!localStorage.getItem('ligon_agendamentos')) {
+                localStorage.setItem('ligon_agendamentos', '[]');
+            }
+        }
+
+        // Carregar profissionais no select
+        function loadProfissionais() {
+            const profissionais = JSON.parse(localStorage.getItem('ligon_profissionais') || '[]');
+            const select = document.getElementById('profissional');
+            select.innerHTML = '<option value="">Selecione...</option>';
+            profissionais.forEach(prof => {
+                select.innerHTML += `<option value="${prof.id}">${prof.nome}</option>`;
+            });
+        }
+
+        // Mostrar/esconder campos baseado no perfil
+        document.getElementById('perfil').addEventListener('change', function() {
+            const perfil = this.value;
+            const recepcionistaGroup = document.getElementById('recepcionistaGroup');
+            const profissionalGroup = document.getElementById('profissionalGroup');
+
+            recepcionistaGroup.style.display = perfil === 'recepcao' ? 'block' : 'none';
+            profissionalGroup.style.display = perfil === 'profissional' ? 'block' : 'none';
+
+            if (perfil === 'profissional') {
+                loadProfissionais();
+            }
+        });
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const perfil = document.getElementById('perfil').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const recepcionista = document.getElementById('recepcionista').value;
+            const profissionalId = document.getElementById('profissional').value;
+
+            let usuarioValido = false;
+            let usuarioData = null;
+
+            if (perfil === 'profissional') {
+                // Verificar profissional
+                const profissionais = JSON.parse(localStorage.getItem('ligon_profissionais') || '[]');
+                const profissional = profissionais.find(p => p.id === profissionalId && p.login === username && p.senha === password);
+                if (profissional) {
+                    usuarioValido = true;
+                    usuarioData = {
+                        perfil: 'profissional',
+                        id: profissional.id,
+                        nome: profissional.nome,
+                        login: profissional.login
+                    };
+                }
+            } else {
+                // Verificar outros perfis
+                const usuarios = JSON.parse(localStorage.getItem('ligon_usuarios_agenda') || '[]');
+                const usuario = usuarios.find(u => 
+                    u.perfil === perfil && 
+                    u.login === username && 
+                    u.senha === password &&
+                    (perfil !== 'recepcao' || u.recepcionista === recepcionista)
+                );
+                if (usuario) {
+                    usuarioValido = true;
+                    usuarioData = {
+                        perfil: usuario.perfil,
+                        nome: usuario.nome,
+                        login: usuario.login,
+                        recepcionista: usuario.recepcionista
+                    };
+                }
+            }
+
+            if (usuarioValido) {
+                sessionStorage.setItem('agenda_user', JSON.stringify(usuarioData));
+                sessionStorage.setItem('agenda_authenticated', 'true');
+                
+                // Redirecionar baseado no perfil
+                if (perfil === 'comercial') {
+                    window.location.href = 'agenda-comercial.html';
+                } else if (perfil === 'recepcao') {
+                    window.location.href = 'agenda-recepcao.html';
+                } else if (perfil === 'profissional') {
+                    window.location.href = 'agenda-profissional.html';
+                } else if (perfil === 'gerencial') {
+                    window.location.href = 'agenda-gerencial.html';
+                }
+            } else {
+                alert('Usuário ou senha inválidos!');
+            }
+        });
+
+        // Inicializar
+        initAgendaData();
+    </script>
+</body>
+</html>
+

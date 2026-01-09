@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Gerencial</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="agenda.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-calendar-alt"></i> Agenda Ligon</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="agenda-gerencial.html" class="nav-item active">
+                <i class="fas fa-calendar-day"></i> Visão Geral
+            </a>
+            <a href="agenda-gerencial-relatorio.html" class="nav-item">
+                <i class="fas fa-chart-line"></i> Relatórios
+            </a>
+            <a href="agenda-login.html" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Agenda - Visão Gerencial</h1>
+            <div class="user-info">
+                <span id="userName">Gerente</span>
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid" style="margin-bottom: 30px;">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #2E5F35;">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalAgendamentos">0</h3>
+                    <p>Total de Agendamentos</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #28a745;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalConcluidos">0</h3>
+                    <p>Concluídos</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #ffc107;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalPendentes">0</h3>
+                    <p>Pendentes</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #dc3545;">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalCancelados">0</h3>
+                    <p>Cancelados</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="agenda-header-controls">
+            <div class="agenda-date-nav">
+                <button onclick="changeDate(-1)"><i class="fas fa-chevron-left"></i></button>
+                <div class="agenda-date-display" id="dateDisplay"></div>
+                <button onclick="changeDate(1)"><i class="fas fa-chevron-right"></i></button>
+                <button onclick="goToToday()">Hoje</button>
+            </div>
+        </div>
+
+        <div class="agenda-container">
+            <table class="agenda-table" id="agendaTable">
+                <thead>
+                    <tr>
+                        <th>Horário</th>
+                        <!-- Colunas de profissionais serão adicionadas dinamicamente -->
+                    </tr>
+                </thead>
+                <tbody id="agendaBody">
+                    <!-- Conteúdo será gerado dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Verificar autenticação
+        const userData = JSON.parse(sessionStorage.getItem('agenda_user') || '{}');
+        if (!sessionStorage.getItem('agenda_authenticated') || userData.perfil !== 'gerencial') {
+            window.location.href = 'agenda-login.html';
+        }
+
+        document.getElementById('userName').textContent = userData.nome || 'Gerente';
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'agenda-login.html';
+        });
+
+        let currentDate = new Date();
+
+        // Formatar data
+        function formatDate(date) {
+            return date.toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Atualizar display da data
+        function updateDateDisplay() {
+            document.getElementById('dateDisplay').textContent = formatDate(currentDate);
+        }
+
+        // Mudar data
+        function changeDate(days) {
+            currentDate.setDate(currentDate.getDate() + days);
+            updateDateDisplay();
+            loadAgenda();
+            loadStats();
+        }
+
+        // Ir para hoje
+        function goToToday() {
+            currentDate = new Date();
+            updateDateDisplay();
+            loadAgenda();
+            loadStats();
+        }
+
+        // Carregar estatísticas
+        function loadStats() {
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            
+            const total = agendamentos.length;
+            const concluidos = agendamentos.filter(a => a.compareceu).length;
+            const pendentes = agendamentos.filter(a => !a.compareceu && a.status !== 'cancelado').length;
+            const cancelados = agendamentos.filter(a => a.status === 'cancelado').length;
+
+            document.getElementById('totalAgendamentos').textContent = total;
+            document.getElementById('totalConcluidos').textContent = concluidos;
+            document.getElementById('totalPendentes').textContent = pendentes;
+            document.getElementById('totalCancelados').textContent = cancelados;
+        }
+
+        // Carregar agenda
+        function loadAgenda() {
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const profissionais = JSON.parse(localStorage.getItem('ligon_profissionais') || '[]');
+            
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const agendamentosDoDia = agendamentos.filter(a => a.data === dateStr);
+
+            // Criar estrutura de horários (10h às 20h)
+            const horarios = [];
+            for (let h = 10; h <= 20; h++) {
+                for (let m = 0; m < 60; m += 30) {
+                    const hora = String(h).padStart(2, '0');
+                    const minuto = String(m).padStart(2, '0');
+                    horarios.push(`${hora}:${minuto}`);
+                }
+            }
+
+            // Criar cabeçalho com profissionais
+            const thead = document.querySelector('#agendaTable thead tr');
+            thead.innerHTML = '<th>Horário</th>';
+            profissionais.forEach(prof => {
+                thead.innerHTML += `<th>${prof.nome}</th>`;
+            });
+
+            // Criar corpo da tabela
+            const tbody = document.getElementById('agendaBody');
+            tbody.innerHTML = '';
+
+            horarios.forEach(horario => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${horario}</td>`;
+                
+                profissionais.forEach(prof => {
+                    const cell = document.createElement('td');
+                    const agendamentosSlot = agendamentosDoDia.filter(a => 
+                        a.profissionalId === prof.id && a.hora === horario
+                    );
+
+                    if (agendamentosSlot.length > 0) {
+                        agendamentosSlot.forEach(ag => {
+                            const slot = createAgendamentoSlot(ag);
+                            cell.appendChild(slot);
+                        });
+                    } else {
+                        cell.innerHTML = '<div class="agenda-empty">-</div>';
+                    }
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Criar slot de agendamento
+        function createAgendamentoSlot(agendamento) {
+            const slot = document.createElement('div');
+            slot.className = 'agenda-slot';
+            
+            // Determinar classe baseado no status
+            if (agendamento.status === 'cancelado') {
+                slot.classList.add('cancelado');
+            } else if (agendamento.status === 'reagendado') {
+                slot.classList.add('reagendado-original');
+            } else if (agendamento.reagendadoDe) {
+                slot.classList.add('reagendado-novo');
+            } else if (agendamento.compareceu) {
+                slot.classList.add('concluido');
+            } else {
+                slot.classList.add('normal');
+            }
+
+            const statusPago = agendamento.jaPago ? 'pago' : 'pendente';
+
+            slot.innerHTML = `
+                <div class="agenda-slot-content">
+                    <div class="agenda-slot-cliente">${agendamento.clienteNome}</div>
+                    <div class="agenda-slot-procedimento">${agendamento.procedimentoNome}</div>
+                    <div class="agenda-slot-info">
+                        <span class="agenda-slot-status ${statusPago}">${agendamento.jaPago ? 'Pago' : 'Pendente'}</span>
+                        ${agendamento.compareceu ? '<span class="status-badge compareceu">✓</span>' : ''}
+                    </div>
+                </div>
+            `;
+
+            return slot;
+        }
+
+        // Inicializar
+        updateDateDisplay();
+        loadStats();
+        loadAgenda();
+    </script>
+</body>
+</html>
+

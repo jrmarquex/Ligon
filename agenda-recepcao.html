@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Recepção</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="agenda.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-calendar-alt"></i> Agenda Ligon</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="agenda-recepcao.html" class="nav-item active">
+                <i class="fas fa-calendar-day"></i> Agenda do Dia
+            </a>
+            <a href="agenda-login.html" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Agenda do Dia</h1>
+            <div class="user-info">
+                <span id="userName">Recepcionista</span>
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </header>
+
+        <div class="agenda-header-controls">
+            <div class="agenda-date-nav">
+                <button onclick="changeDate(-1)"><i class="fas fa-chevron-left"></i></button>
+                <div class="agenda-date-display" id="dateDisplay"></div>
+                <button onclick="changeDate(1)"><i class="fas fa-chevron-right"></i></button>
+                <button onclick="goToToday()">Hoje</button>
+            </div>
+        </div>
+
+        <div class="agenda-container">
+            <table class="agenda-table" id="agendaTable">
+                <thead>
+                    <tr>
+                        <th>Horário</th>
+                        <!-- Colunas de profissionais serão adicionadas dinamicamente -->
+                    </tr>
+                </thead>
+                <tbody id="agendaBody">
+                    <!-- Conteúdo será gerado dinamicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal para ações -->
+    <div class="agenda-modal" id="actionModal">
+        <div class="agenda-modal-content">
+            <div class="agenda-modal-header">
+                <h2 id="modalTitle">Ações do Agendamento</h2>
+                <button class="agenda-modal-close" onclick="closeActionModal()">&times;</button>
+            </div>
+            <div id="modalContent">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Verificar autenticação
+        const userData = JSON.parse(sessionStorage.getItem('agenda_user') || '{}');
+        if (!sessionStorage.getItem('agenda_authenticated') || userData.perfil !== 'recepcao') {
+            window.location.href = 'agenda-login.html';
+        }
+
+        document.getElementById('userName').textContent = userData.nome || 'Recepcionista';
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'agenda-login.html';
+        });
+
+        let currentDate = new Date();
+        let currentAgendamento = null;
+
+        // Formatar data
+        function formatDate(date) {
+            return date.toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+
+        // Atualizar display da data
+        function updateDateDisplay() {
+            document.getElementById('dateDisplay').textContent = formatDate(currentDate);
+        }
+
+        // Mudar data
+        function changeDate(days) {
+            currentDate.setDate(currentDate.getDate() + days);
+            updateDateDisplay();
+            loadAgenda();
+        }
+
+        // Ir para hoje
+        function goToToday() {
+            currentDate = new Date();
+            updateDateDisplay();
+            loadAgenda();
+        }
+
+        // Carregar agenda
+        function loadAgenda() {
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const profissionais = JSON.parse(localStorage.getItem('ligon_profissionais') || '[]');
+            
+            const dateStr = currentDate.toISOString().split('T')[0];
+            const agendamentosDoDia = agendamentos.filter(a => a.data === dateStr);
+
+            // Criar estrutura de horários (10h às 20h)
+            const horarios = [];
+            for (let h = 10; h <= 20; h++) {
+                for (let m = 0; m < 60; m += 30) {
+                    const hora = String(h).padStart(2, '0');
+                    const minuto = String(m).padStart(2, '0');
+                    horarios.push(`${hora}:${minuto}`);
+                }
+            }
+
+            // Criar cabeçalho com profissionais
+            const thead = document.querySelector('#agendaTable thead tr');
+            thead.innerHTML = '<th>Horário</th>';
+            profissionais.forEach(prof => {
+                thead.innerHTML += `<th>${prof.nome}</th>`;
+            });
+
+            // Criar corpo da tabela
+            const tbody = document.getElementById('agendaBody');
+            tbody.innerHTML = '';
+
+            horarios.forEach(horario => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${horario}</td>`;
+                
+                profissionais.forEach(prof => {
+                    const cell = document.createElement('td');
+                    const agendamentosSlot = agendamentosDoDia.filter(a => 
+                        a.profissionalId === prof.id && a.hora === horario
+                    );
+
+                    if (agendamentosSlot.length > 0) {
+                        agendamentosSlot.forEach(ag => {
+                            const slot = createAgendamentoSlot(ag);
+                            cell.appendChild(slot);
+                        });
+                    } else {
+                        cell.innerHTML = '<div class="agenda-empty">-</div>';
+                    }
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Criar slot de agendamento
+        function createAgendamentoSlot(agendamento) {
+            const slot = document.createElement('div');
+            slot.className = 'agenda-slot';
+            
+            // Determinar classe baseado no status
+            if (agendamento.status === 'cancelado') {
+                slot.classList.add('cancelado');
+            } else if (agendamento.status === 'reagendado') {
+                slot.classList.add('reagendado-original');
+            } else if (agendamento.reagendadoDe) {
+                slot.classList.add('reagendado-novo');
+            } else if (agendamento.compareceu) {
+                slot.classList.add('concluido');
+            } else {
+                slot.classList.add('normal');
+            }
+
+            const statusPago = agendamento.jaPago ? 'pago' : 'pendente';
+            const statusCompareceu = agendamento.compareceu ? 'compareceu' : 'pendente';
+
+            slot.innerHTML = `
+                <div class="agenda-slot-content">
+                    <div class="agenda-slot-cliente">${agendamento.clienteNome}</div>
+                    <div class="agenda-slot-procedimento">${agendamento.procedimentoNome}</div>
+                    <div class="agenda-slot-info">
+                        <span class="agenda-slot-status ${statusPago}">${agendamento.jaPago ? 'Pago' : 'Pendente'}</span>
+                        ${agendamento.compareceu ? '<span class="status-badge compareceu">Compareceu</span>' : ''}
+                    </div>
+                </div>
+            `;
+
+            slot.addEventListener('click', () => openActionModal(agendamento));
+            return slot;
+        }
+
+        // Abrir modal de ações
+        function openActionModal(agendamento) {
+            currentAgendamento = agendamento;
+            const modal = document.getElementById('actionModal');
+            const modalContent = document.getElementById('modalContent');
+
+            modalContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 10px;">Cliente: ${agendamento.clienteNome}</h3>
+                    <p><strong>Profissional:</strong> ${agendamento.profissionalNome}</p>
+                    <p><strong>Procedimento:</strong> ${agendamento.procedimentoNome}</p>
+                    <p><strong>Horário:</strong> ${agendamento.hora}</p>
+                    <p><strong>Forma de Pagamento:</strong> ${agendamento.formaPagamento}</p>
+                    <p><strong>Status Pagamento:</strong> ${agendamento.jaPago ? 'Pago' : 'Pendente'}</p>
+                    <p><strong>Compareceu:</strong> ${agendamento.compareceu ? 'Sim' : 'Não'}</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    ${!agendamento.compareceu ? `
+                        <button class="btn-action baixa" onclick="darBaixa()">
+                            <i class="fas fa-check"></i> Dar Baixa (Compareceu)
+                        </button>
+                    ` : ''}
+                    
+                    ${!agendamento.jaPago ? `
+                        <button class="btn-action baixa" onclick="marcarPago()">
+                            <i class="fas fa-money-bill"></i> Marcar como Pago
+                        </button>
+                    ` : ''}
+
+                    <button class="btn-action reagendar" onclick="reagendar()">
+                        <i class="fas fa-calendar-alt"></i> Reagendar
+                    </button>
+
+                    <button class="btn-action editar" onclick="alterarProfissional()">
+                        <i class="fas fa-user-md"></i> Alterar Profissional
+                    </button>
+
+                    ${agendamento.status !== 'cancelado' ? `
+                        <button class="btn-action cancelar" onclick="cancelarAgendamento()">
+                            <i class="fas fa-times"></i> Cancelar Agendamento
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+
+            modal.classList.add('show');
+        }
+
+        // Fechar modal
+        function closeActionModal() {
+            document.getElementById('actionModal').classList.remove('show');
+            currentAgendamento = null;
+        }
+
+        // Dar baixa (compareceu)
+        function darBaixa() {
+            if (!currentAgendamento) return;
+            
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const index = agendamentos.findIndex(a => a.id === currentAgendamento.id);
+            
+            if (index !== -1) {
+                agendamentos[index].compareceu = true;
+                agendamentos[index].dataBaixa = new Date().toISOString();
+                agendamentos[index].baixadoPor = userData.nome;
+                localStorage.setItem('ligon_agendamentos', JSON.stringify(agendamentos));
+                showNotification('Baixa registrada com sucesso!');
+                closeActionModal();
+                loadAgenda();
+            }
+        }
+
+        // Marcar como pago
+        function marcarPago() {
+            if (!currentAgendamento) return;
+            
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const index = agendamentos.findIndex(a => a.id === currentAgendamento.id);
+            
+            if (index !== -1) {
+                agendamentos[index].jaPago = true;
+                agendamentos[index].dataPagamento = new Date().toISOString();
+                agendamentos[index].pagoPor = userData.nome;
+                localStorage.setItem('ligon_agendamentos', JSON.stringify(agendamentos));
+                showNotification('Pagamento registrado com sucesso!');
+                closeActionModal();
+                loadAgenda();
+            }
+        }
+
+        // Reagendar
+        function reagendar() {
+            if (!currentAgendamento) return;
+            
+            const novaData = prompt('Digite a nova data (YYYY-MM-DD):');
+            if (!novaData) return;
+            
+            const novaHora = prompt('Digite o novo horário (HH:MM):');
+            if (!novaHora) return;
+
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const index = agendamentos.findIndex(a => a.id === currentAgendamento.id);
+            
+            if (index !== -1) {
+                // Criar novo agendamento
+                const novoAgendamento = {
+                    ...agendamentos[index],
+                    id: generateId(),
+                    data: novaData,
+                    hora: novaHora,
+                    status: 'reagendado',
+                    reagendadoDe: agendamentos[index].id,
+                    dataReagendamento: new Date().toISOString(),
+                    reagendadoPor: userData.nome
+                };
+                
+                // Marcar original como reagendado
+                agendamentos[index].status = 'reagendado';
+                agendamentos[index].reagendadoPara = novoAgendamento.id;
+                
+                agendamentos.push(novoAgendamento);
+                localStorage.setItem('ligon_agendamentos', JSON.stringify(agendamentos));
+                showNotification('Agendamento reagendado com sucesso!');
+                closeActionModal();
+                loadAgenda();
+            }
+        }
+
+        // Alterar profissional
+        function alterarProfissional() {
+            if (!currentAgendamento) return;
+            
+            const profissionais = JSON.parse(localStorage.getItem('ligon_profissionais') || '[]');
+            let options = 'Selecione o novo profissional:\n';
+            profissionais.forEach((prof, i) => {
+                options += `${i + 1}. ${prof.nome}\n`;
+            });
+            
+            const escolha = prompt(options);
+            if (!escolha) return;
+            
+            const indexProf = parseInt(escolha) - 1;
+            if (indexProf < 0 || indexProf >= profissionais.length) {
+                alert('Opção inválida!');
+                return;
+            }
+
+            const novoProf = profissionais[indexProf];
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const index = agendamentos.findIndex(a => a.id === currentAgendamento.id);
+            
+            if (index !== -1) {
+                agendamentos[index].profissionalId = novoProf.id;
+                agendamentos[index].profissionalNome = novoProf.nome;
+                agendamentos[index].alteradoPor = userData.nome;
+                agendamentos[index].dataAlteracao = new Date().toISOString();
+                localStorage.setItem('ligon_agendamentos', JSON.stringify(agendamentos));
+                showNotification('Profissional alterado com sucesso!');
+                closeActionModal();
+                loadAgenda();
+            }
+        }
+
+        // Cancelar agendamento
+        function cancelarAgendamento() {
+            if (!currentAgendamento) return;
+            
+            if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
+
+            const agendamentos = JSON.parse(localStorage.getItem('ligon_agendamentos') || '[]');
+            const index = agendamentos.findIndex(a => a.id === currentAgendamento.id);
+            
+            if (index !== -1) {
+                agendamentos[index].status = 'cancelado';
+                agendamentos[index].dataCancelamento = new Date().toISOString();
+                agendamentos[index].canceladoPor = userData.nome;
+                localStorage.setItem('ligon_agendamentos', JSON.stringify(agendamentos));
+                showNotification('Agendamento cancelado!');
+                closeActionModal();
+                loadAgenda();
+            }
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('actionModal').addEventListener('click', (e) => {
+            if (e.target.id === 'actionModal') {
+                closeActionModal();
+            }
+        });
+
+        // Inicializar
+        updateDateDisplay();
+        loadAgenda();
+    </script>
+</body>
+</html>
+

@@ -101,6 +101,17 @@ function initStorage() {
     if (!localStorage.getItem('ligon_galeria')) {
         localStorage.setItem('ligon_galeria', '[]');
     }
+    if (!localStorage.getItem('ligon_agendamentos')) {
+        localStorage.setItem('ligon_agendamentos', '[]');
+    }
+    if (!localStorage.getItem('ligon_profissionais')) {
+        const profissionais = [
+            { id: 'prof1', nome: 'Profissional 1', login: 'prof1', senha: '123456' },
+            { id: 'prof2', nome: 'Profissional 2', login: 'prof2', senha: '123456' },
+            { id: 'prof3', nome: 'Profissional 3', login: 'prof3', senha: '123456' }
+        ];
+        localStorage.setItem('ligon_profissionais', JSON.stringify(profissionais));
+    }
 }
 
 // Initialize on load
