@@ -707,8 +707,8 @@
                 icon.classList.add('fa-sun');
             }
 
-            // Add click handler
-            toggleBtn.onclick = function(e) {
+            // Add click handler - works for both button and icon
+            const handleDarkModeToggle = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -735,6 +735,10 @@
                     initCharts();
                 }, 100);
             };
+
+            // Attach handler to both button and icon
+            toggleBtn.onclick = handleDarkModeToggle;
+            icon.onclick = handleDarkModeToggle;
 
             darkModeInitialized = true;
             console.log('Dark mode initialized successfully!');
