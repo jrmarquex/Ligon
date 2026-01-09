@@ -4,9 +4,17 @@
 class SimpleChart {
     constructor(canvasId, options = {}) {
         this.canvas = document.getElementById(canvasId);
-        if (!this.canvas) return;
+        if (!this.canvas) {
+            console.error('Canvas not found:', canvasId);
+            return;
+        }
         
         this.ctx = this.canvas.getContext('2d');
+        if (!this.ctx) {
+            console.error('Canvas context not available');
+            return;
+        }
+        
         this.options = {
             type: options.type || 'bar',
             data: options.data || [],
@@ -14,6 +22,12 @@ class SimpleChart {
             labels: options.labels || [],
             ...options
         };
+        
+        // Validate data
+        if (!this.options.data || this.options.data.length === 0) {
+            console.error('No data provided for chart');
+            return;
+        }
         
         this.init();
     }
