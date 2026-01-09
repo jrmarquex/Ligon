@@ -103,6 +103,9 @@
                 <button class="header-icon-btn" title="Refresh">
                     <i class="fas fa-sync-alt"></i>
                 </button>
+                <button class="header-icon-btn" id="darkModeToggle" title="Alternar Modo Noturno">
+                    <i class="fas fa-moon" id="darkModeIcon"></i>
+                </button>
                 <div class="user-avatar">
                     <i class="fas fa-user-circle"></i>
                 </div>
@@ -184,17 +187,32 @@
             <!-- Charts Row -->
             <div class="charts-row-modern">
                 <!-- Analytics Chart -->
-                <div class="content-card-modern">
+                <div class="content-card-modern chart-card-enhanced">
                     <div class="card-header-modern">
                         <div>
                             <h3>Análise de Vendas</h3>
+                            <p class="section-subtitle-modern">Visão geral do desempenho de vendas</p>
                         </div>
                         <div class="chart-controls-modern">
                             <button class="chart-toggle-modern active" data-period="monthly">Mensal</button>
                             <button class="chart-toggle-modern" data-period="yearly">Anual</button>
                         </div>
                     </div>
-                    <div class="chart-wrapper">
+                    <div class="chart-stats-row">
+                        <div class="chart-stat-item">
+                            <span class="chart-stat-label">Total</span>
+                            <span class="chart-stat-value" id="totalVendasChart">R$ 0,00</span>
+                        </div>
+                        <div class="chart-stat-item">
+                            <span class="chart-stat-label">Média</span>
+                            <span class="chart-stat-value" id="mediaVendasChart">R$ 0,00</span>
+                        </div>
+                        <div class="chart-stat-item">
+                            <span class="chart-stat-label">Crescimento</span>
+                            <span class="chart-stat-value positive" id="crescimentoVendasChart">+0%</span>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper-enhanced">
                         <canvas id="salesChart" width="800" height="300"></canvas>
                     </div>
                 </div>
@@ -391,6 +409,38 @@
             document.getElementById('userName').textContent = user.name;
         }
 
+        // Dark Mode Toggle
+        function initDarkMode() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const body = document.body;
+            const icon = document.getElementById('darkModeIcon');
+            
+            if (darkMode) {
+                body.classList.add('dark-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            
+            document.getElementById('darkModeToggle').addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                
+                if (isDark) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                
+                // Reinitialize charts with new colors
+                setTimeout(initCharts, 100);
+            });
+        }
+        
+        initDarkMode();
+
         // Logout
         document.getElementById('logoutBtn').addEventListener('click', (e) => {
             e.preventDefault();
@@ -470,14 +520,32 @@
 
         // Initialize charts
         function initCharts() {
-            // Sales Chart (Bar Chart) - More vibrant colors like reference
+            // Sales Chart (Bar Chart) - Enhanced with stats
             const salesData = generateSalesData();
+            const isDark = document.body.classList.contains('dark-mode');
+            const chartColors = isDark 
+                ? ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#86efac', '#bbf7d0']
+                : ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#86efac', '#bbf7d0'];
+            
+            // Update chart stats
+            const total = salesData.values.reduce((a, b) => a + b, 0);
+            const media = total / salesData.values.length;
+            const crescimento = salesData.values.length > 1 
+                ? ((salesData.values[salesData.values.length - 1] - salesData.values[0]) / salesData.values[0] * 100).toFixed(1)
+                : 0;
+            
+            document.getElementById('totalVendasChart').textContent = formatCurrency(total * 100);
+            document.getElementById('mediaVendasChart').textContent = formatCurrency(media * 100);
+            document.getElementById('crescimentoVendasChart').textContent = 
+                (crescimento >= 0 ? '+' : '') + crescimento + '%';
+            
             new SimpleChart('salesChart', {
                 type: 'bar',
                 data: salesData.values,
                 labels: salesData.labels,
-                colors: ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0'],
-                highlightedIndex: new Date().getMonth() % 7
+                colors: chartColors,
+                highlightedIndex: new Date().getMonth() % 7,
+                darkMode: isDark
             });
             
             // Progress Chart (Donut Chart)

@@ -44,6 +44,145 @@
     --radius-lg: 0.75rem;
 }
 
+/* ============================================
+   DARK MODE - Professional Dark Theme
+   ============================================ */
+body.dark-mode {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --border-color: #475569;
+    --border-light: #334155;
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-tertiary: #94a3b8;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .sidebar {
+    background: var(--bg-secondary);
+    border-right-color: var(--border-color);
+}
+
+body.dark-mode .top-header {
+    background: var(--bg-secondary);
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .sidebar-search {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .sidebar-search input {
+    color: var(--text-primary);
+}
+
+body.dark-mode .nav-item:hover {
+    background: var(--bg-tertiary);
+}
+
+body.dark-mode .content-card-modern {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .stat-card-modern {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .chart-controls-modern {
+    background: var(--bg-tertiary);
+}
+
+body.dark-mode .activity-item-modern {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .quick-action-item {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .meta-card {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .empty-icon-wrapper {
+    background: linear-gradient(135deg, #1e3a2e, #2d4a3a);
+}
+
+body.dark-mode .empty-icon-wrapper::before {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+}
+
+body.dark-mode .header-icon-btn:hover {
+    background: var(--bg-tertiary);
+}
+
+body.dark-mode .breadcrumb-text {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .user-avatar {
+    background: var(--bg-tertiary);
+    color: var(--primary);
+}
+
+body.dark-mode .modal-content {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea,
+body.dark-mode .form-group select {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus,
+body.dark-mode .form-group select:focus {
+    border-color: var(--primary);
+    background: var(--bg-tertiary);
+}
+
+body.dark-mode table {
+    background: var(--bg-secondary);
+}
+
+body.dark-mode table th {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+body.dark-mode table tr:hover {
+    background: var(--bg-tertiary);
+}
+
+body.dark-mode .btn-secondary {
+    background: var(--bg-tertiary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .btn-secondary:hover {
+    background: var(--bg-secondary);
+}
+
+body.dark-mode .chart-stat-value {
+    color: var(--text-primary);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -540,6 +679,54 @@ body {
     width: 100%;
     height: 300px;
     position: relative;
+}
+
+.chart-wrapper-enhanced {
+    width: 100%;
+    height: 320px;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.chart-card-enhanced {
+    position: relative;
+}
+
+.chart-stats-row {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: 1rem;
+}
+
+.chart-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.chart-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.chart-stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.chart-stat-value.positive {
+    color: var(--primary);
+}
+
+.chart-stat-value.negative {
+    color: #ef4444;
 }
 
 .donut-wrapper {

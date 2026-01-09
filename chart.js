@@ -41,20 +41,35 @@ class SimpleChart {
     
     drawBarChart() {
         const { data, labels, colors } = this.options;
+        const isDark = this.options.darkMode || false;
         const width = this.canvas.width / (window.devicePixelRatio || 1);
         const height = this.canvas.height / (window.devicePixelRatio || 1);
-        const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+        const padding = { top: 30, right: 30, bottom: 50, left: 60 };
         const chartWidth = width - padding.left - padding.right;
         const chartHeight = height - padding.top - padding.bottom;
         const maxValue = Math.max(...data, 1);
         const barWidth = chartWidth / data.length;
-        const spacing = barWidth * 0.15;
-        const barRadius = 6;
+        const spacing = barWidth * 0.12;
+        const barRadius = 8;
         
-        // Draw grid lines (horizontal)
-        this.ctx.strokeStyle = '#f3f4f6';
+        // Background gradient
+        const bgGradient = this.ctx.createLinearGradient(0, padding.top, 0, height - padding.bottom);
+        if (isDark) {
+            bgGradient.addColorStop(0, 'rgba(16, 185, 129, 0.05)');
+            bgGradient.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
+        } else {
+            bgGradient.addColorStop(0, 'rgba(16, 185, 129, 0.03)');
+            bgGradient.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+        }
+        this.ctx.fillStyle = bgGradient;
+        this.ctx.fillRect(padding.left, padding.top, chartWidth, chartHeight);
+        
+        // Draw grid lines (horizontal) - enhanced
+        const gridColor = isDark ? 'rgba(203, 213, 225, 0.1)' : '#f3f4f6';
+        const gridTextColor = isDark ? '#94a3b8' : '#9ca3af';
+        this.ctx.strokeStyle = gridColor;
         this.ctx.lineWidth = 1;
-        const gridLines = 5;
+        const gridLines = 6;
         for (let i = 0; i <= gridLines; i++) {
             const y = padding.top + (chartHeight / gridLines) * i;
             this.ctx.beginPath();
@@ -62,60 +77,121 @@ class SimpleChart {
             this.ctx.lineTo(width - padding.right, y);
             this.ctx.stroke();
             
-            // Y-axis labels
+            // Y-axis labels with better formatting
             if (i < gridLines) {
                 const value = maxValue - (maxValue / gridLines) * i;
-                this.ctx.fillStyle = '#9ca3af';
+                this.ctx.fillStyle = gridTextColor;
                 this.ctx.font = '11px Inter';
                 this.ctx.textAlign = 'right';
+                const formattedValue = this.formatValue(value, maxValue);
                 this.ctx.fillText(
-                    this.formatValue(value, maxValue),
-                    padding.left - 10,
+                    formattedValue,
+                    padding.left - 15,
                     y + 4
                 );
             }
         }
         
-        // Draw bars with rounded corners
+        // Draw vertical grid line at start
+        this.ctx.strokeStyle = gridColor;
+        this.ctx.beginPath();
+        this.ctx.moveTo(padding.left, padding.top);
+        this.ctx.lineTo(padding.left, height - padding.bottom);
+        this.ctx.stroke();
+        
+        // Draw bars with enhanced styling
         data.forEach((value, index) => {
             const barHeight = (value / maxValue) * chartHeight;
             const x = padding.left + (index * barWidth) + spacing;
             const y = padding.top + chartHeight - barHeight;
             const actualBarWidth = barWidth - (spacing * 2);
             
-            // Bar color - more vibrant
+            // Bar color with gradient
             const color = Array.isArray(colors) ? colors[index % colors.length] : colors;
             const isHighlighted = this.options.highlightedIndex === index;
-            const barColor = isHighlighted ? color : this.lightenColor(color, 0.4);
             
-            // Draw rounded rectangle bar
-            this.drawRoundedRect(x, y, actualBarWidth, barHeight, barRadius, barColor);
+            // Create gradient for bar
+            const barGradient = this.ctx.createLinearGradient(x, y, x, y + barHeight);
+            if (isHighlighted) {
+                barGradient.addColorStop(0, this.lightenColor(color, 0.15));
+                barGradient.addColorStop(1, color);
+            } else {
+                barGradient.addColorStop(0, this.lightenColor(color, 0.35));
+                barGradient.addColorStop(1, this.lightenColor(color, 0.2));
+            }
             
-            // Draw value on top (only if bar is tall enough)
-            if (barHeight > 25) {
-                this.ctx.fillStyle = '#111827';
-                this.ctx.font = 'bold 12px Inter';
+            // Draw rounded rectangle bar with gradient
+            this.drawRoundedRectGradient(x, y, actualBarWidth, barHeight, barRadius, barGradient);
+            
+            // Add subtle shadow/highlight
+            if (isHighlighted) {
+                this.ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                this.ctx.beginPath();
+                this.ctx.moveTo(x + barRadius, y);
+                this.ctx.lineTo(x + actualBarWidth - barRadius, y);
+                this.ctx.quadraticCurveTo(x + actualBarWidth, y, x + actualBarWidth, y + barRadius);
+                this.ctx.lineTo(x + actualBarWidth, y + Math.min(barHeight * 0.3, 20));
+                this.ctx.lineTo(x, y + Math.min(barHeight * 0.3, 20));
+                this.ctx.lineTo(x, y + barRadius);
+                this.ctx.quadraticCurveTo(x, y, x + barRadius, y);
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
+            
+            // Draw value on top with better styling
+            if (barHeight > 30) {
+                const textColor = isDark ? '#f1f5f9' : '#111827';
+                this.ctx.fillStyle = textColor;
+                this.ctx.font = 'bold 13px Inter';
                 this.ctx.textAlign = 'center';
                 const displayValue = this.formatValue(value, maxValue);
+                
+                // Add text shadow for better visibility
+                this.ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.8)';
+                this.ctx.shadowBlur = 4;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 1;
+                
                 this.ctx.fillText(
                     displayValue,
                     x + actualBarWidth / 2,
-                    y - 8
+                    y - 10
                 );
+                
+                // Reset shadow
+                this.ctx.shadowColor = 'transparent';
+                this.ctx.shadowBlur = 0;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 0;
             }
             
-            // Draw label
+            // Draw label with better styling
             if (labels[index]) {
-                this.ctx.fillStyle = '#6b7280';
+                const labelColor = isDark ? '#cbd5e1' : '#6b7280';
+                this.ctx.fillStyle = labelColor;
                 this.ctx.font = '12px Inter';
                 this.ctx.textAlign = 'center';
                 this.ctx.fillText(
                     labels[index],
                     x + actualBarWidth / 2,
-                    height - padding.bottom + 20
+                    height - padding.bottom + 25
                 );
             }
         });
+    }
+    
+    drawRoundedRectGradient(x, y, width, height, radius, gradient) {
+        this.ctx.fillStyle = gradient;
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + radius, y);
+        this.ctx.lineTo(x + width - radius, y);
+        this.ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        this.ctx.lineTo(x + width, y + height);
+        this.ctx.lineTo(x, y + height);
+        this.ctx.lineTo(x, y + radius);
+        this.ctx.quadraticCurveTo(x, y, x + radius, y);
+        this.ctx.closePath();
+        this.ctx.fill();
     }
     
     drawRoundedRect(x, y, width, height, radius, color) {

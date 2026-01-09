@@ -117,8 +117,48 @@ function initStorage() {
     }
 }
 
+// Dark Mode Functions
+function initDarkMode() {
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    const body = document.body;
+    
+    if (darkMode) {
+        body.classList.add('dark-mode');
+    }
+    
+    // Add toggle button if it exists
+    const toggleBtn = document.getElementById('darkModeToggle');
+    if (toggleBtn) {
+        const icon = document.getElementById('darkModeIcon');
+        if (icon) {
+            if (darkMode) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+            
+            toggleBtn.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isDark);
+                
+                if (isDark) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                
+                // Trigger custom event for charts to update
+                window.dispatchEvent(new CustomEvent('darkModeToggle', { detail: { isDark } }));
+            });
+        }
+    }
+}
+
 // Initialize on load
 if (typeof window !== 'undefined') {
     initStorage();
+    initDarkMode();
 }
 
