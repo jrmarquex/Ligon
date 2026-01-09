@@ -112,6 +112,9 @@ function initStorage() {
         ];
         localStorage.setItem('ligon_profissionais', JSON.stringify(profissionais));
     }
+    if (!localStorage.getItem('ligon_metas')) {
+        localStorage.setItem('ligon_metas', '[]');
+    }
 }
 
 // Initialize on load

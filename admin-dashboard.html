@@ -224,6 +224,22 @@
                 </div>
             </div>
 
+            <!-- Metas Section -->
+            <div class="content-card-modern">
+                <div class="card-header-modern">
+                    <div>
+                        <h3>Metas</h3>
+                        <p class="section-subtitle-modern">Acompanhe o progresso das metas do spa</p>
+                    </div>
+                    <button class="btn-primary-large" onclick="openMetaModal()">
+                        <i class="fas fa-plus"></i> Nova Meta
+                    </button>
+                </div>
+                <div class="metas-grid" id="metasGrid">
+                    <!-- Metas will be loaded here -->
+                </div>
+            </div>
+
             <!-- Two Column Layout -->
             <div class="dashboard-grid-modern">
                 <!-- Recent Activity -->
@@ -290,6 +306,74 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Meta Modal -->
+    <div class="modal" id="metaModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="metaModalTitle">Nova Meta</h2>
+                <button class="modal-close" onclick="closeMetaModal()">&times;</button>
+            </div>
+            <form id="metaForm">
+                <input type="hidden" id="metaId">
+                
+                <div class="form-group">
+                    <label for="metaNome">Nome da Meta *</label>
+                    <input type="text" id="metaNome" placeholder="Ex: Meta de Agendamentos" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="metaTabela">Tabela do Banco de Dados *</label>
+                    <select id="metaTabela" required>
+                        <option value="">Selecione uma tabela</option>
+                        <option value="agendamentos">Agendamentos</option>
+                        <option value="vendas">Vendas</option>
+                        <option value="servicos">Serviços</option>
+                        <option value="produtos">Produtos</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="metaColuna">Coluna para Medição *</label>
+                    <select id="metaColuna" required>
+                        <option value="">Selecione uma coluna</option>
+                        <option value="count">Contagem Total</option>
+                        <option value="valor">Valor Total</option>
+                        <option value="compareceu">Atendimentos Realizados</option>
+                        <option value="pago">Pagamentos Confirmados</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="metaValor">Valor da Meta *</label>
+                        <input type="number" id="metaValor" step="0.01" min="0" placeholder="Ex: 100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="metaPeriodo">Período *</label>
+                        <select id="metaPeriodo" required>
+                            <option value="mensal">Mensal</option>
+                            <option value="semanal">Semanal</option>
+                            <option value="diario">Diário</option>
+                            <option value="anual">Anual</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="metaDescricao">Descrição</label>
+                    <textarea id="metaDescricao" rows="3" placeholder="Descreva a meta..."></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="closeMetaModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar Meta</button>
+                </div>
+            </form>
+        </div>
+    </div>
         </div>
     </div>
 
@@ -386,13 +470,13 @@
 
         // Initialize charts
         function initCharts() {
-            // Sales Chart (Bar Chart)
+            // Sales Chart (Bar Chart) - More vibrant colors like reference
             const salesData = generateSalesData();
             new SimpleChart('salesChart', {
                 type: 'bar',
                 data: salesData.values,
                 labels: salesData.labels,
-                colors: ['#10b981'],
+                colors: ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0'],
                 highlightedIndex: new Date().getMonth() % 7
             });
             
@@ -445,7 +529,237 @@
             });
         });
 
+        // Metas Management
+        function loadMetas() {
+            const metas = JSON.parse(localStorage.getItem('ligon_metas') || '[]');
+            const metasGrid = document.getElementById('metasGrid');
+            
+            if (metas.length === 0) {
+                metasGrid.innerHTML = `
+                    <div class="empty-state-modern">
+                        <i class="fas fa-bullseye"></i>
+                        <p>Nenhuma meta cadastrada</p>
+                        <button class="btn-primary" onclick="openMetaModal()" style="margin-top: 1rem;">
+                            <i class="fas fa-plus"></i> Criar Primeira Meta
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            metasGrid.innerHTML = metas.map(meta => {
+                const progresso = calcularProgressoMeta(meta);
+                const porcentagem = Math.min(100, (progresso.atual / progresso.meta) * 100);
+                
+                return `
+                    <div class="meta-card">
+                        <div class="meta-card-header">
+                            <div class="meta-icon" style="background: linear-gradient(135deg, ${getMetaColor(meta.tabela)});">
+                                <i class="fas ${getMetaIcon(meta.tabela)}"></i>
+                            </div>
+                            <div class="meta-info">
+                                <h4>${meta.nome}</h4>
+                                <p class="meta-subtitle">${meta.descricao || meta.tabela} - ${meta.periodo}</p>
+                            </div>
+                            <div class="meta-actions">
+                                <button class="btn-icon-small" onclick="editMeta('${meta.id}')" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon-small" onclick="deleteMeta('${meta.id}')" title="Excluir">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="meta-progress">
+                            <div class="meta-values">
+                                <span class="meta-atual">${formatMetaValue(progresso.atual, meta.coluna)}</span>
+                                <span class="meta-total">/ ${formatMetaValue(progresso.meta, meta.coluna)}</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: ${porcentagem}%; background: linear-gradient(135deg, ${getMetaColor(meta.tabela)});"></div>
+                            </div>
+                            <div class="meta-percentage">
+                                <span class="${porcentagem >= 100 ? 'success' : porcentagem >= 75 ? 'warning' : 'danger'}">
+                                    ${porcentagem.toFixed(1)}%
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function calcularProgressoMeta(meta) {
+            let atual = 0;
+            const hoje = new Date();
+            let inicioPeriodo = new Date();
+            
+            switch(meta.periodo) {
+                case 'diario':
+                    inicioPeriodo.setHours(0, 0, 0, 0);
+                    break;
+                case 'semanal':
+                    inicioPeriodo.setDate(hoje.getDate() - hoje.getDay());
+                    inicioPeriodo.setHours(0, 0, 0, 0);
+                    break;
+                case 'mensal':
+                    inicioPeriodo.setDate(1);
+                    inicioPeriodo.setHours(0, 0, 0, 0);
+                    break;
+                case 'anual':
+                    inicioPeriodo.setMonth(0, 1);
+                    inicioPeriodo.setHours(0, 0, 0, 0);
+                    break;
+            }
+
+            const dados = JSON.parse(localStorage.getItem(`ligon_${meta.tabela}`) || '[]');
+            
+            switch(meta.coluna) {
+                case 'count':
+                    atual = dados.filter(item => {
+                        const dataItem = new Date(item.dataCadastro || item.data || new Date());
+                        return dataItem >= inicioPeriodo;
+                    }).length;
+                    break;
+                case 'valor':
+                    atual = dados.filter(item => {
+                        const dataItem = new Date(item.dataCadastro || item.data || new Date());
+                        return dataItem >= inicioPeriodo;
+                    }).reduce((sum, item) => sum + (parseFloat(item.valorTotal || item.preco || 0)), 0);
+                    break;
+                case 'compareceu':
+                    atual = dados.filter(item => {
+                        const dataItem = new Date(item.data || new Date());
+                        return dataItem >= inicioPeriodo && item.compareceu === true;
+                    }).length;
+                    break;
+                case 'pago':
+                    atual = dados.filter(item => {
+                        const dataItem = new Date(item.data || new Date());
+                        return dataItem >= inicioPeriodo && item.pago === true;
+                    }).length;
+                    break;
+            }
+
+            return {
+                atual: atual,
+                meta: parseFloat(meta.valor)
+            };
+        }
+
+        function formatMetaValue(value, tipo) {
+            if (tipo === 'valor') {
+                return formatCurrency(value);
+            }
+            return Math.round(value).toString();
+        }
+
+        function getMetaColor(tabela) {
+            const colors = {
+                'agendamentos': '#6366f1, #818cf8',
+                'vendas': '#10b981, #34d399',
+                'servicos': '#8b5cf6, #a78bfa',
+                'produtos': '#f59e0b, #fbbf24'
+            };
+            return colors[tabela] || '#10b981, #34d399';
+        }
+
+        function getMetaIcon(tabela) {
+            const icons = {
+                'agendamentos': 'fa-calendar-check',
+                'vendas': 'fa-shopping-cart',
+                'servicos': 'fa-spa',
+                'produtos': 'fa-box'
+            };
+            return icons[tabela] || 'fa-bullseye';
+        }
+
+        function openMetaModal(metaId = null) {
+            const modal = document.getElementById('metaModal');
+            const form = document.getElementById('metaForm');
+            const modalTitle = document.getElementById('metaModalTitle');
+            
+            form.reset();
+            document.getElementById('metaId').value = '';
+            
+            if (metaId) {
+                const metas = JSON.parse(localStorage.getItem('ligon_metas') || '[]');
+                const meta = metas.find(m => m.id === metaId);
+                if (meta) {
+                    modalTitle.textContent = 'Editar Meta';
+                    document.getElementById('metaId').value = meta.id;
+                    document.getElementById('metaNome').value = meta.nome;
+                    document.getElementById('metaTabela').value = meta.tabela;
+                    document.getElementById('metaColuna').value = meta.coluna;
+                    document.getElementById('metaValor').value = meta.valor;
+                    document.getElementById('metaPeriodo').value = meta.periodo;
+                    document.getElementById('metaDescricao').value = meta.descricao || '';
+                }
+            } else {
+                modalTitle.textContent = 'Nova Meta';
+            }
+
+            modal.classList.add('show');
+        }
+
+        function closeMetaModal() {
+            document.getElementById('metaModal').classList.remove('show');
+        }
+
+        function editMeta(metaId) {
+            openMetaModal(metaId);
+        }
+
+        function deleteMeta(metaId) {
+            if (confirm('Deseja realmente excluir esta meta?')) {
+                const metas = JSON.parse(localStorage.getItem('ligon_metas') || '[]');
+                const filtered = metas.filter(m => m.id !== metaId);
+                localStorage.setItem('ligon_metas', JSON.stringify(filtered));
+                showNotification('Meta excluída com sucesso!');
+                loadMetas();
+            }
+        }
+
+        // Handle meta form submission
+        document.getElementById('metaForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const metas = JSON.parse(localStorage.getItem('ligon_metas') || '[]');
+            const metaId = document.getElementById('metaId').value;
+            
+            const meta = {
+                id: metaId || generateId(),
+                nome: document.getElementById('metaNome').value,
+                tabela: document.getElementById('metaTabela').value,
+                coluna: document.getElementById('metaColuna').value,
+                valor: parseFloat(document.getElementById('metaValor').value),
+                periodo: document.getElementById('metaPeriodo').value,
+                descricao: document.getElementById('metaDescricao').value,
+                dataCriacao: metaId ? metas.find(m => m.id === metaId)?.dataCriacao || new Date().toISOString() : new Date().toISOString(),
+                dataAtualizacao: new Date().toISOString()
+            };
+
+            if (metaId) {
+                const index = metas.findIndex(m => m.id === metaId);
+                metas[index] = meta;
+                showNotification('Meta atualizada com sucesso!');
+            } else {
+                metas.push(meta);
+                showNotification('Meta criada com sucesso!');
+            }
+
+            localStorage.setItem('ligon_metas', JSON.stringify(metas));
+            closeMetaModal();
+            loadMetas();
+        });
+
+        // Initialize metas storage
+        if (!localStorage.getItem('ligon_metas')) {
+            localStorage.setItem('ligon_metas', '[]');
+        }
+
         loadDashboardStats();
+        loadMetas();
         setTimeout(initCharts, 300);
     </script>
 </body>
