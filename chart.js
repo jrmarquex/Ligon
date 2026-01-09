@@ -31,12 +31,18 @@ class SimpleChart {
         const dpr = window.devicePixelRatio || 1;
         const rect = this.canvas.getBoundingClientRect();
         
-        this.canvas.width = rect.width * dpr;
-        this.canvas.height = rect.height * dpr;
+        // Ensure minimum dimensions
+        const minWidth = 600;
+        const minHeight = 300;
+        const width = Math.max(rect.width || minWidth, minWidth);
+        const height = Math.max(rect.height || minHeight, minHeight);
+        
+        this.canvas.width = width * dpr;
+        this.canvas.height = height * dpr;
         
         this.ctx.scale(dpr, dpr);
-        this.canvas.style.width = rect.width + 'px';
-        this.canvas.style.height = rect.height + 'px';
+        this.canvas.style.width = width + 'px';
+        this.canvas.style.height = height + 'px';
     }
     
     drawBarChart() {

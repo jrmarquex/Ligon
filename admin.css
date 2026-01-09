@@ -686,6 +686,13 @@ body {
     height: 320px;
     position: relative;
     margin-top: 1rem;
+    min-height: 320px;
+}
+
+.chart-wrapper-enhanced canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .chart-card-enhanced {

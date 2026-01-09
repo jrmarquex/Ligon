@@ -518,14 +518,22 @@
             activityList.innerHTML = html;
         }
 
+        // Chart period state
+        let currentPeriod = 'monthly';
+        
         // Initialize charts
         function initCharts() {
+            // Clear existing chart canvas
+            const canvas = document.getElementById('salesChart');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            
             // Sales Chart (Bar Chart) - Enhanced with stats
-            const salesData = generateSalesData();
+            const salesData = generateSalesData(currentPeriod);
             const isDark = document.body.classList.contains('dark-mode');
-            const chartColors = isDark 
-                ? ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#86efac', '#bbf7d0']
-                : ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#86efac', '#bbf7d0'];
+            const chartColors = ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#86efac', '#bbf7d0'];
             
             // Update chart stats
             const total = salesData.values.reduce((a, b) => a + b, 0);
@@ -534,19 +542,31 @@
                 ? ((salesData.values[salesData.values.length - 1] - salesData.values[0]) / salesData.values[0] * 100).toFixed(1)
                 : 0;
             
-            document.getElementById('totalVendasChart').textContent = formatCurrency(total * 100);
-            document.getElementById('mediaVendasChart').textContent = formatCurrency(media * 100);
-            document.getElementById('crescimentoVendasChart').textContent = 
-                (crescimento >= 0 ? '+' : '') + crescimento + '%';
+            if (document.getElementById('totalVendasChart')) {
+                document.getElementById('totalVendasChart').textContent = formatCurrency(total);
+                document.getElementById('mediaVendasChart').textContent = formatCurrency(media);
+                const crescimentoElement = document.getElementById('crescimentoVendasChart');
+                if (crescimentoElement) {
+                    crescimentoElement.textContent = (crescimento >= 0 ? '+' : '') + crescimento + '%';
+                    crescimentoElement.className = 'chart-stat-value ' + (crescimento >= 0 ? 'positive' : 'negative');
+                }
+            }
             
-            new SimpleChart('salesChart', {
-                type: 'bar',
-                data: salesData.values,
-                labels: salesData.labels,
-                colors: chartColors,
-                highlightedIndex: new Date().getMonth() % 7,
-                darkMode: isDark
-            });
+            // Wait a bit for canvas to be ready
+            setTimeout(() => {
+                try {
+                    new SimpleChart('salesChart', {
+                        type: 'bar',
+                        data: salesData.values,
+                        labels: salesData.labels,
+                        colors: chartColors,
+                        highlightedIndex: currentPeriod === 'monthly' ? new Date().getMonth() % salesData.labels.length : salesData.labels.length - 1,
+                        darkMode: isDark
+                    });
+                } catch (error) {
+                    console.error('Error initializing chart:', error);
+                }
+            }, 100);
             
             // Progress Chart (Donut Chart)
             const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');
@@ -568,31 +588,39 @@
             });
         }
         
-        // Generate sample sales data
-        function generateSalesData() {
-            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'];
-            const vendas = JSON.parse(localStorage.getItem('ligon_vendas') || '[]');
-            const currentMonth = new Date().getMonth();
-            
-            // Group sales by month (simplified)
-            const values = months.map((_, index) => {
-                if (index === currentMonth % 7) {
-                    return Math.max(30, vendas.length * 5 + Math.random() * 20);
-                }
-                return Math.random() * 40 + 10;
-            });
-            
-            return {
-                labels: months,
-                values: values
-            };
+        // Generate sample sales data with static values
+        function generateSalesData(period = 'monthly') {
+            if (period === 'monthly') {
+                // Dados estáticos mensais (últimos 7 meses)
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul'];
+                const staticValues = [12500, 18200, 15200, 21000, 19500, 22800, 24500];
+                
+                return {
+                    labels: months,
+                    values: staticValues
+                };
+            } else {
+                // Dados estáticos anuais (últimos 6 meses do ano)
+                const months = ['Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                const staticValues = [24500, 26800, 25200, 28900, 31200, 32800];
+                
+                return {
+                    labels: months,
+                    values: staticValues
+                };
+            }
         }
         
         // Chart period toggle
         document.querySelectorAll('.chart-toggle-modern').forEach(btn => {
             btn.addEventListener('click', function() {
+                const period = this.getAttribute('data-period');
+                currentPeriod = period;
+                
                 document.querySelectorAll('.chart-toggle-modern').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
+                
+                // Reinitialize chart with new period
                 setTimeout(initCharts, 100);
             });
         });
