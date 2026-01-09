@@ -558,11 +558,25 @@
             // Initialize chart - ensure canvas is visible and has dimensions
             setTimeout(() => {
                 try {
-                    // Reset canvas dimensions
-                    canvas.width = 0;
-                    canvas.height = 0;
+                    const canvasElement = document.getElementById('salesChart');
+                    if (!canvasElement) {
+                        console.error('Canvas element not found');
+                        return;
+                    }
                     
-                    new SimpleChart('salesChart', {
+                    // Ensure canvas container is visible
+                    const container = canvasElement.parentElement;
+                    if (container) {
+                        container.style.display = 'block';
+                        container.style.visibility = 'visible';
+                    }
+                    
+                    // Reset canvas to force re-render
+                    canvasElement.width = 0;
+                    canvasElement.height = 0;
+                    
+                    // Create new chart instance
+                    const chart = new SimpleChart('salesChart', {
                         type: 'bar',
                         data: salesData.values,
                         labels: salesData.labels,
@@ -570,10 +584,13 @@
                         highlightedIndex: currentPeriod === 'monthly' ? new Date().getMonth() % salesData.labels.length : salesData.labels.length - 1,
                         darkMode: isDark
                     });
+                    
+                    console.log('Chart initialized successfully', chart);
                 } catch (error) {
                     console.error('Error initializing chart:', error);
+                    console.error('Stack:', error.stack);
                 }
-            }, 200);
+            }, 300);
             
             // Progress Chart (Donut Chart)
             const produtos = JSON.parse(localStorage.getItem('ligon_produtos') || '[]');

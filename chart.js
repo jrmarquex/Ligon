@@ -19,7 +19,18 @@ class SimpleChart {
     }
     
     init() {
+        if (!this.canvas) {
+            console.error('Canvas not available for chart initialization');
+            return;
+        }
+        
         this.setupCanvas();
+        
+        if (!this.ctx) {
+            console.error('Canvas context not available');
+            return;
+        }
+        
         if (this.options.type === 'bar') {
             this.drawBarChart();
         } else if (this.options.type === 'donut') {
