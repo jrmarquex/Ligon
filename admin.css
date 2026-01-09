@@ -59,6 +59,12 @@ body {
     width: 20px;
 }
 
+.nav-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 10px 20px;
+}
+
 /* Main Content */
 .main-content {
     margin-left: 260px;
