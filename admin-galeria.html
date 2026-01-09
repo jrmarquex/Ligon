@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Ligon - Galeria</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-spa"></i> Ligon Admin</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="admin-dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="admin-produtos.html" class="nav-item">
+                <i class="fas fa-box"></i> Produtos
+            </a>
+            <a href="admin-servicos.html" class="nav-item">
+                <i class="fas fa-spa"></i> Serviços
+            </a>
+            <a href="admin-galeria.html" class="nav-item active">
+                <i class="fas fa-images"></i> Galeria
+            </a>
+            <a href="admin-vendas.html" class="nav-item">
+                <i class="fas fa-shopping-cart"></i> Vendas
+            </a>
+            <a href="admin-relatorios.html" class="nav-item">
+                <i class="fas fa-chart-line"></i> Relatórios
+            </a>
+            <a href="#" class="nav-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Sair
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="header">
+            <h1>Gerenciar Galeria</h1>
+            <button class="btn btn-primary" onclick="openGalleryItemModal()">
+                <i class="fas fa-plus"></i> Nova Imagem
+            </button>
+        </header>
+
+        <div class="content-section">
+            <div class="cards-grid" id="galleryGrid">
+                <!-- Gallery items will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Item Modal -->
+    <div class="modal" id="galleryItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nova Imagem da Galeria</h2>
+                <button class="modal-close" onclick="closeGalleryItemModal()">&times;</button>
+            </div>
+            <form id="galleryItemForm">
+                <input type="hidden" id="galleryItemId">
+                
+                <div class="form-group">
+                    <label for="galleryItemTitle">Título *</label>
+                    <input type="text" id="galleryItemTitle" required placeholder="Ex: TRANSFORMAÇÃO DIVINA">
+                </div>
+
+                <div class="form-group">
+                    <label for="galleryItemDescription">Descrição *</label>
+                    <textarea id="galleryItemDescription" required rows="4" placeholder="Descrição da imagem..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="galleryItemImage">Imagem *</label>
+                    <input type="file" id="galleryItemImage" accept="image/*" onchange="handleGalleryImageUpload(event)">
+                    <div class="image-preview" id="galleryImagePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="galleryItemCTA">Texto do Botão CTA (opcional)</label>
+                    <input type="text" id="galleryItemCTA" placeholder="Ex: → Agende Sua Experiência">
+                </div>
+
+                <div class="form-group">
+                    <label for="galleryItemCTALink">Link do Botão CTA (opcional)</label>
+                    <input type="url" id="galleryItemCTALink" placeholder="https://... ou #">
+                </div>
+
+                <div class="form-group">
+                    <label for="galleryItemType">Tipo de Exibição *</label>
+                    <select id="galleryItemType" required>
+                        <option value="">Selecione...</option>
+                        <option value="featured">Destaque (Imagem Grande - Esquerda)</option>
+                        <option value="grid">Grid (Imagens Pequenas - Direita)</option>
+                    </select>
+                    <small style="color: #666; margin-top: 5px; display: block;">
+                        <strong>Destaque:</strong> Aparece como imagem grande na coluna esquerda (apenas 1 por vez)<br>
+                        <strong>Grid:</strong> Aparece na coluna direita com outras imagens
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label for="galleryItemOrder">Ordem de Exibição</label>
+                    <input type="number" id="galleryItemOrder" min="0" value="0">
+                    <small style="color: #666; margin-top: 5px; display: block;">
+                        Números menores aparecem primeiro. Use 0 para ordem padrão.
+                    </small>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="closeGalleryItemModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Check authentication
+        if (!sessionStorage.getItem('admin_authenticated')) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = 'admin-login.html';
+        });
+
+        let currentGalleryImage = null;
+
+        // Load gallery items
+        function loadGalleryItems() {
+            const galleryItems = JSON.parse(localStorage.getItem('ligon_galeria') || '[]');
+            const grid = document.getElementById('galleryGrid');
+
+            if (galleryItems.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fas fa-images"></i>
+                        <p>Nenhuma imagem cadastrada na galeria</p>
+                        <p style="margin-top: 10px; color: #666; font-size: 14px;">
+                            Adicione imagens para que apareçam na página de galeria do site
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by order
+            const sortedItems = [...galleryItems].sort((a, b) => (a.ordem || 0) - (b.ordem || 0));
+
+            grid.innerHTML = sortedItems.map(item => `
+                <div class="card">
+                    ${item.imagem ? 
+                        `<img src="${item.imagem}" alt="${item.titulo}" class="card-image">` : 
+                        `<div class="card-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center; color: #999;">
+                            <i class="fas fa-image" style="font-size: 48px;"></i>
+                        </div>`
+                    }
+                    <h3 class="card-title">${item.titulo}</h3>
+                    <p class="card-description">${item.descricao}</p>
+                    <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                        <strong>Tipo:</strong> ${item.tipo === 'featured' ? 'Destaque' : 'Grid'} | 
+                        <strong>Ordem:</strong> ${item.ordem || 0}
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="editGalleryItem('${item.id}')">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteGalleryItem('${item.id}')">
+                            <i class="fas fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open gallery item modal
+        function openGalleryItemModal(itemId = null) {
+            const modal = document.getElementById('galleryItemModal');
+            const form = document.getElementById('galleryItemForm');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            form.reset();
+            currentGalleryImage = null;
+            document.getElementById('galleryImagePreview').innerHTML = '';
+
+            if (itemId) {
+                modalTitle.textContent = 'Editar Imagem da Galeria';
+                const galleryItems = JSON.parse(localStorage.getItem('ligon_galeria') || '[]');
+                const item = galleryItems.find(g => g.id === itemId);
+                
+                if (item) {
+                    document.getElementById('galleryItemId').value = item.id;
+                    document.getElementById('galleryItemTitle').value = item.titulo;
+                    document.getElementById('galleryItemDescription').value = item.descricao;
+                    document.getElementById('galleryItemCTA').value = item.ctaTexto || '';
+                    document.getElementById('galleryItemCTALink').value = item.ctaLink || '';
+                    document.getElementById('galleryItemType').value = item.tipo;
+                    document.getElementById('galleryItemOrder').value = item.ordem || 0;
+                    
+                    if (item.imagem) {
+                        currentGalleryImage = item.imagem;
+                        displayGalleryImage(item.imagem);
+                    }
+                }
+            } else {
+                modalTitle.textContent = 'Nova Imagem da Galeria';
+            }
+
+            modal.classList.add('show');
+        }
+
+        // Close gallery item modal
+        function closeGalleryItemModal() {
+            document.getElementById('galleryItemModal').classList.remove('show');
+        }
+
+        // Handle gallery image upload
+        async function handleGalleryImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const base64 = await imageToBase64(file);
+                currentGalleryImage = base64;
+                displayGalleryImage(base64);
+            }
+        }
+
+        // Display gallery image
+        function displayGalleryImage(imageSrc) {
+            const preview = document.getElementById('galleryImagePreview');
+            preview.innerHTML = `
+                <div class="image-preview-item" style="max-width: 100%;">
+                    <img src="${imageSrc}" alt="Preview" style="max-width: 100%; height: auto; border-radius: 8px;">
+                </div>
+            `;
+        }
+
+        // Edit gallery item
+        function editGalleryItem(id) {
+            openGalleryItemModal(id);
+        }
+
+        // Delete gallery item
+        function deleteGalleryItem(id) {
+            if (confirm('Tem certeza que deseja excluir esta imagem da galeria?')) {
+                const galleryItems = JSON.parse(localStorage.getItem('ligon_galeria') || '[]');
+                const filtered = galleryItems.filter(g => g.id !== id);
+                localStorage.setItem('ligon_galeria', JSON.stringify(filtered));
+                loadGalleryItems();
+                showNotification('Imagem removida da galeria com sucesso!');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('galleryItemForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentGalleryImage) {
+                alert('Por favor, selecione uma imagem!');
+                return;
+            }
+
+            const galleryItems = JSON.parse(localStorage.getItem('ligon_galeria') || '[]');
+            const itemId = document.getElementById('galleryItemId').value;
+            
+            const galleryItem = {
+                id: itemId || generateId(),
+                titulo: document.getElementById('galleryItemTitle').value,
+                descricao: document.getElementById('galleryItemDescription').value,
+                imagem: currentGalleryImage,
+                ctaTexto: document.getElementById('galleryItemCTA').value || '',
+                ctaLink: document.getElementById('galleryItemCTALink').value || '#',
+                tipo: document.getElementById('galleryItemType').value,
+                ordem: parseInt(document.getElementById('galleryItemOrder').value) || 0,
+                dataCadastro: itemId ? galleryItems.find(g => g.id === itemId)?.dataCadastro || new Date().toISOString() : new Date().toISOString(),
+                dataAtualizacao: new Date().toISOString()
+            };
+
+            // Se for tipo "featured", remover featured de outros itens
+            if (galleryItem.tipo === 'featured') {
+                galleryItems.forEach(item => {
+                    if (item.id !== galleryItem.id && item.tipo === 'featured') {
+                        item.tipo = 'grid';
+                    }
+                });
+            }
+
+            if (itemId) {
+                const index = galleryItems.findIndex(g => g.id === itemId);
+                galleryItems[index] = galleryItem;
+                showNotification('Imagem da galeria atualizada com sucesso!');
+            } else {
+                galleryItems.push(galleryItem);
+                showNotification('Imagem adicionada à galeria com sucesso!');
+            }
+
+            localStorage.setItem('ligon_galeria', JSON.stringify(galleryItems));
+            closeGalleryItemModal();
+            loadGalleryItems();
+        });
+
+        // Check if should open modal for new item
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('action') === 'new') {
+            setTimeout(() => openGalleryItemModal(), 100);
+        }
+
+        // Load gallery items on page load
+        loadGalleryItems();
+    </script>
+</body>
+</html>
+

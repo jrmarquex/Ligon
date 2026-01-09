@@ -27,13 +27,36 @@
         .hero-section {
             position: relative;
             width: 100%;
-            height: 50vh;
-            min-height: 350px;
-            background: linear-gradient(135deg, rgba(46, 95, 53, 0.9) 0%, rgba(155, 138, 107, 0.85) 100%), url('images/marmore_verde.jpg') center center;
+            height: 60vh;
+            min-height: 400px;
+            background: linear-gradient(135deg, rgba(46, 95, 53, 0.95) 0%, rgba(155, 138, 107, 0.9) 50%, rgba(46, 95, 53, 0.95) 100%), url('images/marmore_verde.jpg') center center;
             background-size: cover;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(232, 213, 183, 0.1) 0%, transparent 70%);
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: translate(0%, 0%) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translate(10%, 10%) rotate(180deg);
+                opacity: 0.6;
+            }
         }
 
         .hero-content {
@@ -41,20 +64,43 @@
             z-index: 2;
             text-align: center;
             color: #FFFFFF;
-            padding: 20px;
+            padding: 40px 20px;
+            background: rgba(46, 95, 53, 0.2);
+            border-radius: 30px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(232, 213, 183, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero-content h1 {
-            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
             font-weight: 700;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #FFFFFF, #E8D5B7, #FFFFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-content p {
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: clamp(1.2rem, 3vw, 2rem);
             font-weight: 300;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
+            color: #E8D5B7;
+            letter-spacing: 1px;
         }
 
         /* Main Content */
@@ -331,8 +377,8 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1>Nossos Procedimentos</h1>
-            <p>Descubra tratamentos exclusivos para seu bem-estar</p>
+            <h1>✨ Conheça Nossos Procedimentos ✨</h1>
+            <p>Experiências únicas de bem-estar e renovação</p>
         </div>
     </section>
 
@@ -347,11 +393,12 @@
             <div class="filter-dropdown">
                 <select id="categoryFilter">
                     <option value="">Todas as Categorias</option>
-                    <option value="massagem">Massagens</option>
-                    <option value="facial">Tratamentos Faciais</option>
-                    <option value="corporal">Tratamentos Corporais</option>
-                    <option value="relaxamento">Relaxamento</option>
-                    <option value="estetica">Estética</option>
+                    <option value="rituais">Rituais Ligon</option>
+                    <option value="massagens">Massagens</option>
+                    <option value="head-spa">Head Spa</option>
+                    <option value="estetica-facial">Estética Facial</option>
+                    <option value="aqua-ligon">Linha Aqua Ligon</option>
+                    <option value="spa-day">Spa Day</option>
                 </select>
             </div>
             <div class="filter-dropdown">
@@ -373,169 +420,229 @@
     </div>
 
     <script>
-        // Sample procedures data
+        // Procedures data from official catalog
         const proceduresData = [
+            // 1. RITUAIS LIGON
             {
                 id: 1,
-                name: "Massagem Relaxante Completa",
-                category: "massagem",
-                description: "Uma massagem profunda que alivia tensões musculares e promove relaxamento total do corpo e mente. Utiliza técnicas suaves e óleos essenciais aromáticos.",
-                price: 250.00,
+                name: "Ligon Soul Therapy",
+                category: "rituais",
+                description: "Renovação Profunda & Aconchego. Uma imersão completa que combina purificação, esfoliação e massagem terapêutica com óleos e cremes aquecidos. Inclui: escalda-pés, esfoliação, massagem com óleo vegetal aquecido, aromaterapia, esfoliação corporal completa e toalhas térmicas.",
+                price: 316.99,
                 image: "images/IMG-20251114-WA0504.jpg",
-                duration: "90 minutos"
-            },
-            {
-                id: 2,
-                name: "Tratamento Facial Revitalizante",
-                category: "facial",
-                description: "Tratamento facial completo com produtos premium que hidrata, nutre e rejuvenesce a pele, deixando-a radiante e com aspecto saudável.",
-                price: 180.00,
-                image: "images/IMG-20251114-WA0512.jpg",
-                duration: "60 minutos"
-            },
-            {
-                id: 3,
-                name: "Massagem Terapêutica",
-                category: "massagem",
-                description: "Técnica especializada para alívio de dores musculares e tensões crônicas. Ideal para quem sofre com estresse e dores nas costas.",
-                price: 220.00,
-                image: "images/IMG-20251114-WA0516.jpg",
-                duration: "75 minutos"
-            },
-            {
-                id: 4,
-                name: "Ritual de Bem-Estar Corporal",
-                category: "corporal",
-                description: "Experiência completa de relaxamento com esfoliação, massagem e hidratação profunda. Renove sua pele e sua energia.",
-                price: 320.00,
-                image: "images/IMG-20251114-WA0517.jpg",
                 duration: "120 minutos"
             },
             {
-                id: 5,
-                name: "Tratamento Anti-Idade",
-                category: "facial",
-                description: "Protocolo avançado com produtos anti-idade que estimulam a produção de colágeno e reduzem sinais de envelhecimento.",
-                price: 280.00,
-                image: "images/IMG-20251114-WA0504.jpg",
+                id: 2,
+                name: "Ligon Nature Flow",
+                category: "rituais",
+                description: "Reconexão Natural & Bem-Estar Profundo. Inspirado na leveza da natureza, une toque quente, extratos florais e aromaterapia para restaurar o equilíbrio físico e emocional. Inclui escalda-pés com sais e ervas naturais, massagem com óleo aquecido e toalhas térmicas.",
+                price: 322.99,
+                image: "images/IMG-20251114-WA0512.jpg",
                 duration: "90 minutos"
+            },
+            {
+                id: 3,
+                name: "Ligon Experience",
+                category: "rituais",
+                description: "A Essência do Relaxamento Profundo. Combina imersão sensorial, toque acolhedor e técnicas exclusivas que acalmam a mente, aquecem o corpo e restauram as energias. Inclui escalda-pés aromático, massagem com vela e aromaterapia personalizada.",
+                price: 406.90,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 4,
+                name: "Ligon Sensations",
+                category: "rituais",
+                description: "Experiência Sensorial Completa. Ritual profundo que combina purificação, toque quente, estímulos energéticos e técnicas relaxantes. Inclui esfoliação, massagem com vela, pedras quentes, drenagem, alongamentos e toalhas aquecidas.",
+                price: 406.90,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "120 minutos"
+            },
+            // 2. MASSAGENS
+            {
+                id: 5,
+                name: "Massagem com Pedras Quentes",
+                category: "massagens",
+                description: "Aconchego Térmico & Alívio Profundo. Ritual terapêutico que combina toque relaxante com o calor das pedras de basalto. Inclui escalda-pés, massagem em pés e panturrilhas com óleo e creme aquecido, e massagem corporal completa com técnicas de pedras quentes.",
+                price: 316.90,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "85 minutos"
             },
             {
                 id: 6,
-                name: "Massagem com Pedras Quentes",
-                category: "relaxamento",
-                description: "Técnica milenar que combina massagem com pedras vulcânicas aquecidas para relaxamento profundo e alívio de tensões.",
-                price: 300.00,
+                name: "Pindas Aromáticas",
+                category: "massagens",
+                description: "Aconchego Térmico & Alívio Profundo. Ritual terapêutico que combina toque relaxante com o calor das pindas aromáticas. A energia térmica dissolve tensões, acalma a mente e restaura o equilíbrio do corpo.",
+                price: 316.90,
                 image: "images/IMG-20251114-WA0512.jpg",
-                duration: "90 minutos"
+                duration: "85 minutos"
             },
             {
                 id: 7,
-                name: "Limpeza de Pele Profunda",
-                category: "estetica",
-                description: "Limpeza facial profunda que remove impurezas, cravos e células mortas, deixando a pele limpa, suave e renovada.",
-                price: 150.00,
+                name: "Drenagem Linfática",
+                category: "massagens",
+                description: "Leveza & Bem-Estar Imediato. Técnica suave e ritmada que reduz o inchaço, ativa a circulação e promove equilíbrio corporal. Inclui escalda-pés com ervas e drenagem linfática corporal completa com manobras suaves.",
+                price: 406.90,
                 image: "images/IMG-20251114-WA0516.jpg",
-                duration: "60 minutos"
+                duration: "75 minutos"
             },
+            // 3. HEAD SPA
             {
                 id: 8,
-                name: "Drenagem Linfática",
-                category: "corporal",
-                description: "Técnica que estimula o sistema linfático, reduzindo inchaços e melhorando a circulação sanguínea.",
-                price: 200.00,
+                name: "Head Spa Master",
+                category: "head-spa",
+                description: "Relaxamento Profundo & Revitalização Capilar. Ritual completo que harmoniza mente, couro cabeludo e fios. Inclui escalda-pés aromático, massagem em pés e panturrilhas, ritual completo de limpeza + esfoliação + hidratação capilar e finalização profissional.",
+                price: 436.99,
                 image: "images/IMG-20251114-WA0517.jpg",
-                duration: "60 minutos"
+                duration: "80 minutos"
             },
             {
                 id: 9,
-                name: "Massagem Aromaterapia",
-                category: "relaxamento",
-                description: "Massagem relaxante com óleos essenciais personalizados que promovem bem-estar físico e emocional.",
-                price: 240.00,
+                name: "Head Spa Therapy",
+                category: "head-spa",
+                description: "Diagnóstico Profissional & Relaxamento Profundo. Ritual completo que combina avaliação técnica com microscópio, estímulos sensoriais, massagem terapêutica e tratamento capilar de alta performance. Promove revitalização do couro cabeludo e equilíbrio mental.",
+                price: 584.19,
                 image: "images/IMG-20251114-WA0504.jpg",
-                duration: "75 minutos"
+                duration: "80 minutos"
             },
             {
                 id: 10,
-                name: "Tratamento Capilar Premium",
-                category: "estetica",
-                description: "Tratamento completo para cabelos com produtos de alta qualidade que nutrem, hidratam e reparam os fios.",
-                price: 160.00,
+                name: "Head Spa Premium",
+                category: "head-spa",
+                description: "A Experiência Capilar Mais Completa da Ligon. Ritual exclusivo que une análise microscópica avançada, tratamento capilar profundo, massagem capilar, massagem corporal relaxante e pindas aromáticas aquecidas. Revitaliza os fios, acalma a mente e relaxa todo o corpo.",
+                price: 656.99,
                 image: "images/IMG-20251114-WA0512.jpg",
-                duration: "90 minutos"
+                duration: "105-120 minutos"
             },
+            // 4. ESTÉTICA FACIAL
             {
                 id: 11,
-                name: "Massagem Desportiva",
-                category: "massagem",
-                description: "Massagem específica para atletas que ajuda na recuperação muscular, prevenção de lesões e melhora do desempenho.",
-                price: 260.00,
+                name: "Ligon Pure Skin Express",
+                category: "estetica-facial",
+                description: "Renovação Rápida & Pele Revitalizada. Tratamento express para limpeza profunda leve, redução de brilho e melhora imediata da textura. Ideal para manutenção mensal. Inclui higienização, esfoliação suave, extração express e máscara calmante com cromoterapia.",
+                price: 203.59,
                 image: "images/IMG-20251114-WA0516.jpg",
-                duration: "75 minutos"
+                duration: "45 minutos"
             },
             {
                 id: 12,
-                name: "Ritual de Detox Corporal",
-                category: "corporal",
-                description: "Tratamento completo que elimina toxinas, melhora a circulação e promove sensação de leveza e bem-estar.",
-                price: 290.00,
+                name: "Ligon Dermo Revival Premium",
+                category: "estetica-facial",
+                description: "Limpeza Profunda & Renovação Avançada. Tratamento premium para peles que precisam de limpeza profunda, extração completa e regeneração imediata. Inclui higienização profunda, esfoliação avançada, vapor de ozônio, extração profunda exclusiva Ligon e máscara anti-inflamatória.",
+                price: 312.99,
                 image: "images/IMG-20251114-WA0517.jpg",
-                duration: "105 minutos"
-            },
-            {
-                id: 13,
-                name: "Tratamento Facial Hidratante",
-                category: "facial",
-                description: "Hidratação profunda da pele com máscaras e produtos específicos para seu tipo de pele, deixando-a macia e radiante.",
-                price: 170.00,
-                image: "images/IMG-20251114-WA0504.jpg",
-                duration: "60 minutos"
-            },
-            {
-                id: 14,
-                name: "Massagem Pré-Natal",
-                category: "massagem",
-                description: "Massagem especializada e segura para gestantes, aliviando dores, tensões e promovendo relaxamento durante a gravidez.",
-                price: 230.00,
-                image: "images/IMG-20251114-WA0512.jpg",
-                duration: "60 minutos"
-            },
-            {
-                id: 15,
-                name: "Tratamento Corporal Redutor",
-                category: "corporal",
-                description: "Protocolo completo que ajuda a reduzir medidas, melhorar a textura da pele e promover sensação de firmeza.",
-                price: 310.00,
-                image: "images/IMG-20251114-WA0516.jpg",
                 duration: "90 minutos"
             },
             {
+                id: 13,
+                name: "Microagulhamento Facial",
+                category: "estetica-facial",
+                description: "Renovação, Colágeno & Textura Uniforme. Estimula a produção natural de colágeno, melhora a textura da pele e suaviza linhas, manchas e cicatrizes. Indicado para flacidez leve a moderada, acne, cicatrizes e manchas.",
+                price: 193.59,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "45 minutos"
+            },
+            {
+                id: 14,
+                name: "Microagulhamento Labial (Hidragloss)",
+                category: "estetica-facial",
+                description: "Hidratação & Viço Natural. Procedimento focado na hidratação profunda dos lábios, melhora da textura e estímulo de colágeno. Deixa os lábios mais macios, viçosos e com aspecto saudável, sem aumento de volume.",
+                price: 143.49,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "20 minutos"
+            },
+            {
+                id: 15,
+                name: "Preenchimento Facial",
+                category: "estetica-facial",
+                description: "Harmonização & Rejuvenescimento Natural. Restaura volumes, suaviza sulcos e melhora contornos faciais de forma equilibrada e personalizada. Indicado para perda de volume, sulcos profundos e assimetrias faciais.",
+                price: 1200.00,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "60 minutos"
+            },
+            {
                 id: 16,
-                name: "Massagem Reflexologia",
-                category: "relaxamento",
-                description: "Técnica de massagem nos pés que estimula pontos reflexos conectados a diferentes partes do corpo, promovendo equilíbrio.",
-                price: 190.00,
+                name: "Preenchimento Labial",
+                category: "estetica-facial",
+                description: "Definição, Hidratação & Volume Elegante. Promove hidratação profunda, definição do contorno e aumento sutil de volume, respeitando a anatomia labial e a naturalidade do sorriso.",
+                price: 999.90,
                 image: "images/IMG-20251114-WA0517.jpg",
                 duration: "60 minutos"
             },
             {
                 id: 17,
-                name: "Tratamento Facial Iluminador",
-                category: "facial",
-                description: "Protocolo que uniformiza o tom da pele, reduz manchas e deixa a pele com aspecto iluminado e radiante.",
-                price: 210.00,
+                name: "Toxina Botulínica (Botox)",
+                category: "estetica-facial",
+                description: "Suavização de Rugas & Prevenção do Envelhecimento. Tratamento consagrado para suavizar rugas dinâmicas e prevenir linhas de expressão. Proporciona aspecto descansado, rejuvenescido e natural. Indicado para testa, glabela e pés de galinha.",
+                price: 1200.00,
                 image: "images/IMG-20251114-WA0504.jpg",
-                duration: "75 minutos"
+                duration: "60 minutos"
             },
+            // 5. LINHA AQUA LIGON
             {
                 id: 18,
-                name: "Ritual Completo de Relaxamento",
-                category: "relaxamento",
-                description: "Experiência completa que inclui banho relaxante, massagem, tratamento facial e momento de meditação guiada.",
-                price: 450.00,
+                name: "Banho Dourado & Esfoliação Mineral",
+                category: "aqua-ligon",
+                description: "Renovação & Brilho Natural. Experiência que revela a luminosidade natural da pele. A esfoliação com sais minerais e óleo de camélia purifica, ativa a circulação e deixa o toque sedoso. Inclui taça de espumante e snack leve.",
+                price: 498.90,
                 image: "images/IMG-20251114-WA0512.jpg",
-                duration: "180 minutos"
+                duration: "60 minutos"
+            },
+            {
+                id: 19,
+                name: "Banho de Lua Ligon",
+                category: "aqua-ligon",
+                description: "Clareamento & Delicadeza Lunar. Inspirado nos rituais de renovação feminina, este banho clareia, hidrata e ilumina a pele. Movimentos suaves aplicam o clareador corporal enquanto o ambiente brilha em tons perolados. Inclui escalda-pés com lavanda.",
+                price: 589.90,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "60 minutos"
+            },
+            {
+                id: 20,
+                name: "Banho de Cleópatra – Rosas & Leite",
+                category: "aqua-ligon",
+                description: "Realeza & Nutrição Profunda. Um tributo ao feminino sagrado. O corpo é envolvido por uma mistura de leite de coco, mel e pétalas de rosas brancas. A experiência finaliza com massagem sensorial de 30 minutos que prolonga a hidratação e o conforto.",
+                price: 658.90,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "90 minutos"
+            },
+            {
+                id: 21,
+                name: "Imersão Renascence Bath",
+                category: "aqua-ligon",
+                description: "Renascimento & Paz Profunda. Imersão meditativa para quem busca silêncio, acolhimento e reconexão. A banheira é preparada com flores naturais, essências nobres e cromoterapia dourada. Inclui imersão floral, massagem nas extremidades e mini brunch com espumante.",
+                price: 989.89,
+                image: "images/IMG-20251114-WA0504.jpg",
+                duration: "90 minutos"
+            },
+            // 6. SPA DAY (Pacotes combinados)
+            {
+                id: 22,
+                name: "Ligon Master Sensations",
+                category: "spa-day",
+                description: "Head Spa Master + Ligon Sensations. Ritual profundo que combina cuidado capilar, toque quente, estímulos energéticos e técnicas relaxantes. Inclui Head Spa Master completo, esfoliação, massagem com vela, pedras quentes, drenagem e alongamentos.",
+                price: 675.12,
+                image: "images/IMG-20251114-WA0512.jpg",
+                duration: "160 minutos"
+            },
+            {
+                id: 23,
+                name: "Ligon Therapy Cleópatra",
+                category: "spa-day",
+                description: "Banho de Cleópatra + Head Spa Therapy + Ligon Pure Skin Express. Tributo ao feminino sagrado que une banho sensorial, tratamento capilar técnico e limpeza de pele express. Nutre o corpo, ilumina a pele e promove relaxamento profundo.",
+                price: 1157.34,
+                image: "images/IMG-20251114-WA0516.jpg",
+                duration: "200 minutos"
+            },
+            {
+                id: 24,
+                name: "Ligon Premium Bath",
+                category: "spa-day",
+                description: "Ligon Soul Therapy + Head Spa Premium + Imersão Renascence Bath. Imersão completa que combina purificação, esfoliação, massagem terapêutica e rituais capilares premium. Nutre a pele, libera tensões e reconecta o corpo ao estado mais profundo de calma.",
+                price: 1573.49,
+                image: "images/IMG-20251114-WA0517.jpg",
+                duration: "240 minutos"
             }
         ];
 
@@ -590,11 +697,12 @@
 
         function getCategoryName(category) {
             const categories = {
-                'massagem': 'Massagens',
-                'facial': 'Tratamentos Faciais',
-                'corporal': 'Tratamentos Corporais',
-                'relaxamento': 'Relaxamento',
-                'estetica': 'Estética'
+                'rituais': 'Rituais Ligon',
+                'massagens': 'Massagens',
+                'head-spa': 'Head Spa',
+                'estetica-facial': 'Estética Facial',
+                'aqua-ligon': 'Linha Aqua Ligon',
+                'spa-day': 'Spa Day'
             };
             return categories[category] || category;
         }

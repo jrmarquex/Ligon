@@ -98,6 +98,9 @@ function initStorage() {
     if (!localStorage.getItem('ligon_vendas')) {
         localStorage.setItem('ligon_vendas', '[]');
     }
+    if (!localStorage.getItem('ligon_galeria')) {
+        localStorage.setItem('ligon_galeria', '[]');
+    }
 }
 
 // Initialize on load
