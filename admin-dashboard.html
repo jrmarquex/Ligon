@@ -537,10 +537,14 @@
             if (metas.length === 0) {
                 metasGrid.innerHTML = `
                     <div class="empty-state-modern">
-                        <i class="fas fa-bullseye"></i>
-                        <p>Nenhuma meta cadastrada</p>
-                        <button class="btn-primary" onclick="openMetaModal()" style="margin-top: 1rem;">
-                            <i class="fas fa-plus"></i> Criar Primeira Meta
+                        <div class="empty-icon-wrapper">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="empty-title">Nenhuma meta cadastrada</h3>
+                        <p class="empty-description">Comece criando sua primeira meta para acompanhar o progresso do spa</p>
+                        <button class="btn-create-first-meta" onclick="openMetaModal()">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Criar Primeira Meta</span>
                         </button>
                     </div>
                 `;
